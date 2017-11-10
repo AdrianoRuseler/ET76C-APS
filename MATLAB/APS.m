@@ -51,6 +51,13 @@ conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0
 
 % Simule no PSIM para verificar a resposta
 winopen([conv.tipo '\' conv.tipo '1malha.psimsch']) % Abre arquivo de simulação
+
+%% Implementação analógica com AmpOp
+
+
+
+
+winopen([conv.tipo '\' conv.tipo '1malhaAmpOp.psimsch']) % Abre arquivo de simulação
  
 %% Discretização do controlador
 conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
