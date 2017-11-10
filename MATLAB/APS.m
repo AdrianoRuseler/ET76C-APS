@@ -1,23 +1,29 @@
-% Limpa area de trabalho
+%% Limpa area de trabalho
 clear all 
 clc
 
-%% Obtenção dos parâmetros
+%% Identificação
 RA=1019252; % Coloque aqui o seu RA (Boost)
 RA=1234567; % Buck
 RA=1230067; % Buck-Boost
 
-conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor;    
+%% Obtenção dos parâmetros do conversor
+conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
+
+psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Exporta os parâmetros do conversor
+winopen(conv.tipo) % Abre pasta contendo arquivos de simulação
 
 %% Simulação do ponto de operação 
 
-psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Cria arquivo txt com os parâmetros do conversor
 % Simule o conversor para verificar o ponto de operação
+winopen([conv.tipo '\' conv.tipo '.psimsch']) % Abre arquivo de simulação
+
 % Simule o arquivo ACSweep para verificar a modelagem do cenversor
+winopen([conv.tipo '\' conv.tipo 'ACSweep.psimsch']) % Abre arquivo de simulação
 
 %% Verificação das plantas
 
-PSIMdata = psimfra2matlab(); % Abra o arquivo .fra
+PSIMdata = psimfra2matlab([conv.tipo '\' conv.tipo 'ACSweep.fra']); % Abra o arquivo .fra
 validarplanta(PSIMdata,conv) % Compara modelos
 
 
@@ -42,6 +48,9 @@ conv.FTMA1 = feedback(conv.C*conv.vC0_d,1);
 figure
 step(conv.FTMA1) % Obtêm resposta ao degrau
 conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+
+% Simule no PSIM para verificar a resposta
+winopen([conv.tipo '\' conv.tipo '1malha.psimsch']) % Abre arquivo de simulação
  
 %% Discretização do controlador
 conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
@@ -63,6 +72,9 @@ conv.b1z = CzNum(2); %
  
 psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt
 
+% Simule no PSIM para verificar a resposta
+winopen([conv.tipo '\' conv.tipo '1malhaDiscreto.psimsch']) % Abre arquivo de simulação
+
 %% Implementação em linguem C do controlador (DLL)
 
 % Specify discrete transfer functions in DSP format
@@ -72,6 +84,9 @@ conv.CDLL=filt(CzNum,CzDen,conv.Ta);
 % ---- = -------------------------
 % e(z)          1 - z^-1
           
+% Simule no PSIM para verificar a resposta
+winopen([conv.tipo '\' conv.tipo '1malhaDLL.psimsch']) % Abre arquivo de simulação
+
  %% Projeto com duas malhas de controle
  
  % Abra a feramenta de projeto do controlador
@@ -94,6 +109,7 @@ conv.C2=C2; % Associe a estrutura
  
  psimdata(conv,[conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
  
- 
+ % Simule no PSIM para verificar a resposta
+winopen([conv.tipo '\' conv.tipo '2malhas.psimsch']) % Abre arquivo de simulação
 
  
