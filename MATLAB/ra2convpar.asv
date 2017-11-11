@@ -1,5 +1,5 @@
 function conv = ra2convpar(RA)
-conv.RA=RA; % Registro Acadêmico
+conv.RA=RA; 
 
 conv.Vi = bitget(RA,3:-1:1)*[25; 50; 100]+50; % Tensão de entrada
 conv.V0 = bitget(RA,6:-1:4)*[50; 75; 100]+50; % Tensão de saída

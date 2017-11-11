@@ -1,5 +1,5 @@
-\titulo{MODELAGEM E CONTROLE DE UM CONVERSOR BOOST CC--CC EM MODO DE CONDUÇÃO CONTÍNUA} % Titulo em português
-\title{MODELLING AND CONTROL OF A DC--DC BOOST CONVERTER IN CONTINUOUS CONDUCTION MODE} % Título em inglês
+\titulo{MODELAGEM E CONTROLE DE UM CONVERSOR BUCK CC--CC EM MODO DE CONDUÇÃO CONTÍNUA} % Titulo em português
+\title{MODELLING AND CONTROL OF A DC--DC BUCK CONVERTER IN CONTINUOUS CONDUCTION MODE} % Título em inglês
 
 \maketitle
 
@@ -38,13 +38,13 @@ Repositório: \url{https://github.com/AdrianoRuseler/ET76C-APS} }
 
 A seção de Introdução tem o objetivo geral de apresentar a natureza do problema abordado no trabalho, através de adequada revisão bibliográfica, o propósito e a contribuição do artigo submetido.
 
-A introdução requer uma breve revisão da literatura referente ao tópico de pesquisa. A introdução é então melhor construída como um funil descritivo, começando com temas gerais e focando lentamente no trabalho em questão. Talvez de três a quatro parágrafos sejam necessários. Uma abordagem pode ser começar com um ou dois parágrafos que introduzam o leitor para o estudo de campo geral. Os parágrafos subsequentes então descrevem como um aspecto deste campo poderia ser melhorado. O parágrafo final é essencial. Ele afirma claramente, provavelmente na primeira frase do parágrafo, qual questão experimental será respondida pelo estudo. A hipótese é então indicada. Em seguida, descreve brevemente a abordagem que foi feita para testar a hipótese. Finalmente, uma frase de resumo pode ser adicionada informando como a resposta da sua pergunta vai contribuir para o campo geral de estudo \figref{fig:boost}.
+A introdução requer uma breve revisão da literatura referente ao tópico de pesquisa. A introdução é então melhor construída como um funil descritivo, começando com temas gerais e focando lentamente no trabalho em questão. Talvez de três a quatro parágrafos sejam necessários. Uma abordagem pode ser começar com um ou dois parágrafos que introduzam o leitor para o estudo de campo geral. Os parágrafos subsequentes então descrevem como um aspecto deste campo poderia ser melhorado. O parágrafo final é essencial. Ele afirma claramente, provavelmente na primeira frase do parágrafo, qual questão experimental será respondida pelo estudo. A hipótese é então indicada. Em seguida, descreve brevemente a abordagem que foi feita para testar a hipótese. Finalmente, uma frase de resumo pode ser adicionada informando como a resposta da sua pergunta vai contribuir para o campo geral de estudo \figref{fig:buck}.
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=1\linewidth]{Figs/Boost}
-	\caption{Conversor Boost.}
-	\label{fig:boost}
+	\includegraphics[width=1\linewidth]{Figs/Buck}
+	\caption{Conversor Buck.}
+	\label{fig:buck}
 \end{figure}
 
 \subsection{Detalhes do conversor}
@@ -55,35 +55,18 @@ Tabela com os parâmetros do conversor.
 
 \section{Estudo teórico}
 
-Detalhar o projeto do conversor Boost \cite{inep-cccc-2006} no modo de condução contínua (MCC), (ver Planilhas \cite{noauthor_ptc_nodate}).
-
-%\begin{figure*}[!h]
-%	\centering
-%	\includegraphics[width=0.85\linewidth]{Figs/PWM}
-%	\caption{Controlador PI implementado com modulador PWM.}
-%	\label{fig:PWM}
-%\end{figure*}
-%
-%
-%
-%\begin{figure}[!h]
-%	\centering
-%	\includegraphics[width=0.85\linewidth]{Figs/PWM-PI}
-%	\caption{Controlador PI implementado medição de tensão via divisor resistivo.}
-%	\label{fig:PI-PWM}
-%\end{figure}
-
+Detalhar o projeto do conversor Buck \cite{inep-cccc-2006} no modo de condução contínua (MCC), (ver Planilhas \cite{noauthor_ptc_nodate}).
 
 
 \section{Projeto do controlador}
 
-A \tabref{tab:parametrosBoost} apresenta os parâmetros de projeto do conversor Boost.
+A \tabref{tab:parametrosBuck} apresenta os parâmetros de projeto do conversor Buck.
 
 %\begin{table}[!ht]
 %	\centering
 \begin{center}
-	\captionof{table}{Parâmetros de projeto do conversor Boost}
-	\label{tab:parametrosBoost}
+	\captionof{table}{Parâmetros de projeto do conversor Buck}
+	\label{tab:parametrosBuck}
 	\begin{tabular}{@{}ccc@{}}
 		\toprule
 		\textbf{Parâmetro} & \textbf{Valor} & \textbf{Símbolo} \\ \midrule			

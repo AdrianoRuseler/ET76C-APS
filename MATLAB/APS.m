@@ -13,6 +13,8 @@ conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor;
 psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Exporta os parâmetros do conversor
 winopen(conv.tipo) % Abre pasta contendo arquivos de simulação
 
+conv2tex(conv)
+
 %% Simulação do ponto de operação 
 
 % Simule o conversor para verificar o ponto de operação
