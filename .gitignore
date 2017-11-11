@@ -1,3 +1,6 @@
+## Arquivos de simulação
+*.swv
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

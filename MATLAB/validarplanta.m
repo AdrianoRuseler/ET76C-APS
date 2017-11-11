@@ -25,7 +25,7 @@
 % =========================================================================
 
 
-function  validarplanta(PSIMdata,conv)
+function  hfig = validarplanta(PSIMdata,conv)
 
 estados=conv.sys.statename;
 e=length(estados);
@@ -61,7 +61,7 @@ for j=1:e
     [mag,phase] = bode(sys_tf,2*pi*Freq);
     magdb = 20*log10(mag(:)); % Pontos do modelo
     
-    figure
+    hfig(j)=figure;
     % subplot(2,3,j)
     subplot(2,1,1)
     semilogx(Freq,Mag,'*') % Plota pontos do ACsweep
@@ -72,11 +72,10 @@ for j=1:e
     grid on
     axis tight
     title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ])
+    set(hfig(j),'Name',[conv.tipo '-' PSIMdata.fra.signals(f).label ]) % Nome da figura
     xlabel('')
     ylabel('Magnitude (dB)')
-    legend({'ACsweep','Model'})
-
-    
+    legend({'ACsweep','Model'})    
     
     fase=radtodeg(unwrap(degtorad(Pha),3*pi/2));
 

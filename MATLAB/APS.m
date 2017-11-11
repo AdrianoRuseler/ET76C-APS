@@ -3,9 +3,9 @@ clear all
 clc
 
 %% Identificação
-RA=1019252; % Coloque aqui o seu RA (Boost)
 RA=1234567; % Buck
-RA=1230067; % Buck-Boost
+% RA=1019252; % Coloque aqui o seu RA (Boost)
+% RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -24,7 +24,11 @@ winopen([conv.tipo '\' conv.tipo 'ACSweep.psimsch']) % Abre arquivo de simulação
 %% Verificação das plantas
 
 PSIMdata = psimfra2matlab([conv.tipo '\' conv.tipo 'ACSweep.fra']); % Abra o arquivo .fra
-validarplanta(PSIMdata,conv) % Compara modelos
+hfig=validarplanta(PSIMdata,conv); % Compara modelos
+
+% Salva figuras
+print(hfig(1),[conv.tipo '\' get(hfig(1),'Name')],'-depsc')
+print(hfig(2),[conv.tipo '\' get(hfig(2),'Name')],'-depsc')
 
 
 %% Projeto do controlador
@@ -36,27 +40,68 @@ controlSystemDesigner(conv.T1) % pidTuner(conv.vC0_d,'pi')
 conv.C=C; % Associe a estrutura 
 
 % Obtenha os ganhos
- [CNum CzDen]=tfdata(C,'v'); 
- conv.Kp = CNum(1); % Ganho proporcional
- conv.Ki = CNum(2); % Ganho do integrador
- 
- psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
+[CNum CzDen]=tfdata(C,'v'); 
+conv.Kp = CNum(1); % Ganho proporcional
+conv.Ki = CNum(2); % Ganho do integrador
  
 % Optem resposta ao degrau
-conv.FTMA1 = feedback(conv.C*conv.vC0_d,1);
+conv.FTMA1 = feedback(conv.C*conv.vC0_d,conv.Hv);
 
-figure
+hsfig=figure;
 step(conv.FTMA1) % Obtêm resposta ao degrau
 conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+print(hsfig,[conv.tipo '\StepResponse1malha' ],'-depsc') % Salva resposta ao degrau
 
+psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
 % Simule no PSIM para verificar a resposta
 winopen([conv.tipo '\' conv.tipo '1malha.psimsch']) % Abre arquivo de simulação
 
 %% Implementação analógica com AmpOp
+E12=[10 12 15 18 22 27 33 39 47 56 68 82];
+x=1;
+for e1=1:length(E12)
+    for e2=1:length(E12)
+        g(x)=E12(e2)/(E12(e1));
+        indx{x}=[e1 e2];
+        x=x+1;
+    end      
+end
 
+Re= abs(conv.Kp*10000-g); % Ajustado manualmente
+ind=find(Re==min(abs(Re))); % Menor erro 
+e=indx{ind};
+conv.R1pi=E12(e(1))*10000;
+conv.R2pi=E12(e(2));
 
+Kpf = conv.R2pi/conv.R1pi; % Ganho obtido
 
+C1t=1/(conv.R1pi*conv.Ki);
+C1base=10^(floor(log10(C1t)-1));
 
+C1e= abs(C1t/C1base-E12);
+ind=find(C1e==min(abs(C1e))); % Menor erro 
+conv.C1pi=E12(ind)*C1base;
+
+Kif=1/(conv.R1pi*conv.C1pi);
+
+conv.CApmOp = pid(Kpf,Kif); % Verificação 
+
+hbfig=figure;
+bode(conv.C,conv.CApmOp)
+grid on
+print(hbfig,[conv.tipo '\Bode1malhaAmpOp' ],'-depsc') % Salva comparação Bode
+
+% Optem resposta ao degrau
+conv.FTMA1AmpOp = feedback(conv.CApmOp*conv.vC0_d,conv.Hv);
+
+hsfig=figure;
+step(conv.FTMA1,conv.FTMA1AmpOp) % Obtêm resposta ao degrau
+grid on
+print(hsfig,[conv.tipo '\StepResponse1malhaAmpOp' ],'-depsc') % Salva resposta ao degrau
+
+conv.StepAmpOp = stepinfo(conv.FTMA1AmpOp,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+
+psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
 winopen([conv.tipo '\' conv.tipo '1malhaAmpOp.psimsch']) % Abre arquivo de simulação
  
 %% Discretização do controlador
@@ -112,9 +157,9 @@ conv.C2=C2; % Associe a estrutura
  conv.Ki2 = PInum{1}(2); % Ganho do integrador
  
 
- %% Simulação do controle em malha fechada
+% Simulação do controle em malha fechada
  
- psimdata(conv,[conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
+ psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt
  
  % Simule no PSIM para verificar a resposta
 winopen([conv.tipo '\' conv.tipo '2malhas.psimsch']) % Abre arquivo de simulação
