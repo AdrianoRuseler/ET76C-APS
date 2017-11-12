@@ -2,10 +2,18 @@
 clear all 
 clc
 
+% Verifica se o diretório de trabalho está OK!
+if ~ exist('APS.m')
+    disp('Arquivo APS.m não encontrado!')
+    disp('O diretório de trabalho deve conter o arquivo APS.m!')
+else
+    disp('Arquivo APS.m encontrado!')
+end
+
 %% Identificação
-% RA=1234567; % Buck
+RA=1234567; % Buck
 %  RA=1019252; % Coloque aqui o seu RA (Boost)
-RA=1230067; % Buck-Boost
+% RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -28,14 +36,13 @@ winopen([conv.tipo '\' conv.tipo 'ACSweep.psimsch']) % Abre arquivo de simulação
 PSIMdata = psimfra2matlab([conv.tipo '\' conv.tipo 'ACSweep.fra']); % Abra o arquivo .fra
 validarplanta(PSIMdata,conv); % Compara modelos
 
-
 %% Projeto do controlador
 
 % Abra a feramenta de projeto do controlador
 controlSystemDesigner(conv.T1) 
-% pidTuner(conv.vC0_d,'pi') 
+% pidTuner(conv.vC0_d*conv.Hv,'pi') 
 
-[C,info] = pidtune(conv.vC0_d,'PI'); % Automático
+[C,info] = pidtune(conv.vC0_d*conv.Hv,'PI'); % Automático
 
 %% Exporte o controlador PI projetado
 conv.C=C; % Associe a estrutura 
@@ -45,17 +52,7 @@ conv.C=C; % Associe a estrutura
 conv.Kp = CNum(1); % Ganho proporcional
 conv.Ki = CNum(2); % Ganho do integrador
  
-% Optem resposta ao degrau
-conv.FTMA1 = feedback(conv.C*conv.vC0_d,conv.Hv);
-
-hsfig=figure;
-step(conv.FTMA1) % Obtêm resposta ao degrau
-grid on
-conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
-print(hsfig,[conv.tipo '\StepResponse1malha' ],'-depsc') % Salva resposta ao degrau
-
-conv.ST=round(1.5*conv.Step.SettlingTime*10)/10; % Tempo de acomodação
-disp(['Recomenda-se um tempo mínimo de simulação igual a: ' num2str(3*conv.ST) ' segundos!'])
+conv = step2tex(conv);
 
 psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
 % Simule no PSIM para verificar a resposta

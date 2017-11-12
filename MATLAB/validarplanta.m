@@ -78,13 +78,13 @@ for j=1:e
     hx.XTickLabel={};
     grid on
     axis tight
-    title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ])   
+    title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ],'Interpreter','latex')   
     xlabel('')
     if j==1
-        ylabel('Magnitude (dB)')
+        ylabel('Magnitude (dB)','Interpreter','latex')
     else
         ylabel('')
-        legend({'ACsweep','Modelo'})
+        legend({'ACsweep','Modelo'},'Interpreter','latex')
     end
 %     legend({'ACsweep','Modelo'})
     
@@ -105,13 +105,12 @@ for j=1:e
     axis tight
     %     title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ])
     title('')
-    xlabel('Frequência (Hz)')
+    xlabel('Frequ\^encia (Hz)','Interpreter','latex')
     
     if j==1
-        ylabel('Fase (deg)')
+        ylabel('Fase (deg)','Interpreter','latex')
     else
-        ylabel('')
-        
+        ylabel('')        
     end
     
 %     legend({'ACsweep','Modelo'})
