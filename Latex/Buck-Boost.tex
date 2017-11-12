@@ -47,41 +47,12 @@ A introdução requer uma breve revisão da literatura referente ao tópico de p
 	\label{fig:buckboost}
 \end{figure}
 
-\subsection{Detalhes do conversor}
+\subsection{Parâmetros de projeto do conversor Buck--Boost}
 
-Tabela com os parâmetros do conversor.
-
-
-
-\section{Estudo teórico}
-
-Detalhar o projeto do conversor Buck--Boost \cite{inep-cccc-2006} no modo de condução contínua (MCC), (ver Planilhas \cite{noauthor_ptc_nodate}).
-
-
-\section{Projeto do controlador}
 
 A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Buck--Boost.
-
 % Tabela com parâmetros do conversor
-\begin{table}[!ht]
-	\centering
-	\caption{Parâmetros de projeto do conversor Buck referente ao registro acadêmico de número $1234567$}
-	\label{tab:parametros}
-	\begin{tabular}{@{}ccc@{}}
-		\toprule
-		\textbf{Símbolo} & \textbf{Descrição} & \textbf{Valor}\\ \midrule
-		$f_s$ & Frequência de comutação & \SI{25}{\kilo\hertz}\\
-		$V_i$ & Tensão média de entrada  & \SI{225}{\V}\\
-		$V_0$ & Tensão média de saída  & \SI{50}{\V} \\
-		$P_0$ & Potência processada  & \SI{1750}{\W} \\
-		$R_0$ & Resistência de carga & \SI{1.4286}{\ohm} \\
-		$\Delta{i_{L_0}}$  & Ondulação de corrente & \SI{15}{\%}\\
-		$\Delta{v_{C_0}}$  & Ondulação de tensão & \SI{7}{\%}\\
-		$L_0$ & Indutância & \SI{296.2963}{\micro\henry}\\
-		$C_0$ & Capacitância & \SI{7.5}{\micro\farad}\\
-		\bottomrule
-	\end{tabular}
-\end{table}
+\input{Tables/Buck-Boost_parametros.tex}
 
 
 
@@ -92,49 +63,40 @@ A análise teórica apresentada anteriormente deve ser verificada por simulaçã
 A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Buck--Boost.
 
 % Tabela com o ponto de operação do conversor
-\begin{table}[!ht]
-	\centering
-	\caption{Ponto de operação do conversor Buck referente ao registro acadêmico de número $1234567$}
-	\label{tab:steadystate}
-	\begin{tabular}{@{}ccc@{}}
-		\toprule
-		\textbf{Símbolo} & \textbf{Descrição} & \textbf{Valor}\\ \midrule
-		$G$ & Ganho estático & \SI{0.22222}{}\\
-		$D$ & Razão cíclida  & \SI{22.2222}{\%}\\
-		$I_0$ & Corrente média na carga  & \SI{35}{\A} \\
-		$I_{L_0}$ & Corrente média no indutor & \SI{35}{\A} \\
-		$V_C$ & Tensão de controle  & \SI{0.22222}{\V} \\
-		$V_{CM}$ & Tensão máxima de controle  & \SI{1}{\V} \\
-		$V_{Cm}$ & Tensão mínima de controle  & \SI{0}{\V} \\
-		$R_a$ & Resistência de medição & \SI{270}{\kilo\ohm} \\
-		$R_b$ & Resistência de medição & \SI{1.2}{\kilo\ohm} \\
-		$H_v$ & Ganho de medição (tensão) & \SI{4.4248}{\milli\V\per\V} \\
-		$R_s$ & Resistência shunt & \SI{0.1}{\ohm} \\
-		$H_i$ & Ganho de medição (corrente) & \SI{0.1}{\A\per\A} \\
-		\bottomrule
-	\end{tabular}
-\end{table}
+\input{Tables/Buck-Boost_steadystate.tex}
 
 
 									
- Apresente as formas de onda referentes ao projeto do conversor:
- 
-\begin{enumerate}
-	\item Verificar o comportamento em malha fechada;
-\end{enumerate}
+\section{Verificação do modelo dinâmico via simulação}
+
+\subsection{Função de transferência}
+
+%\begin{equation}
+%\frac{3317760000000001}{32768\,\left(s^2+\frac{1603454457173333\,s}{17179869184}+\frac{7549747199999989}{16777216}\right)}
+%\end{equation}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\linewidth]{Figs/Buck-Boost-ValidacaoModelo}
+		\caption{Comparação do diagrama de Bode das funções de transferência em função da razão cíclica obtida via simulação no PSIM.}
+	\label{fig:ValidacaoModelo}
+\end{figure}
 
 
-\section{Resultados experimentais}
+\section{Projeto do controlador de tensão}
+Detalhes do projeto do controlador de tensão
 
 
-A análise teórica, assim como as simulações, são verificadas de forma definitiva com os resultados experimentais.
-\begin{enumerate}									
-	\item Verificar o comportamento em malha fechada;
-	\item  Apresente uma fotografia do conversor montado;
-\end{enumerate}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{Figs/StepResponse1malha}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:stepresponse1malha}
+\end{figure}
 
 \section{Conclusões} 
-
 
 As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
 

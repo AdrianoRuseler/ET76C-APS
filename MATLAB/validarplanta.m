@@ -25,7 +25,7 @@
 % =========================================================================
 
 
-function  hfig = validarplanta(PSIMdata,conv)
+function  [hfig haxes] = validarplanta(PSIMdata,conv)
 
 estados=conv.sys.statename;
 e=length(estados);
@@ -34,6 +34,10 @@ P = bodeoptions; % Set phase visiblity to off and frequency units to Hz in optio
 P.FreqUnits = 'Hz'; % Create plot with the options specified by P
 Freq= PSIMdata.fra.freq;
 
+%
+hfig=figure;
+% set(hfig,'Name',['Mag-' conv.tipo '-' PSIMdata.fra.signals(f).label ]) % Nome da figura
+a=1;
 for j=1:e
     k = strfind({PSIMdata.fra.signals.label},estados{j});
     for f=1:length({PSIMdata.fra.signals.label})
@@ -47,7 +51,7 @@ for j=1:e
         disp('Estado não encontrado!')
         continue
     end
-        
+    
     Mag=PSIMdata.fra.signals(f).amp;
     Pha=PSIMdata.fra.signals(f).phase;
     
@@ -56,14 +60,17 @@ for j=1:e
     
     [bsys,asys] = ss2tf(conv.sys.A,conv.sys.B,sysC,conv.sys.D,2);
     sys_tf=tf(bsys,asys);
-  
+    
     
     [mag,phase] = bode(sys_tf,2*pi*Freq);
     magdb = 20*log10(mag(:)); % Pontos do modelo
     
-    hfig(j)=figure;
+    
     % subplot(2,3,j)
-    subplot(2,1,1)
+
+    subplot(2,2,j)
+    title([conv.tipo '-' PSIMdata.fra.signals(f).label ])
+    haxes(a)=gca;
     semilogx(Freq,Mag,'*') % Plota pontos do ACsweep
     hold all
     semilogx(Freq,magdb)
@@ -71,20 +78,23 @@ for j=1:e
     hx.XTickLabel={};
     grid on
     axis tight
-    title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ])
-    set(hfig(j),'Name',[conv.tipo '-' PSIMdata.fra.signals(f).label ]) % Nome da figura
+    title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ])   
     xlabel('')
-    ylabel('Magnitude (dB)')
-    legend({'ACsweep','Model'})    
+    if j==1
+        ylabel('Magnitude (dB)')
+    else
+        ylabel('')
+        legend({'ACsweep','Modelo'})
+    end
+%     legend({'ACsweep','Modelo'})
     
     fase=radtodeg(unwrap(degtorad(Pha),3*pi/2));
-
-    subplot(2,1,2)
-    if flag
-        semilogx(Freq,fase,'*')
-    else
-        semilogx(Freq,Pha,'*')
-    end
+    a=a+1;
+    subplot(2,2,j+2)
+    haxes(a)=gca;
+%     hfig(h)=figure;
+%     set(hfig(h),'Name',['Fase-' conv.tipo '-' PSIMdata.fra.signals(f).label ]) % Nome da figura
+    semilogx(Freq,Pha,'*')    
     
     hold all
     fase2=phase(:);
@@ -93,11 +103,63 @@ for j=1:e
     semilogx(Freq,fase2)
     grid on
     axis tight
+    %     title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ])
     title('')
-    xlabel('Frequency (Hz)')
-    ylabel('Phase (deg)')
-    legend({'ACsweep','Model'})
+    xlabel('Frequência (Hz)')
+    
+    if j==1
+        ylabel('Fase (deg)')
+    else
+        ylabel('')
+        
+    end
+    
+%     legend({'ACsweep','Modelo'})
+    a=a+1;
 end
+
+% % Salva figura em formato .eps
+% for i=1:h-1
+     
+% end
+
+% get(haxes(4),'PlotBoxAspectRatio')
+% get(haxes(1),'OuterPosition')
+% 
+% set(haxes(1),'OuterPosition',[0.0 0.5 0.5 0.5])
+% set(haxes(2),'OuterPosition',[0.0 0.0 0.5 0.5])
+% set(haxes(3),'OuterPosition',[0.5 0.5 0.5 0.5])
+% set(haxes(4),'OuterPosition',[0.5 0.0 0.5 0.5])
+% 
+ set(haxes(1),'Position',[0.1 0.55 0.4 0.4])
+ set(haxes(2),'Position',[0.1 0.15 0.4 0.4])
+ set(haxes(3),'Position',[0.55 0.55 0.4 0.4])
+ set(haxes(4),'Position',[0.55 0.15 0.4 0.4])
+% 
+% 
+% set(haxes(1),'PlotBoxAspectRatio',[1 0.75 0.75])
+% set(haxes(2),'PlotBoxAspectRatio',[1 0.75 0.75])
+% set(haxes(3),'PlotBoxAspectRatio',[1 0.75 0.75])
+% set(haxes(4),'PlotBoxAspectRatio',[1 0.75 0.75])
+
+% get(haxes(1),'Position')
+% get(haxes(1),'Position')
+% get(haxes(2),'Position')
+% get(haxes(3),'Position')
+% get(haxes(4),'Position')
+
+% get(hfig,'Position')
+
+set(hfig,'Position',[1 1 850 500])
+% get(hfig,'WindowStyle')
+% set(hfig,'WindowStyle','normal')
+
+print(hfig,[conv.tipo '\' conv.tipo '-ValidacaoModelo' ],'-depsc')
+       
+    
+    
+%     set(haxes(1),'Title','Texto')
+    
 
 
 

@@ -3,9 +3,9 @@ clear all
 clc
 
 %% Identificação
-RA=1234567; % Buck
-% RA=1019252; % Coloque aqui o seu RA (Boost)
-% RA=1230067; % Buck-Boost
+% RA=1234567; % Buck
+%  RA=1019252; % Coloque aqui o seu RA (Boost)
+RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -13,7 +13,7 @@ conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor;
 psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Exporta os parâmetros do conversor
 winopen(conv.tipo) % Abre pasta contendo arquivos de simulação
 
-conv2tex(conv)
+conv2tex(conv) % Exporta tabela com parâmetros do conversor
 
 %% Simulação do ponto de operação 
 
@@ -26,17 +26,16 @@ winopen([conv.tipo '\' conv.tipo 'ACSweep.psimsch']) % Abre arquivo de simulação
 %% Verificação das plantas
 
 PSIMdata = psimfra2matlab([conv.tipo '\' conv.tipo 'ACSweep.fra']); % Abra o arquivo .fra
-hfig=validarplanta(PSIMdata,conv); % Compara modelos
-
-% Salva figuras
-print(hfig(1),[conv.tipo '\' get(hfig(1),'Name')],'-depsc')
-print(hfig(2),[conv.tipo '\' get(hfig(2),'Name')],'-depsc')
+validarplanta(PSIMdata,conv); % Compara modelos
 
 
 %% Projeto do controlador
 
 % Abra a feramenta de projeto do controlador
-controlSystemDesigner(conv.T1) % pidTuner(conv.vC0_d,'pi') 
+controlSystemDesigner(conv.T1) 
+% pidTuner(conv.vC0_d,'pi') 
+
+[C,info] = pidtune(conv.vC0_d,'PI'); % Automático
 
 %% Exporte o controlador PI projetado
 conv.C=C; % Associe a estrutura 
@@ -51,8 +50,12 @@ conv.FTMA1 = feedback(conv.C*conv.vC0_d,conv.Hv);
 
 hsfig=figure;
 step(conv.FTMA1) % Obtêm resposta ao degrau
+grid on
 conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
 print(hsfig,[conv.tipo '\StepResponse1malha' ],'-depsc') % Salva resposta ao degrau
+
+conv.ST=round(1.5*conv.Step.SettlingTime*10)/10; % Tempo de acomodação
+disp(['Recomenda-se um tempo mínimo de simulação igual a: ' num2str(3*conv.ST) ' segundos!'])
 
 psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
 % Simule no PSIM para verificar a resposta

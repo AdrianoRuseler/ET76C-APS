@@ -32,15 +32,17 @@ if nargin < 1
     return;
 end
 
-
+%% Tabela com parâmetros do conversor
 filename=[conv.tipo '\' conv.tipo '_parametros.tex'];
 
 % call fprintf to print the updated text strings
-fid = fopen(filename,'w');
+fid = fopen(filename,'w','n','UTF-8');
 if fid==-1
     disp('Erro ao abrir o arquivo para escrita dos parâmetros!')
     return
 end
+
+% [filename,permission,machinefmt,encodingOut] =fopen(fid)
 
 fprintf(fid, '%s%c%c', '% Tabela com parâmetros do conversor',13,10);
 fprintf(fid, '%s%c%c', '\begin{table}[!ht]',13,10);
@@ -65,11 +67,12 @@ fprintf(fid, '%s%c%c', '\end{table}',13,10);
 fprintf(fid, '%s%c%c', '',13,10);
 fclose(fid);
 
+%% Ponto de operação do conversor
 
 filename=[conv.tipo '\' conv.tipo '_steadystate.tex'];
 
 % call fprintf to print the updated text strings
-fid = fopen(filename,'w');
+fid = fopen(filename,'w','n','UTF-8');
 if fid==-1
     disp('Erro ao abrir o arquivo para escrita do ponto de operação!')
     return
@@ -87,17 +90,29 @@ fprintf(fid, '%s%c%c', ['$G$ & Ganho estático & \SI{' num2str(conv.G) '}{}\\'],1
 fprintf(fid, '%s%c%c', ['$D$ & Razão cíclida  & \SI{' num2str(conv.D*100) '}{\%}\\'],13,10);
 fprintf(fid, '%s%c%c', ['$I_0$ & Corrente média na carga  & \SI{' num2str(conv.I0) '}{\A} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$I_{L_0}$ & Corrente média no indutor & \SI{' num2str(conv.IL0) '}{\A} \\'],13,10);
-fprintf(fid, '%s%c%c', ['$V_C$ & Tensão de controle  & \SI{' num2str(conv.VC) '}{\V} \\'],13,10);
-fprintf(fid, '%s%c%c', ['$V_{CM}$ & Tensão máxima de controle  & \SI{' num2str(conv.VTM) '}{\V} \\'],13,10);
-fprintf(fid, '%s%c%c', ['$V_{Cm}$ & Tensão mínima de controle  & \SI{' num2str(conv.VTm) '}{\V} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$R_a$ & Resistência de medição & \SI{' num2str(conv.Ra/1000) '}{\kilo\ohm} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$R_b$ & Resistência de medição & \SI{' num2str(conv.Rb/1000) '}{\kilo\ohm} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$H_v$ & Ganho de medição (tensão) & \SI{' num2str(conv.Hv*1000) '}{\milli\V\per\V} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$R_s$ & Resistência shunt & \SI{' num2str(conv.Rs) '}{\ohm} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$H_i$ & Ganho de medição (corrente) & \SI{' num2str(conv.Hi) '}{\A\per\A} \\'],13,10);
+fprintf(fid, '%s%c%c', ['$V_C$ & Tensão de controle  & \SI{' num2str(conv.VC) '}{\V} \\'],13,10);
+fprintf(fid, '%s%c%c', ['$V_{CM}$ & Tensão máxima de controle  & \SI{' num2str(conv.VTM) '}{\V} \\'],13,10);
+fprintf(fid, '%s%c%c', ['$V_{Cm}$ & Tensão mínima de controle  & \SI{' num2str(conv.VTm) '}{\V} \\'],13,10);
 fprintf(fid, '%s%c%c', '\bottomrule',13,10);
 fprintf(fid, '%s%c%c', '\end{tabular}',13,10);
 fprintf(fid, '%s%c%c', '\end{table}',13,10);
 fprintf(fid, '%s%c%c', '',13,10);
 fclose(fid);
+
+%% Modelo dinâmico do conversor estático
+
+%    [num,den] = tfdata(conv.vC0_d);
+%    syms s
+%    t_sym = poly2sym(cell2mat(num),s)/poly2sym(cell2mat(den),s)
+% 
+% l = latex(t_sym)
+
+
+
+
 

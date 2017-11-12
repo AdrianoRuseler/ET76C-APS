@@ -47,83 +47,56 @@ A introdução requer uma breve revisão da literatura referente ao tópico de p
 	\label{fig:buck}
 \end{figure}
 
-\subsection{Detalhes do conversor}
-
-Tabela com os parâmetros do conversor.
+\subsection{Parâmetros de projeto do conversor Buck}
 
 
+A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Buck.
 
-\section{Estudo teórico}
-
-Detalhar o projeto do conversor Buck \cite{inep-cccc-2006} no modo de condução contínua (MCC), (ver Planilhas \cite{noauthor_ptc_nodate}).
-
-
-\section{Projeto do controlador}
-
-A \tabref{tab:parametrosBuck} apresenta os parâmetros de projeto do conversor Buck.
-
-%\begin{table}[!ht]
-%	\centering
-\begin{center}
-	\captionof{table}{Parâmetros de projeto do conversor Buck}
-	\label{tab:parametrosBuck}
-	\begin{tabular}{@{}ccc@{}}
-		\toprule
-		\textbf{Parâmetro} & \textbf{Valor} & \textbf{Símbolo} \\ \midrule			
-		Frequência  da rede        & \SI{60}{\hertz}     & $f_0$  \\		
-		Frequência de comutação        & \SI{20}{\kilo\hertz}     & $f_s$  \\	
-		Tensão contínua de entrada         &  \SI{178}{\V}      & $V_i$  \\
-		Tensão contínua de saída         &  \SI{200}{\V}      & $V_0$  \\
-		Resistência de carga        & \SI{820}{\ohm}      & $R_0$  \\
-			Indutância        & \SI{29.556}{\milli\henry}     & $L_0$  \\
-			Capacitor           & \SI{220}{\micro\farad} x \SI{250}{\V}      & $C_0$               \\
-%		Razão cíclica de operação       & \SI{35.7142857}{\%}    & $D_{0}$    \\ 
-		 \bottomrule	
-	\end{tabular}
-%\end{table}
-\end{center}
+% Tabela com parâmetros do conversor
+\input{Tables/Buck_parametros.tex}
 
 
 
-%
-%\begin{table}[!ht]
-%	\centering
-%	\caption{Componentes utilizados na montagem do controlador PI}
-%	\label{tab:componentesPWM}
-%	\begin{tabular}{@{}ccc@{}}
-%		\toprule
-%		\textbf{Componente} & \textbf{Descrição} & \textbf{Quantidade} \\ \midrule			
-%		Resistor  $R_a$     & \SI{100}{\kilo\ohm} -- \SI{1/4}{\W}    & 1    \\	
-%		Resistor   $R_b$    & \SI{1.8}{\kilo\ohm} -- \SI{1/4}{\W}    & 1    \\
-%		Resistor  $R_{1PI}$     & \SI{390}{\kilo\ohm} -- \SI{1/4}{\W}    & 1     \\	     
-%		Resistor  $R_{2PI}$     & \SI{56}{\ohm} -- \SI{1/4}{\W}    & 1   \\  
-%	    Capacitor $C_{1PI}$     & \SI{3,9}{\micro\farad} x \SI{25}{\V}      & 1  \\\bottomrule	
-%	\end{tabular}
-%\end{table}
 
-%
-
-
-
-\section{Verificação por simulação}
+\section{Verificação do ponto de operação via simulação}
 
 A análise teórica apresentada anteriormente deve ser verificada por simulação \cite{noauthor_psim_nodate}.
-									
- Apresente as formas de onda referentes ao projeto do conversor:
- 
-\begin{enumerate}
-	\item Verificar o comportamento em malha fechada;
-\end{enumerate}
+
+A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Buck.
+
+% Tabela com o ponto de operação do conversor
+\input{Tables/Buck_steadystate.tex}
 
 
-\section{Resultados experimentais}
+\section{Verificação do modelo dinâmico via simulação}
+
+\subsection{Função de transferência}
+
+%\begin{equation}
+%\frac{3317760000000001}{32768\,\left(s^2+\frac{1603454457173333\,s}{17179869184}+\frac{7549747199999989}{16777216}\right)}
+%\end{equation}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\linewidth]{Figs/Buck-ValidacaoModelo}
+	\caption{Comparação do diagrama de Bode da função de transferência que relaciona uma variação da corrente na indutância em função da razão cíclica obtida via simulação no PSIM.}
+	\label{fig:buck-il0}
+\end{figure}
 
 
-A análise teórica, assim como as simulações, são verificadas de forma definitiva com os resultados experimentais.
-\begin{enumerate}									
-	\item Verificar o comportamento em malha fechada;
-	\item  Apresente uma fotografia do conversor montado;
-\end{enumerate}
+\section{Projeto do controlador de tensão}
+Detalhes do projeto do controlador de tensão
+
+
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{Figs/StepResponse1malha}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:stepresponse1malha}
+\end{figure}
+
 
 \section{Conclusões} 
 
