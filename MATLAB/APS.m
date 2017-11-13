@@ -11,6 +11,7 @@ else
 end
 
 %% Identificação
+RA=951404
 RA=1234567; % Buck
 %  RA=1019252; % Coloque aqui o seu RA (Boost)
 % RA=1230067; % Buck-Boost
@@ -88,20 +89,9 @@ Kif=1/(conv.R1pi*conv.C1pi);
 
 conv.CApmOp = pid(Kpf,Kif); % Verificação 
 
-hbfig=figure;
-bode(conv.C,conv.CApmOp)
-grid on
-print(hbfig,[conv.tipo '\Bode1malhaAmpOp' ],'-depsc') % Salva comparação Bode
+%% Resposta ao degrau e simulação
 
-% Optem resposta ao degrau
-conv.FTMA1AmpOp = feedback(conv.CApmOp*conv.vC0_d,conv.Hv);
-
-hsfig=figure;
-step(conv.FTMA1,conv.FTMA1AmpOp) % Obtêm resposta ao degrau
-grid on
-print(hsfig,[conv.tipo '\StepResponse1malhaAmpOp' ],'-depsc') % Salva resposta ao degrau
-
-conv.StepAmpOp = stepinfo(conv.FTMA1AmpOp,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+conv = step2tex(conv);
 
 psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
 winopen([conv.tipo '\' conv.tipo '1malhaAmpOp.psimsch']) % Abre arquivo de simulação
@@ -113,9 +103,6 @@ conv.Ta=1/conv.fa;
 % 'tustin' — Bilinear (Tustin) method.
 conv.Cz=c2d(conv.C,conv.Ta,'tustin');
 
-% Compara controladores
-figure
-bode(conv.C,conv.Cz)
 
 [CzNum, CzDen]=tfdata(conv.Cz,'v');
 
