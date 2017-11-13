@@ -33,8 +33,12 @@ end
 %% Optem resposta ao degrau 1 malha
 conv.FTMA1 = feedback(conv.C*conv.vC0_d,conv.Hv);
 
+opt = stepDataOptions; % 
+opt.InputOffset = conv.VC; %
+opt.StepAmplitude =-conv.VC/2; %
+
 hsfig=figure;
-step(conv.FTMA1) % Obtêm resposta ao degrau
+step(conv.FTMA1,opt); % Obtem resposta ao degrau
 grid on
 title('')
 xlabel('Tempo','Interpreter','latex')
