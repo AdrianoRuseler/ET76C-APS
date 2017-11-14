@@ -11,7 +11,7 @@ else
 end
 
 %% Identificação
-RA=951404
+
 RA=1234567; % Buck
 %  RA=1019252; % Coloque aqui o seu RA (Boost)
 % RA=1230067; % Buck-Boost
@@ -23,14 +23,19 @@ psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Exporta os parâmetros do 
 winopen(conv.tipo) % Abre pasta contendo arquivos de simulação
 
 conv2tex(conv) % Exporta tabela com parâmetros do conversor
+   
 
 %% Simulação do ponto de operação 
 
 % Simule o conversor para verificar o ponto de operação
 winopen([conv.tipo '\' conv.tipo '.psimsch']) % Abre arquivo de simulação
+conv.PSIMCMD.infile = [conv.tipo '\' conv.tipo '.psimsch']; % Arquivo de simulação
+conv = psimfromcmd(conv); % Simula via CMD
 
 % Simule o arquivo ACSweep para verificar a modelagem do cenversor
 winopen([conv.tipo '\' conv.tipo 'ACSweep.psimsch']) % Abre arquivo de simulação
+conv.PSIMCMD.infile = [conv.tipo '\' conv.tipo 'ACSweep.psimsch']; % Arquivo de simulação
+conv = psimfromcmd(conv); % Simula via CMD
 
 %% Verificação das plantas
 

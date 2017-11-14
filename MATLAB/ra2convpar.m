@@ -22,7 +22,7 @@ if(conv.G>1.75)
     conv.VC=conv.D*(conv.VTM-conv.VTm)+conv.VTm; % Tensão de controle
     conv.IL0 = conv.I0/(1-conv.D);
     conv.L0 = (conv.V0-conv.Vi)*conv.Vi/(conv.DiL0*conv.I0*conv.V0*conv.fs);
-    conv.C0 = (conv.I0*conv.D)/(conv.fs*conv.DvC0*conv.V0);    
+    conv.C0 = (conv.I0*conv.D)/(conv.fs*conv.DvC0*conv.V0);
     % Modelo dinâmico
     A=[0 (conv.D-1)/conv.L0;(1-conv.D)/conv.C0 -1/(conv.R0*conv.C0)];
     B=[1/conv.L0 conv.V0/conv.L0; 0 -conv.IL0/conv.C0];
@@ -32,7 +32,7 @@ elseif(conv.G<0.75)
     conv.VC=conv.D*(conv.VTM-conv.VTm)+conv.VTm; % Tensão de controle
     conv.IL0 = conv.I0;
     conv.L0 = (conv.Vi-conv.V0)*conv.V0/(conv.DiL0*conv.IL0*conv.Vi*conv.fs);
-    conv.C0 = (conv.IL0*conv.DiL0)/(8*conv.fs*conv.DvC0*conv.V0);        
+    conv.C0 = (conv.IL0*conv.DiL0)/(8*conv.fs*conv.DvC0*conv.V0);
     % Modelo dinâmico
     A=[0 -1/conv.L0;1/conv.C0 -1/(conv.R0*conv.C0)];
     B=[conv.D/conv.L0 conv.Vi/conv.L0;0 0];
@@ -42,7 +42,7 @@ else
     conv.VC=conv.D*(conv.VTM-conv.VTm)+conv.VTm; % Tensão de controle
     conv.IL0 = conv.I0/(1-conv.D);
     conv.L0 = (conv.Vi*conv.V0)/(conv.DiL0*conv.IL0*(conv.Vi+conv.V0)*conv.fs);
-    conv.C0 = (conv.I0*conv.D)/(conv.fs*conv.DvC0*conv.V0);    
+    conv.C0 = (conv.I0*conv.D)/(conv.fs*conv.DvC0*conv.V0);
     % Modelo dinâmico
     A=[0 (conv.D-1)/conv.L0;(1-conv.D)/conv.C0 -1/(conv.R0*conv.C0)];
     B=[conv.D/conv.L0 (conv.V0+conv.Vi)/conv.L0; 0 -conv.IL0/conv.C0];
@@ -56,7 +56,7 @@ for e1=1:length(E12)
         g(x)=E12(e2)/(100*E12(e1)+E12(e2));
         indx{x}=[e1 e2];
         x=x+1;
-    end      
+    end
 end
 
 % Escolha do divisor de tensão (Leitura)
@@ -69,11 +69,11 @@ conv.Hv=conv.Rb/(conv.Ra+conv.Rb); % Ganho do condicionamento de tensão
 conv.Rs=0.1; % Resistor shunt para medição da corrente
 conv.Hi=conv.Rs; % Ganho do condicionamento de corrente
 
-%% Funções de transferência 
-D=[0 0];                          
+%% Funções de transferência
+D=[0 0];
 C=[0 1]; % vC0
 conv.sys = ss(A,B,C,D,'StateName',{'iL0' 'vC0'},...
-                    'InputName',{'Vin' 'd'});
+    'InputName',{'Vin' 'd'});
 [bsys,asys] = ss2tf(A,B,C,[0 0],2);
 conv.vC0_d=tf(bsys,asys);
 
@@ -93,4 +93,19 @@ conv.T6.G1.Value = conv.iL0_d;  % Planta da malha de corrente
 conv.T6.H1.Value = tf(conv.Hi); % Ganho da leitura de corrente
 conv.T6.G2.Value = conv.vC0_iL0;  % Planta da malha de tensão
 conv.T6.H2.Value = tf(conv.Hv); % Ganho da leitura de tensão
+
+%% PSIM from CMD
+
+conv.PSIMCMD.infile = [conv.tipo '\' conv.tipo '.psimsch'];
+conv.PSIMCMD.outfile = [conv.tipo '\' conv.tipo '.txt'];
+conv.PSIMCMD.msgfile = [conv.tipo '\' conv.tipo '_msg.txt'];
+conv.PSIMCMD.totaltime = 0.01;
+conv.PSIMCMD.steptime = 1E-006;
+conv.PSIMCMD.printtime = 0;
+conv.PSIMCMD.printstep = 0;
+conv.PSIMCMD.extracmd = '-g'; % -g :  Run Simview after the simulation is complete.
+
+
+
+
 
