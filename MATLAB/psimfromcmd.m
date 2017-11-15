@@ -59,6 +59,8 @@ if status % Verifica se é possivel executar o PSIM pelo prompt do DOS
     [PSIMexeFile,PSIMPath] = uigetfile('PsimCmd.exe','Diretório de instalação do PSIM!');
     if isequal(PSIMexeFile,0)
         disp('User selected Cancel')
+        conv.PSIMCMD.status=1;
+        conv.PSIMCMD.cmdout='PsimCmd.exe não encontrado!';
         return
     end
     %     PSIMdir=[PSIMPath PSIMexeFile]; % Diretório de instalação do PSIM
@@ -87,6 +89,7 @@ else
     disp(conv.PSIMCMD) % Mostra parâmetros de simulação
 end
 
+conv.fullfilename = [ conv.basefilename  conv.prefixname]; % Atualiza nome do arquivo
 
 % Cria string de comando
 infile = ['"' conv.fullfilename '.psimsch"'];
@@ -103,20 +106,22 @@ tic
 disp(PsimCmdsrt)
 disp('Simulando conversor...')
 [status,cmdout] = system(['PsimCmd ' PsimCmdsrt]); % Executa simulação
+
+if contains(cmdout,'Error')||contains(cmdout,'Failed') % Verifica se houve error durante a simulção
+    disp('Ocorreu algum erro!')
+    conv.PSIMCMD.status=1;
+else    
+    conv.PSIMCMD.status=0;
+    disp('Importando dados simulados do conversor...')
+    conv = psimread(conv);    
+    conv = psimini2struct(conv);  % Atualiza a estrutura conv com dados do arquivo .ini  
+end
+
 disp(cmdout)
 conv.PSIMCMD.simtime=toc; % Tempo total de simulação
-conv.PSIMCMD.status=status;
 conv.PSIMCMD.cmdout=cmdout;
 
-disp('Importando dados simulados do conversor...')
-conv.PSIMCMD.data = psimread(conv.PSIMCMD.outfile);
-
-conv.PSIMCMD.data = psimini2struct(conv.PSIMCMD.data,conv.PSIMCMD.inifile);
-
-
 % conv.PSIMCMD.data.simview
-
-
 
 disp(conv.PSIMCMD)
 

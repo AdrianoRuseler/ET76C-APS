@@ -30,69 +30,56 @@
 % ***
 % =========================================================================
 
-function PSIMdata = psimread(PSIMtxt)
+function conv = psimread(conv)
 
-% Loads directory structure
-% try
-%     dirstruct = evalin('base', 'dirstruct'); % Load dirstruct from base workspace
-% catch
-%     [status, dirstruct]= checkdirstruct(); % Well, check this out
-% end
+% conv.PSIMCMD.data = psimread(conv.PSIMCMD.outfile);  
 
-if nargin <1  % PSIMtxt not supplied
-%     if isfield(dirstruct,'simulatedir')
-%         if isequal(exist(dirstruct.simulatedir,'dir'),7)
-%             cd(dirstruct.simulatedir) % Change to directory with simutalad data
-%         end
-%     end
+if nargin <1  % conv not supplied
+    conv.PSIMCMD.status=1;
+    conv.PSIMCMD.data=[];
+    return
+elseif ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % If file NOT exists
+    disp([conv.PSIMCMD.outfile ' Not found!'])
     [PSIMtxtFile, PSIMtxtPath] = uigetfile({'*.txt;*.fft;*.fra;*.csv;*.smv;*.ini','PSIM Files (*.txt,*.fft,*.fra,*.csv,*.smv)'; ...
         '*.txt','PSIM - txt (*.txt)';'*.fft','FFT Data (*.fft)';'*.fra','AC-Sweed (*.fra)';'*.csv','PSIM Excel (*.csv)';...
         '*.*','All files'}, 'Pick an PSIM-file');
     if isequal(PSIMtxtFile,0)
         disp('User selected Cancel')
-        PSIMdata =[]; % Return empty data
+        conv.PSIMCMD.status=1;
+        conv.PSIMCMD.data=[];
         return
     end
-    PSIMtxt=[PSIMtxtPath PSIMtxtFile]; % Provide
-else
-    if ~isequal(exist(PSIMtxt,'file'),2) % If file NOT exists
-        disp([PSIMtxt ' Not found!'])
-        PSIMdata = psimread(); % Load again
-        return
-    end
+    conv.PSIMCMD.outfile=[PSIMtxtPath PSIMtxtFile]; % Provide    
 end
 
 % PSIMtxt
-[pathstr, name, ext] = fileparts(PSIMtxt);
+[pathstr, name, ext] = fileparts(conv.PSIMCMD.outfile);
 dirstruct.wdir=pwd;
 
 switch ext % Make a simple check of file extensions
     case '.txt'
-         % Good to go!!
+        % Good to go!!
     case '.csv' % Waiting for code implementation
         disp('Export PSIM data to a *.txt file.')
-%         cd(dirstruct.wdir)
-        PSIMdata =[];
+        conv.PSIMCMD.status=1;
         return
     case '.fra' % Waiting for code implementation
-        disp('Frequency analysis from PSIM.')        
-        PSIMdata = psimfra2matlab(PSIMtxt);
-%         cd(dirstruct.wdir)
+        disp('Frequency analysis from PSIM.')
+        conv.PSIMCMD.data = psimfra2matlab(conv.PSIMCMD.outfile);
+        %         cd(dirstruct.wdir)
         return
     case '.fft' % Waiting for code implementation
-        disp('fft analysis from PSIM. Really?')        
+        disp('fft analysis from PSIM. Really?')
         disp('Please try: power_fftscope')
-        PSIMdata = psimfft2matlab(PSIMtxt);
-%         cd(dirstruct.wdir)
+        conv.PSIMCMD.status=1;
         return
     case '.ini' % Waiting for code implementation
         disp('Read Simview *.ini file.')
-        PSIMdata = psimini2struct(PSIMtxt);
+        conv.PSIMCMD.status=1;
         return
     otherwise
         disp('Save simview data as *.txt file.')
-        cd(dirstruct.wdir)
-        PSIMdata =[];
+        conv.PSIMCMD.status=1;
         return
 end
     
@@ -107,7 +94,7 @@ dirstruct.simulatedir=pathstr; % Update simulations dir
 disp(['Reading ' name '.txt file....     Wait!'])
 tic
 cd(dirstruct.simulatedir)
-[fileID,errmsg] = fopen(PSIMtxt);
+[fileID,errmsg] = fopen(conv.PSIMCMD.outfile);
 % [filename,permission,machinefmt,encodingOut] = fopen(fileID); 
 if fileID==-1
     disp('File error!!')
@@ -132,8 +119,8 @@ disp('Done!')
 
  disp('Converting to simulink struct data ....')
 
- PSIMdata.time=M(:,1);
- PSIMdata.Ts=M(2,1)-M(1,1); % Time step
+ conv.PSIMCMD.data.time=M(:,1);
+ conv.PSIMCMD.data.Ts=M(2,1)-M(1,1); % Time step
  
  % Verifies header name
  for i=2:length(header)
@@ -146,17 +133,18 @@ disp('Done!')
      if modified
          disp(['Name ' header{i} ' modified to ' U ' (MATLAB valid name for variables)!!'])
      end
-     PSIMdata.signals(i-1).label=U;
-     PSIMdata.signals(i-1).values=M(:,i);
-     PSIMdata.signals(i-1).dimensions=1;   
-     PSIMdata.signals(i-1).title=U;
-     PSIMdata.signals(i-1).plotStyle=[0,0];
+     conv.PSIMCMD.data.signals(i-1).label=U;
+     conv.PSIMCMD.data.signals(i-1).values=M(:,i);
+     conv.PSIMCMD.data.signals(i-1).dimensions=1;   
+     conv.PSIMCMD.data.signals(i-1).title=U;
+     conv.PSIMCMD.data.signals(i-1).plotStyle=[0,0];
  end
   
- PSIMdata.blockName=name;
+ conv.PSIMCMD.data.blockName=name;
 
  
-PSIMdata.PSIMheader=header; % For non valid variables
+conv.PSIMCMD.data.PSIMheader=header; % For non valid variables
+
 disp('Done!!!!')
 toc
 

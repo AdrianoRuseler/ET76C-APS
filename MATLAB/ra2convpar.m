@@ -97,9 +97,12 @@ conv.T6.H2.Value = tf(conv.Hv); % Ganho da leitura de tensão
 %% PSIM from CMD
 conv.basedir=[ pwd '\' conv.tipo '\'];
 conv.basefilename = [ conv.basedir conv.tipo ];
-conv.fullfilename = [ conv.basedir conv.tipo ];
+conv.prefixname= '';
+conv.fullfilename = [ conv.basefilename  conv.prefixname];
+
 conv.PSIMCMD.infile = [ conv.basefilename '.psimsch'];
 conv.PSIMCMD.outfile = [conv.basefilename '.txt'];
+conv.PSIMCMD.paramfile = [conv.basefilename '_data.txt']; % Arquivo com os parâmetros de simulação
 conv.PSIMCMD.msgfile = [conv.basefilename '_msg.txt'];
 conv.PSIMCMD.inifile = [conv.basefilename '.ini']; % Arquivo ini simview
 conv.PSIMCMD.totaltime = 0.01;
@@ -108,7 +111,11 @@ conv.PSIMCMD.printtime = 0;
 conv.PSIMCMD.printstep = 0;
 conv.PSIMCMD.extracmd = '-g'; % -g :  Run Simview after the simulation is complete.
 
+%% Latex dir
 
-
+conv.latex.tablesdir = [ conv.basedir 'Tables'];
+% mkdir(conv.latex.tablesdir)
+conv.latex.figsdir = [ conv.basedir 'Figs'];
+% mkdir(conv.latex.figsdir)
 
 

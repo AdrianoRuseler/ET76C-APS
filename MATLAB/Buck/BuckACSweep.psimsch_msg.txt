@@ -1,0 +1,3 @@
+New Simulation.
+ERROR: Can not open the input schematic file:  C:\Users\adria\Dropbox\GitHub\ET76C-APS\MATLAB\Buck\BuckACSweep.psimsch.psimsch
+

@@ -1,7 +1,4 @@
-% =========================================================================
-%  PSIM Plot function
-%  psim2plot -- Plots simview data
-%
+
 % =========================================================================
 %
 %  The MIT License (MIT)
@@ -26,7 +23,6 @@
 %  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 %  SOFTWARE.
 %
-% http://pgfplots.sourceforge.net/gallery.html
 % =========================================================================
 
 
@@ -41,9 +37,17 @@ if nargin <1 % input file not supplied
 end
 
 %% All data must be available here:
-PSIMdata=conv.PSIMCMD.data;
 
-if ~isfield(PSIMdata,'simview')
+if ~isfield(conv.PSIMCMD,'data')
+    disp('Sem dados de simulação!')
+    status=1;
+    return
+else
+    PSIMdata=conv.PSIMCMD.data;
+end
+
+if isempty(conv.PSIMCMD.data)
+    disp('Sem dados de simulação!')
     status=1;
     return
 end
@@ -78,7 +82,8 @@ ylabel(PSIMdata.simview.screen1.handle,'Corrente no indutor (A)','Interpreter','
  set(PSIMdata.simview.screen0.handle,'Position',[0.15 0.55 0.75 0.4]);
  set(PSIMdata.simview.screen1.handle,'Position',[0.15 0.1 0.75 0.4]);
  
- print(PSIMdata.simview.main.hfig,conv.fullfilename,'-depsc')
+ 
+ print(PSIMdata.simview.main.hfig,[conv.latex.figsdir '\' conv.tipo conv.prefixname],'-depsc')
 
  
  

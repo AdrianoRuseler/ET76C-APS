@@ -29,11 +29,14 @@ function conv2tex(conv)
 
 if nargin < 1
     disp('Sem parâmetros de entrada!')
-    return;
+    return
 end
 
 %% Tabela com parâmetros do conversor
-filename=[conv.tipo '\' conv.tipo '_parametros.tex'];
+
+% mkdir([conv.tipo '\Tables'])
+
+filename=[conv.latex.tablesdir '\' conv.tipo '_parametros.tex'];
 
 % call fprintf to print the updated text strings
 fid = fopen(filename,'w','n','UTF-8');
@@ -69,7 +72,7 @@ fclose(fid);
 
 %% Ponto de operação do conversor
 
-filename=[conv.tipo '\' conv.tipo '_steadystate.tex'];
+filename=[conv.latex.tablesdir '\' conv.tipo '_steadystate.tex'];
 
 % call fprintf to print the updated text strings
 fid = fopen(filename,'w','n','UTF-8');
