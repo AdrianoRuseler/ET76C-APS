@@ -95,10 +95,13 @@ conv.T6.G2.Value = conv.vC0_iL0;  % Planta da malha de tensão
 conv.T6.H2.Value = tf(conv.Hv); % Ganho da leitura de tensão
 
 %% PSIM from CMD
-
-conv.PSIMCMD.infile = [conv.tipo '\' conv.tipo '.psimsch'];
-conv.PSIMCMD.outfile = [conv.tipo '\' conv.tipo '.txt'];
-conv.PSIMCMD.msgfile = [conv.tipo '\' conv.tipo '_msg.txt'];
+conv.basedir=[ pwd '\' conv.tipo '\'];
+conv.basefilename = [ conv.basedir conv.tipo ];
+conv.fullfilename = [ conv.basedir conv.tipo ];
+conv.PSIMCMD.infile = [ conv.basefilename '.psimsch'];
+conv.PSIMCMD.outfile = [conv.basefilename '.txt'];
+conv.PSIMCMD.msgfile = [conv.basefilename '_msg.txt'];
+conv.PSIMCMD.inifile = [conv.basefilename '.ini']; % Arquivo ini simview
 conv.PSIMCMD.totaltime = 0.01;
 conv.PSIMCMD.steptime = 1E-006;
 conv.PSIMCMD.printtime = 0;

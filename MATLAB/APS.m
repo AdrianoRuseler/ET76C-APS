@@ -19,28 +19,35 @@ RA=1234567; % Buck
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
 
-psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Exporta os parâmetros do conversor
-winopen(conv.tipo) % Abre pasta contendo arquivos de simulação
+psimdata(conv,[conv.basefilename '_data.txt']) % Exporta os parâmetros do conversor
+% winopen(conv.basedir) % Abre pasta contendo arquivos de simulação
 
-conv2tex(conv) % Exporta tabela com parâmetros do conversor
+% conv2tex(conv) % Exporta tabela com parâmetros do conversor
    
 
 %% Simulação do ponto de operação 
 
 % Simule o conversor para verificar o ponto de operação
-winopen([conv.tipo '\' conv.tipo '.psimsch']) % Abre arquivo de simulação
-conv.PSIMCMD.infile = [conv.tipo '\' conv.tipo '.psimsch']; % Arquivo de simulação
-conv = psimfromcmd(conv); % Simula via CMD
+winopen([conv.basefilename '.psimsch']) % Abre arquivo de simulação
 
-% Simule o arquivo ACSweep para verificar a modelagem do cenversor
-winopen([conv.tipo '\' conv.tipo 'ACSweep.psimsch']) % Abre arquivo de simulação
-conv.PSIMCMD.infile = [conv.tipo '\' conv.tipo 'ACSweep.psimsch']; % Arquivo de simulação
+%% Simulação via CMD
+conv.PSIMCMD.totaltime = 0.002;
+conv.PSIMCMD.steptime = 1E-007;
+conv.PSIMCMD.printtime = 0.001;
+conv.PSIMCMD.printstep = 0;
+conv.PSIMCMD.infile = [conv.basefilename '.psimsch']; % Arquivo de simulação
+
 conv = psimfromcmd(conv); % Simula via CMD
+[status]=psim2plot(conv); % Plota resposta
+
+%% Simule o arquivo ACSweep para verificar a modelagem do cenversor
+winopen([conv.basefilename 'ACSweep.psimsch']) % Abre arquivo de simulação
+% conv.PSIMCMD.infile = [conv.basefilename 'ACSweep.psimsch']; % Arquivo de simulação
+% conv = psimfromcmd(conv); % Simula via CMD
 
 %% Verificação das plantas
 
-PSIMdata = psimfra2matlab([conv.tipo '\' conv.tipo 'ACSweep.fra']); % Abra o arquivo .fra
-validarplanta(PSIMdata,conv); % Compara modelos
+validarplanta(conv); % Compara modelos
 
 %% Projeto do controlador
 
@@ -58,11 +65,23 @@ conv.C=C; % Associe a estrutura
 conv.Kp = CNum(1); % Ganho proporcional
 conv.Ki = CNum(2); % Ganho do integrador
  
-conv = step2tex(conv);
+conv = step2tex(conv); % Plota resposta ao degrau
 
-psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
+psimdata(conv,[conv.basefilename '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
+
 % Simule no PSIM para verificar a resposta
-winopen([conv.tipo '\' conv.tipo '1malha.psimsch']) % Abre arquivo de simulação
+winopen([conv.basefilename '.psimsch']) % Abre arquivo de simulação
+
+%% Simulação via CMD
+conv.PSIMCMD.totaltime = 0.02;
+conv.PSIMCMD.steptime = 1E-007;
+conv.PSIMCMD.printtime = 0.005;
+conv.PSIMCMD.printstep = 0;
+conv.fullfilename = [ conv.basefilename '1malha' ];
+
+conv = psimfromcmd(conv); % Simula via CMD
+[status]=psim2plot(conv); % Plota resposta
+
 
 %% Implementação analógica com AmpOp
 E12=[10 12 15 18 22 27 33 39 47 56 68 82];
@@ -98,8 +117,8 @@ conv.CApmOp = pid(Kpf,Kif); % Verificação
 
 conv = step2tex(conv);
 
-psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
-winopen([conv.tipo '\' conv.tipo '1malhaAmpOp.psimsch']) % Abre arquivo de simulação
+psimdata(conv,[conv.basefilename '_data.txt']) % Atualiza arquivo txt com os parâmetros do conversor
+winopen([conv.basefilename '1malhaAmpOp.psimsch']) % Abre arquivo de simulação
  
 %% Discretização do controlador
 conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
@@ -116,10 +135,10 @@ conv.a1z = CzDen(2); %
 conv.b0z = CzNum(1); % 
 conv.b1z = CzNum(2); % 
  
-psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt
+psimdata(conv,[conv.basefilename '_data.txt']) % Atualiza arquivo txt
 
 % Simule no PSIM para verificar a resposta
-winopen([conv.tipo '\' conv.tipo '1malhaDiscreto.psimsch']) % Abre arquivo de simulação
+winopen([conv.basefilename '1malhaDiscreto.psimsch']) % Abre arquivo de simulação
 
 %% Implementação em linguem C do controlador (DLL)
 
@@ -131,7 +150,7 @@ conv.CDLL=filt(CzNum,CzDen,conv.Ta);
 % e(z)          1 - z^-1
           
 % Simule no PSIM para verificar a resposta
-winopen([conv.tipo '\' conv.tipo '1malhaDLL.psimsch']) % Abre arquivo de simulação
+winopen([conv.basefilename '1malhaDLL.psimsch']) % Abre arquivo de simulação
 
  %% Projeto com duas malhas de controle
  
@@ -153,9 +172,9 @@ conv.C2=C2; % Associe a estrutura
 
 % Simulação do controle em malha fechada
  
- psimdata(conv,[conv.tipo '\' conv.tipo '_data.txt']) % Atualiza arquivo txt
+ psimdata(conv,[conv.basefilename '_data.txt']) % Atualiza arquivo txt
  
  % Simule no PSIM para verificar a resposta
-winopen([conv.tipo '\' conv.tipo '2malhas.psimsch']) % Abre arquivo de simulação
+winopen([conv.basefilename '2malhas.psimsch']) % Abre arquivo de simulação
 
  

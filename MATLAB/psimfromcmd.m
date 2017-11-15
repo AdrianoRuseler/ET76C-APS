@@ -77,9 +77,7 @@ if nargin <1 % PsimCmdsrt not supplied  - Executa um exemplo
         conv.PSIMCMD.cmdout='Entre com os parâmetros do conversor!';
         return
     end
-    conv.PSIMCMD.infile = [PSIMPath 'examples\dc-dc\buck.psimsch'];
-    conv.PSIMCMD.outfile = [PSIMPath 'examples\dc-dc\buck.txt'];
-    conv.PSIMCMD.msgfile = [PSIMPath 'examples\dc-dc\buck_msg.txt'];
+    conv.fullfilename = [PSIMPath 'examples\dc-dc\buck'];
     conv.PSIMCMD.totaltime = 0.02;
     conv.PSIMCMD.steptime = 1E-007;
     conv.PSIMCMD.printtime = 0;
@@ -89,10 +87,11 @@ else
     disp(conv.PSIMCMD) % Mostra parâmetros de simulação
 end
 
+
 % Cria string de comando
-infile = ['"' conv.PSIMCMD.infile '"'];
-outfile = ['"' conv.PSIMCMD.outfile '"'];
-msgfile = ['"' conv.PSIMCMD.msgfile '"'];
+infile = ['"' conv.fullfilename '.psimsch"'];
+outfile = ['"' conv.fullfilename '.txt"'];
+msgfile = ['"' conv.fullfilename '_msg.txt"'];
 totaltime = ['"' num2str(conv.PSIMCMD.totaltime) '"'];  %   -t :  Followed by total time of the simulation.
 steptime = ['"' num2str(conv.PSIMCMD.steptime) '"']; %   -s :  Followed by time step of the simulation.
 printtime = ['"' num2str(conv.PSIMCMD.printtime) '"']; %   -pt : Followed by print time of the simulation.
@@ -101,11 +100,22 @@ printstep = ['"' num2str(conv.PSIMCMD.printstep) '"']; %   -ps : Followed by pri
 PsimCmdsrt= ['-i ' infile ' -o ' outfile ' -m ' msgfile ' -t ' totaltime ' -s ' steptime ' -pt ' printtime ' -ps ' printstep ' ' conv.PSIMCMD.extracmd];
 
 tic
+disp(PsimCmdsrt)
+disp('Simulando conversor...')
 [status,cmdout] = system(['PsimCmd ' PsimCmdsrt]); % Executa simulação
 disp(cmdout)
 conv.PSIMCMD.simtime=toc; % Tempo total de simulação
 conv.PSIMCMD.status=status;
 conv.PSIMCMD.cmdout=cmdout;
+
+disp('Importando dados simulados do conversor...')
+conv.PSIMCMD.data = psimread(conv.PSIMCMD.outfile);
+
+conv.PSIMCMD.data = psimini2struct(conv.PSIMCMD.data,conv.PSIMCMD.inifile);
+
+
+% conv.PSIMCMD.data.simview
+
 
 
 disp(conv.PSIMCMD)

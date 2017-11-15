@@ -51,7 +51,7 @@ A introdução requer uma breve revisão da literatura referente ao tópico de p
 
 
 A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Buck.
-
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck\_parametros.tex} }
 % Tabela com parâmetros do conversor
 \input{Tables/Buck_parametros.tex}
 
@@ -63,9 +63,22 @@ A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Buck.
 A análise teórica apresentada anteriormente deve ser verificada por simulação \cite{noauthor_psim_nodate}.
 
 A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Buck.
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck\_steadystate.tex} }
 
 % Tabela com o ponto de operação do conversor
 \input{Tables/Buck_steadystate.tex}
+
+
+A \figref{fig:buck-steadystate} apresenta a resposta da simulação do ponto de operação do conversor..  \textcolor{red}{verifique se os valores simulados verificam os parâmetros de projeto...}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-SteadyState}
+	\caption{Verificação do ponto de operação do conversor Buck.}
+	\label{fig:buck-steadystate}
+\end{figure}
+
+
 
 
 \section{Verificação do modelo dinâmico via simulação}
@@ -88,9 +101,9 @@ A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Buck.
 Detalhes do projeto do controlador de tensão
 
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.8\linewidth]{Figs/StepResponse1malha}
+	\includegraphics[width=0.9\linewidth]{Figs/StepResponse1malha}
 	\caption{Resposta ao degrau de referência de tensão.}
 	\label{fig:stepresponse1malha}
 \end{figure}
@@ -98,6 +111,22 @@ Detalhes do projeto do controlador de tensão
 % Tabela com a resposta ao degrau de referência
 \input{Tables/Buck_step1malha.tex}
 
+
+A \figref{fig:buck1malha} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck1malha}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:buck1malha}
+\end{figure}
+
+
+As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
+
+As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
+
+As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
 
 \section{Conclusões} 
 

@@ -25,7 +25,11 @@
 % =========================================================================
 
 
-function  [hfig haxes] = validarplanta(PSIMdata,conv)
+function  [hfig haxes] = validarplanta(conv)
+
+PSIMdata = psimread([conv.basefilename 'ACSweep.fra']); % Abra o arquivo .fra
+
+
 
 estados=conv.sys.statename;
 e=length(estados);
@@ -153,7 +157,7 @@ set(hfig,'Position',[1 1 850 500])
 % get(hfig,'WindowStyle')
 % set(hfig,'WindowStyle','normal')
 
-print(hfig,[conv.tipo '\' conv.tipo '-ValidacaoModelo' ],'-depsc')
+print(hfig,[conv.basefilename '-ValidacaoModelo' ],'-depsc')
        
     
     
