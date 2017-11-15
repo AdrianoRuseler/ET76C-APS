@@ -1,0 +1,6 @@
+New Simulation.
+File Opened: C:\Users\adria\Dropbox\GitHub\ET76C-APS\MATLAB\Boost\Boost1malha.psimsch
+Simulation Successful.
+Warning:   Name=P2     Netlist Name=P
+	Warning! One of the input gains for Summer  P2  is zero!
+

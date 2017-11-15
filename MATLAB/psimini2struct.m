@@ -108,11 +108,17 @@ xfrom = simview.main.xfrom;
 xto = simview.main.xto;
 
 xdata=conv.PSIMCMD.data.time(conv.PSIMCMD.data.time>=xfrom&conv.PSIMCMD.data.time<=xto);
+if isempty(xdata)
+    warndlg('Vetor xdata vazio!! Salve o arquivo *.ini via SINVIEW!!','!! Warning !!')
+end
 simview.main.xdata=xdata; % save time data (x axis data)
 
 for i=1:length(conv.PSIMCMD.data.signals) % Associa dados a cada variável de medição
-   ydata = conv.PSIMCMD.data.signals(:,i).values(conv.PSIMCMD.data.time>=xfrom&conv.PSIMCMD.data.time<=xto);    
-   assignin('base',conv.PSIMCMD.data.signals(i).label,ydata); % Cada leitura vira uma variável 
+    ydata = conv.PSIMCMD.data.signals(:,i).values(conv.PSIMCMD.data.time>=xfrom&conv.PSIMCMD.data.time<=xto);
+    if isempty(xdata)
+        warndlg('Vetor ydata vazio!! Salve o arquivo *.ini via SINVIEW!!','!! Warning !!')
+    end
+    assignin('base',conv.PSIMCMD.data.signals(i).label,ydata); % Cada leitura vira uma variável
 end
 
 % plot(xdata,ydata)

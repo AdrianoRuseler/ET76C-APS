@@ -91,10 +91,16 @@ end
 
 conv.fullfilename = [ conv.basefilename  conv.prefixname]; % Atualiza nome do arquivo
 
+conv.PSIMCMD.infile = [ conv.fullfilename '.psimsch'];
+conv.PSIMCMD.outfile = [conv.fullfilename '.txt'];
+conv.PSIMCMD.msgfile = [conv.fullfilename '_msg.txt'];
+conv.PSIMCMD.inifile = [conv.fullfilename '.ini']; % Arquivo ini simview
+
+
 % Cria string de comando
-infile = ['"' conv.fullfilename '.psimsch"'];
-outfile = ['"' conv.fullfilename '.txt"'];
-msgfile = ['"' conv.fullfilename '_msg.txt"'];
+infile = ['"' conv.PSIMCMD.infile '"'];
+outfile = ['"' conv.PSIMCMD.outfile '"'];
+msgfile = ['"' conv.PSIMCMD.msgfile '"'];
 totaltime = ['"' num2str(conv.PSIMCMD.totaltime) '"'];  %   -t :  Followed by total time of the simulation.
 steptime = ['"' num2str(conv.PSIMCMD.steptime) '"']; %   -s :  Followed by time step of the simulation.
 printtime = ['"' num2str(conv.PSIMCMD.printtime) '"']; %   -pt : Followed by print time of the simulation.

@@ -114,8 +114,12 @@ conv.PSIMCMD.extracmd = '-g'; % -g :  Run Simview after the simulation is comple
 %% Latex dir
 
 conv.latex.tablesdir = [ conv.basedir 'Tables'];
-% mkdir(conv.latex.tablesdir)
+if ~exist(conv.latex.tablesdir,'dir')
+    mkdir(conv.latex.tablesdir)
+end
 conv.latex.figsdir = [ conv.basedir 'Figs'];
-% mkdir(conv.latex.figsdir)
+if ~exist(conv.latex.figsdir,'dir')
+    mkdir(conv.latex.figsdir)
+end
 
 

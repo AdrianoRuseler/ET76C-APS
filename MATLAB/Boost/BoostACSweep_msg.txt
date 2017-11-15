@@ -1,0 +1,43 @@
+New Simulation.
+File Opened: C:\Users\adria\Dropbox\GitHub\ET76C-APS\MATLAB\Boost\BoostACSweep.psimsch
+Simulation Successful.
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 6192.75    
+Amplitude relative error =3.52 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 7110.23    
+Amplitude relative error =15.21 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 9373.1    
+Amplitude relative error =82.8 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 12356.2    
+Amplitude relative error =139.95 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 14186.8    
+Amplitude relative error =100.99 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 16288.6    
+Amplitude relative error =141.9 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 18701.8    
+Amplitude relative error =32.34 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 21472.5    
+Amplitude relative error =9.43 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 24653.8    
+Amplitude relative error =2.81 %
+
+Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
+Frequency = 28306.3    
+Amplitude relative error =0.2 %
+

@@ -12,13 +12,14 @@ end
 
 %% Identificação
 
-RA=1234567; % Buck
-%  RA=1019252; % Coloque aqui o seu RA (Boost)
+% RA=1234567; % Buck
+ RA=1019252; % Coloque aqui o seu RA (Boost)
 % RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
 conv2tex(conv) % Exporta tabela com parâmetros do conversor
+
 winopen(conv.basedir) % Abre pasta contendo arquivos de simulação
 
 %% Simulação do ponto de operação 
@@ -29,13 +30,14 @@ winopen([conv.basefilename '.psimsch']) % Abre arquivo de simulação
 
 % Simulação via CMD
 conv.prefixname='';  % Atualiza prefixo para nome do Arquivo de simulação
-conv.PSIMCMD.totaltime = 0.002;
-conv.PSIMCMD.steptime = 1E-007;
-conv.PSIMCMD.printtime = 0.001;
-conv.PSIMCMD.printstep = 0;
+conv.PSIMCMD.totaltime = 0.01; % Ajuste o tempo para atingir o regime permanente
+conv.PSIMCMD.steptime = 1E-006;
+conv.PSIMCMD.printtime = 0.008;
+conv.PSIMCMD.printstep = 1;
 
 conv = psimfromcmd(conv); % Simula via CMD e retorna dados obtidos
 
+% Salve o arquivo *.ini via simview
 [status]=psim2plot(conv); % Plota resposta
 
 %% Simule o arquivo ACSweep para verificar a modelagem do cenversor
@@ -67,18 +69,17 @@ conv.Ki = CNum(2); % Ganho do integrador
  
 conv = step2tex(conv); % Plota resposta ao degrau
 
+%% Simule no PSIM para verificar a resposta
+conv.prefixname='1malha';
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
-
-% Simule no PSIM para verificar a resposta
-conv.prefixname='1malha'; 
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
-%% Simulação via CMD
-conv.PSIMCMD.totaltime = 0.02;
-conv.PSIMCMD.steptime = 1E-007;
-conv.PSIMCMD.printtime = 0.005;
-conv.PSIMCMD.printstep = 0;
-conv.prefixname='1malha'; 
+% Simulação via CMD
+conv.PSIMCMD.totaltime = 0.3;
+conv.PSIMCMD.steptime = 1E-006;
+conv.PSIMCMD.printtime = 0;
+conv.PSIMCMD.printstep = 1;
+conv.prefixname='1malha'; % Prefixo para nomear arquivos
 
 conv = psimfromcmd(conv); % Simula via CMD
 [status]=psim2plot(conv); % Plota resposta
@@ -119,7 +120,9 @@ conv.CApmOp = pid(Kpf,Kif); % Verificação
 conv = step2tex(conv);
 
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
-winopen([conv.fullfilename '.psimsch']) % Abre arquivo de simulação
+conv.prefixname='1malhaAmpOp'; % Prefixo para nomear arquivos
+winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+
  
 %% Discretização do controlador
 conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
@@ -135,11 +138,10 @@ conv.a0z = CzDen(1); %
 conv.a1z = CzDen(2); %  
 conv.b0z = CzNum(1); % 
 conv.b1z = CzNum(2); % 
- 
-psimdata(conv) % Atualiza arquivo txt
 
-% Simule no PSIM para verificar a resposta
-winopen([conv.basefilename '1malhaDiscreto.psimsch']) % Abre arquivo de simulação
+psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
+conv.prefixname='1malhaDiscreto'; % Prefixo para nomear arquivos
+winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
 %% Implementação em linguem C do controlador (DLL)
 
