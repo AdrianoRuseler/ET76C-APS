@@ -43,7 +43,7 @@ if nargin < 1
     return
 end
 
-names = fieldnames(conv);
+% names = fieldnames(conv);
 % call fprintf to print the updated text strings
 fid = fopen(conv.PSIMCMD.paramfile,'w');
 if fid==-1
@@ -51,10 +51,9 @@ if fid==-1
     return
 end
 
-for ind=1:length(names)
-    temp = getfield(conv,names{ind});
-    if isnumeric(temp) % Apenas imprime o que for numerico
-        strdata=[char(names(ind)) ' = ' num2str(temp,'%10.8e')];
+for ind=1:length(conv.param)    
+    if isfield(conv,conv.param{ind}) % Apenas imprime o que for numerico
+        strdata=[char(conv.param(ind)) ' = ' num2str(getfield(conv,conv.param{ind}),'%10.8e')];
         fprintf(fid, '%s%c%c', strdata,13,10);
     end
 end

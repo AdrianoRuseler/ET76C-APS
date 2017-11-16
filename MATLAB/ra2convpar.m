@@ -15,6 +15,10 @@ conv.G=conv.V0/conv.Vi; % Ganho do conversor
 conv.VTm=0; % Tensão minima da portadora
 conv.VTM=1; % Tensão máxima da portadora
 
+conv.fci=2*pi*conv.fs/4; % Frequência de corte da malha de corrente
+conv.fcv=2*pi*60; % Frequência de corte da malha de
+
+
 % Decide qual topologia utilizar
 if(conv.G>1.75)
     conv.tipo = 'Boost';
@@ -69,6 +73,9 @@ conv.Hv=conv.Rb/(conv.Ra+conv.Rb); % Ganho do condicionamento de tensão
 conv.Rs=0.1; % Resistor shunt para medição da corrente
 conv.Hi=conv.Rs; % Ganho do condicionamento de corrente
 
+conv.param={'Ra','Rb','Hv','Hi','D','VC','L0','IL0','C0','V0','Vi','fs','R0','VTm','VTM','Kp','Ki',...
+    'ST','R1pi','R2pi','C1pi','fa','Ta','a0z','a1z','b1z','b0z'};
+
 %% Funções de transferência
 D=[0 0];
 C=[0 1]; % vC0
@@ -83,6 +90,7 @@ conv.iL0_d=tf(bsys,asys);
 
 conv.vC0_iL0=minreal(conv.vC0_d/conv.iL0_d); % Encontra realização minima
 
+%% Estruturas para controle
 conv.T1 = sisoinit(1);
 conv.T1.G.Value = conv.vC0_d; % Planta da malha de tensão
 conv.T1.H.Value = tf(conv.Hv); % Ganho da leitura de tensão

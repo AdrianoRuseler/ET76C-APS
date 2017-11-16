@@ -116,11 +116,11 @@ disp('Simulando conversor...')
 if contains(cmdout,'Error')||contains(cmdout,'Failed') % Verifica se houve error durante a simulção
     disp('Ocorreu algum erro!')
     conv.PSIMCMD.status=1;
-else    
+else
     conv.PSIMCMD.status=0;
     disp('Importando dados simulados do conversor...')
-    conv = psimread(conv);    
-    conv = psimini2struct(conv);  % Atualiza a estrutura conv com dados do arquivo .ini  
+    conv = psimread(conv); % Importa pontos simulados
+    %     conv = psimini2struct(conv);  % Atualiza a estrutura conv com dados do arquivo .ini
 end
 
 disp(cmdout)

@@ -38,44 +38,28 @@ if nargin <1  % conv not supplied
     conv.PSIMCMD.status=1;
     conv.PSIMCMD.data=[];
     return
-elseif ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % If file NOT exists
-    disp([conv.PSIMCMD.outfile ' Not found!'])
-    [PSIMtxtFile, PSIMtxtPath] = uigetfile({'*.txt;*.fft;*.fra;*.csv;*.smv;*.ini','PSIM Files (*.txt,*.fft,*.fra,*.csv,*.smv)'; ...
-        '*.txt','PSIM - txt (*.txt)';'*.fft','FFT Data (*.fft)';'*.fra','AC-Sweed (*.fra)';'*.csv','PSIM Excel (*.csv)';...
-        '*.*','All files'}, 'Pick an PSIM-file');
-    if isequal(PSIMtxtFile,0)
-        disp('User selected Cancel')
-        conv.PSIMCMD.status=1;
-        conv.PSIMCMD.data=[];
-        return
-    end
-    conv.PSIMCMD.outfile=[PSIMtxtPath PSIMtxtFile]; % Provide    
 end
 
+if ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % Verifica se existe o arquivo    
+    conv.PSIMCMD.outfile = [conv.fullfilename '.fra'];
+elseif ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % Verifica se existe o arquivo
+    disp([conv.PSIMCMD.outfile ' não encontrado!!!'])
+    conv.PSIMCMD.status=1;
+    conv.PSIMCMD.data=[];
+    return
+end
+        
 % PSIMtxt
 [pathstr, name, ext] = fileparts(conv.PSIMCMD.outfile);
 dirstruct.wdir=pwd;
 
 switch ext % Make a simple check of file extensions
-    case '.txt'
+    case '.txt'      
         % Good to go!!
-    case '.csv' % Waiting for code implementation
-        disp('Export PSIM data to a *.txt file.')
-        conv.PSIMCMD.status=1;
-        return
     case '.fra' % Waiting for code implementation
         disp('Frequency analysis from PSIM.')
-        conv.PSIMCMD.data = psimfra2matlab(conv.PSIMCMD.outfile);
-        %         cd(dirstruct.wdir)
-        return
-    case '.fft' % Waiting for code implementation
-        disp('fft analysis from PSIM. Really?')
-        disp('Please try: power_fftscope')
-        conv.PSIMCMD.status=1;
-        return
-    case '.ini' % Waiting for code implementation
-        disp('Read Simview *.ini file.')
-        conv.PSIMCMD.status=1;
+        dataout = psimfra2matlab(conv.PSIMCMD.outfile);
+        conv.PSIMCMD.fra=dataout.fra;
         return
     otherwise
         disp('Save simview data as *.txt file.')

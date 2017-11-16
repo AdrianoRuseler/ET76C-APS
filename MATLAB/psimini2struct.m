@@ -147,7 +147,9 @@ conv.PSIMCMD.data.simview=simview;
 
 disp('Dados do arquivo .ini importados!')
 
+%% Plota dados
 
+psim2plot(conv); % Plota resposta
 
 
 

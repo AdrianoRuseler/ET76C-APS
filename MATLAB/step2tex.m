@@ -31,7 +31,7 @@ if nargin < 1
 end
 
 %% Optem resposta ao degrau 1 malha
-conv.FTMA1 = feedback(conv.C*conv.vC0_d,conv.Hv);
+conv.FTMA1 = feedback(conv.Cv*conv.vC0_d,conv.Hv);
 
 opt = stepDataOptions; % 
 opt.InputOffset = conv.VC; %

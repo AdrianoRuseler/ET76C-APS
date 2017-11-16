@@ -13,8 +13,8 @@ end
 %% Identificação
 
 % RA=1234567; % Buck
- RA=1019252; % Coloque aqui o seu RA (Boost)
-% RA=1230067; % Buck-Boost
+% RA=1019252; % Coloque aqui o seu RA (Boost)
+RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -38,7 +38,7 @@ conv.PSIMCMD.printstep = 1;
 conv = psimfromcmd(conv); % Simula via CMD e retorna dados obtidos
 
 % Salve o arquivo *.ini via simview
-[status]=psim2plot(conv); % Plota resposta
+conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 %% Simule o arquivo ACSweep para verificar a modelagem do cenversor
 conv.prefixname='ACSweep'; 
@@ -49,21 +49,21 @@ conv = psimfromcmd(conv); % Simula via CMD
 
 %% Verificação das plantas
 
- validarplanta(conv); % Compara modelos
+validarplanta(conv); % Compara modelos
 
 %% Projeto do controlador
 
 % Abra a feramenta de projeto do controlador
 % controlSystemDesigner(conv.T1) 
-% pidTuner(conv.vC0_d*conv.Hv,'pi') 
+% pidTuner(conv.vC0_d*conv.Hv,'pi') % Exporte com o nome Cv
 
-[C,info] = pidtune(conv.vC0_d*conv.Hv,'PI'); % Automático
+[Cv,info] = pidtune(conv.vC0_d*conv.Hv,'PI',conv.fcv); % Automático
 
 %% Exporte o controlador PI projetado
-conv.C=C; % Associe a estrutura 
+conv.Cv=Cv; % Associe a estrutura 
 
 % Obtenha os ganhos
-[CNum CzDen]=tfdata(C,'v'); 
+[CNum CDen]=tfdata(Cv,'v'); 
 conv.Kp = CNum(1); % Ganho proporcional
 conv.Ki = CNum(2); % Ganho do integrador
  
@@ -75,14 +75,14 @@ psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
 % Simulação via CMD
-conv.PSIMCMD.totaltime = 0.3;
+conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.steptime = 1E-006;
-conv.PSIMCMD.printtime = 0;
+conv.PSIMCMD.printtime = conv.ST/2;
 conv.PSIMCMD.printstep = 1;
 conv.prefixname='1malha'; % Prefixo para nomear arquivos
 
 conv = psimfromcmd(conv); % Simula via CMD
-[status]=psim2plot(conv); % Plota resposta
+conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 
 %% Implementação analógica com AmpOp
@@ -123,13 +123,20 @@ psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaAmpOp'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
+conv.PSIMCMD.totaltime = 3*conv.ST;
+conv.PSIMCMD.printtime = conv.ST/2;
+
+conv = psimfromcmd(conv); % Simula via CMD e importa dados
+conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
+
+
  
 %% Discretização do controlador
 conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
 conv.Ta=1/conv.fa; 
  
 % 'tustin' — Bilinear (Tustin) method.
-conv.Cz=c2d(conv.C,conv.Ta,'tustin');
+conv.Cz=c2d(conv.Cv,conv.Ta,'tustin');
 
 
 [CzNum, CzDen]=tfdata(conv.Cz,'v');
