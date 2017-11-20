@@ -1,14 +1,7 @@
-%% Limpa area de trabalho
-clear all 
-clc
-
-% Verifica se o diretório de trabalho está OK!
-if ~ exist('APS.m')
-    disp('Arquivo APS.m não encontrado!')
-    disp('O diretório de trabalho deve conter o arquivo APS.m!')
-else
-    disp('Arquivo APS.m encontrado!')
-end
+%% Limpa e verifica area de trabalho 
+clear all % Limpa variáveis de comando
+clc % Limpa Command Window
+verificaambiente(); % Verifica se esta tudo OK!
 
 %% Identificação
 
@@ -18,8 +11,6 @@ RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
-conv2tex(conv) % Exporta tabela com parâmetros do conversor
-
 winopen(conv.basedir) % Abre pasta contendo arquivos de simulação
 
 %% Simulação do ponto de operação 
@@ -28,7 +19,11 @@ winopen(conv.basedir) % Abre pasta contendo arquivos de simulação
 psimdata(conv) % Atualiza arquivo com os parâmetros do convesor
 winopen([conv.basefilename '.psimsch']) % Abre arquivo de simulação
 
-% Simulação via CMD
+% Simule e exporte no formato .txt
+% conv = psimread(conv); 
+% conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
+
+%% Simulação via CMD
 conv.prefixname='';  % Atualiza prefixo para nome do Arquivo de simulação
 conv.PSIMCMD.totaltime = 0.01; % Ajuste o tempo para atingir o regime permanente
 conv.PSIMCMD.steptime = 1E-006;
@@ -68,13 +63,15 @@ conv.Kp = CNum(1); % Ganho proporcional
 conv.Ki = CNum(2); % Ganho do integrador
  
 conv = step2tex(conv); % Plota resposta ao degrau
-
-%% Simule no PSIM para verificar a resposta
 conv.prefixname='1malha';
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
+
+%% Simule no PSIM para verificar a resposta
+
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
-% Simulação via CMD
+%% Simulação via CMD
+
 conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.steptime = 1E-006;
 conv.PSIMCMD.printtime = conv.ST/2;
@@ -82,6 +79,7 @@ conv.PSIMCMD.printstep = 1;
 conv.prefixname='1malha'; % Prefixo para nomear arquivos
 
 conv = psimfromcmd(conv); % Simula via CMD
+
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 

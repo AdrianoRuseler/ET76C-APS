@@ -90,7 +90,6 @@ else
 end
 
 conv.fullfilename = [ conv.basefilename  conv.prefixname]; % Atualiza nome do arquivo
-
 conv.PSIMCMD.infile = [ conv.fullfilename '.psimsch'];
 conv.PSIMCMD.outfile = [conv.fullfilename '.txt'];
 conv.PSIMCMD.msgfile = [conv.fullfilename '_msg.txt'];
@@ -112,23 +111,34 @@ tic
 disp(PsimCmdsrt)
 disp('Simulando conversor...')
 [status,cmdout] = system(['PsimCmd ' PsimCmdsrt]); % Executa simulação
+disp(cmdout)
+conv.PSIMCMD.cmdout=cmdout;
 
-if contains(cmdout,'Error')||contains(cmdout,'Failed') % Verifica se houve error durante a simulção
-    disp('Ocorreu algum erro!')
-    conv.PSIMCMD.status=1;
-else
-    conv.PSIMCMD.status=0;
-    disp('Importando dados simulados do conversor...')
-    conv = psimread(conv); % Importa pontos simulados
-    %     conv = psimini2struct(conv);  % Atualiza a estrutura conv com dados do arquivo .ini
+if verLessThan('matlab', '9.1')
+    if isempty(strfind(cmdout,'Failed'))
+        conv.PSIMCMD.status=0;
+        disp('Importando dados simulados do conversor...')
+        conv = psimread(conv); % Importa pontos simulados
+    else
+        disp('Ocorreu algum erro!')
+        conv.PSIMCMD.status=1;
+    end
+else    
+    if contains(cmdout,'Error')||contains(cmdout,'Failed') % Verifica se houve error durante a simulação
+        disp('Ocorreu algum erro!')
+        conv.PSIMCMD.status=1;
+    else
+        conv.PSIMCMD.status=0;
+        disp('Importando dados simulados do conversor...')
+        conv = psimread(conv); % Importa pontos simulados
+        %     conv = psimini2struct(conv);  % Atualiza a estrutura conv com dados do arquivo .ini
+    end
 end
 
 disp(cmdout)
 conv.PSIMCMD.simtime=toc; % Tempo total de simulação
-conv.PSIMCMD.cmdout=cmdout;
 
 % conv.PSIMCMD.data.simview
-
 disp(conv.PSIMCMD)
 
 

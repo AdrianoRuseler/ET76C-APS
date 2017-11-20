@@ -102,6 +102,11 @@ conv.T6.H1.Value = tf(conv.Hi); % Ganho da leitura de corrente
 conv.T6.G2.Value = conv.vC0_iL0;  % Planta da malha de tensão
 conv.T6.H2.Value = tf(conv.Hv); % Ganho da leitura de tensão
 
+%% Verifica versão do MATLAB
+conv.MATLAB.release=version('-release'); % Dependendo da versão, algumas funções podem não funcionar
+conv.MATLAB.version=version;
+% verLessThan('matlab','8.4')
+
 %% PSIM from CMD
 conv.basedir=[ pwd '\' conv.tipo '\'];
 conv.basefilename = [ conv.basedir conv.tipo ];
@@ -118,6 +123,7 @@ conv.PSIMCMD.steptime = 1E-006;
 conv.PSIMCMD.printtime = 0;
 conv.PSIMCMD.printstep = 0;
 conv.PSIMCMD.extracmd = '-g'; % -g :  Run Simview after the simulation is complete.
+conv.PSIMCMD.status = 0; % Indica probelmas na simulação 
 
 %% Latex dir
 
@@ -129,5 +135,16 @@ conv.latex.figsdir = [ conv.basedir 'Figs'];
 if ~exist(conv.latex.figsdir,'dir')
     mkdir(conv.latex.figsdir)
 end
+
+conv2tex(conv); % Exporta tabela com parâmetros do conversor
+
+%% Mostra parâmetros do conversor
+disp(conv) % Mostra parâmetros do conversor
+
+% conv.param
+
+
+
+
 
 

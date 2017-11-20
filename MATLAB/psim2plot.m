@@ -24,7 +24,7 @@
 %  SOFTWARE.
 %
 % =========================================================================
-
+% TODO: Ajustar limites xlime ylim
 
 function [status]=psim2plot(conv)
 

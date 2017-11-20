@@ -31,7 +31,7 @@ function  [hfig haxes] = validarplanta(conv)
 conv.PSIMCMD.outfile = [conv.fullfilename '.fra'];
 conv = psimread(conv); % Abra o arquivo .fra
 
-PSIMdata=conv.PSIMCMD.data;
+PSIMdata.fra=conv.PSIMCMD.fra;
 
 estados=conv.sys.statename;
 e=length(estados);
@@ -129,7 +129,7 @@ end
 % end
 
 % get(haxes(4),'PlotBoxAspectRatio')
-% get(haxes(1),'OuterPosition')
+% get(haxes(1),'Position')
 % 
 % set(haxes(1),'OuterPosition',[0.0 0.5 0.5 0.5])
 % set(haxes(2),'OuterPosition',[0.0 0.0 0.5 0.5])
