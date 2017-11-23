@@ -1,7 +1,14 @@
 %% Limpa e verifica area de trabalho 
 clear all % Limpa variáveis de comando
 clc % Limpa Command Window
-verificaambiente(); % Verifica se esta tudo OK!
+try
+    verificaambiente(); % Verifica se esta tudo OK!
+catch
+    warning('Altere o diretório de trabalho para a pasta contendo o arquivo APS.m!');
+    disp(['Pasta atual: ' pwd])
+    disp('Arquivos encontrados: ')
+    ls
+end
 
 %% Identificação
 

@@ -26,19 +26,21 @@
 
 function verificaambiente()
 
-% Verifica se o diretório de trabalho está OK!
-if ~ exist('APS.m')
-    disp('Arquivo APS.m não encontrado!')
-    disp('O diretório de trabalho deve conter o arquivo APS.m!')
+%% Verifica o diretório de trabalho
+if ~ exist('APS.m','file')
+    warning('Arquivo APS.m não encontrado!')
+    warning('O diretório de trabalho deve conter o arquivo APS.m!')
+    return
 else
     disp('Arquivo APS.m encontrado!')
 end
 
-% Verifica se é possivel executar o PSIM via CMD
+%% Verifica se é possivel executar o PSIM via CMD
 [status,cmdout] = system('PsimCmd');
 disp(cmdout)
 
 if status % Verifica se é possivel executar o PSIM pelo prompt do DOS
+    warning('Arquivos PsimCmd.exe não encontrado!')
     [PSIMexeFile,PSIMPath] = uigetfile('PsimCmd.exe','Diretório de instalação do PSIM!');
     if isequal(PSIMexeFile,0)
         disp('User selected Cancel')
@@ -49,9 +51,62 @@ if status % Verifica se é possivel executar o PSIM pelo prompt do DOS
     [status,cmdout] = system('PsimCmd');
     if status
        disp(cmdout)
+       return
     else
-        disp('Arquivos PsimCmd.exe não encontrado!')
+        disp('Arquivos PsimCmd.exe encontrado!')
+        disp(cmdout)
     end
 end
 
-% verificar se exixte a função contains
+%% verificar dependências dos m file
+
+disp('Verificando arquivos e versão do MATLAB....')
+[fList,pList] = matlab.codetools.requiredFilesAndProducts(which('APS'));
+nf=0; % Number of not found m files
+for e=1:length(fList)
+    if exist(fList{e},'file')
+        disp(['Encontrado: ' fList{e}])
+    else
+        warning(['Não encontrado: ' fList{e}])
+        nf=nf+1;
+    end
+end
+
+if ~nf
+    disp('Todos os arquivos estão presentes!')
+end
+
+Nome={pList.Name};
+Versao={pList.Version};
+% ProductNumber={pList.ProductNumber};
+% Utilizado={pList.Certain};
+
+ver('MATLAB')
+if verLessThan('MATLAB',Versao{1}) %
+    warning(['Versão ' Versao{1} ' ou superior do pacote ' Nome{1} ' requerida!'])
+else
+    disp(['Versão ' Versao{1} ' ou superior do pacote ' Nome{1} ' encontrada!'])
+end
+
+ver('Control')
+if verLessThan('Control',Versao{2}) %
+    warning(['Versão ' Versao{2} ' ou superior do pacote ' Nome{2} ' requerida!'])
+else
+    disp(['Versão ' Versao{2} ' ou superior do pacote ' Nome{2} ' encontrada!'])
+end
+
+
+%% Verifica plataforma
+if ismac
+    % Code to run on Mac plaform
+elseif isunix
+    % Code to run on Linux plaform
+elseif ispc
+    % Code to run on Windows platform
+%     [str,maxsize,endian] = computer
+else
+    disp('Plataforma não suportada!')
+end
+
+
+
