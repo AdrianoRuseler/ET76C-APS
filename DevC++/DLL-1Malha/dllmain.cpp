@@ -18,6 +18,7 @@
 double t, delt;
 double *in, *out;
 
+// Constantes do controlador
 double  a0z = 1.00000000e+00;
 double  a1z = -1.00000000e+00;
 double  b0z = 5.30305662e-05;
@@ -33,12 +34,11 @@ __stdcall void simuser (double t, double delt, double *in, double *out)
 	static double e0=0,e1=0,u0=0,u1=0;
 	
 	e0=in[0]; // Erro atual
-
+    // Calcula saída atual 
     u0= (e0*b0z+e1*b1z-u1*a1z)/a0z;
-    u1=u0;
-    e1=e0;
-    
-	out[0] = u0;
+    u1=u0; // Atualiza saída anterior
+    e1=e0; // Atualiza erro anterior    
+	out[0] = u0; // Saída do controlador
 
 
 // Place your code here............end

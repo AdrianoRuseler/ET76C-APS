@@ -54,6 +54,7 @@ end
 
 PSIMdata.simview.main.hfig=figure; % Create fig handle
 xdata=PSIMdata.simview.main.xdata*1e3;
+
 for s=0:PSIMdata.simview.main.numscreen-1
     haxes = subplot(PSIMdata.simview.main.numscreen,1,s+1); % Gera subplot
     hold(haxes,'all')
@@ -72,6 +73,7 @@ for s=0:PSIMdata.simview.main.numscreen-1
         set(haxes,'XTickLabel',[])
     end
 end
+
 xlabel('Tempo (ms)','Interpreter','latex')
 
 ylabel(PSIMdata.simview.screen0.handle,'Tens\~ao de sa\''ida (V)','Interpreter','latex')

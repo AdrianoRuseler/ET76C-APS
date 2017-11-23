@@ -91,10 +91,33 @@ Detalhes do projeto do controlador de tensão
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\linewidth]{Figs/StepResponse1malha}
+	\includegraphics[width=0.8\linewidth]{Figs/StepResponse1malha}
 	\caption{Resposta ao degrau de referência de tensão.}
 	\label{fig:stepresponse1malha}
 \end{figure}
+
+
+\section{Implementação digital do controlador PI}
+
+
+\begin{lstlisting}[caption={Parâmetros do controlador PI digital de tensão.},label={lst:valoresPI}]
+// Constantes do controlador
+double  a0z = 1.00000000e+00;
+double  a1z = -1.00000000e+00;
+double  b0z = 5.30305662e-05;
+double  b1z = -4.65043351e-05;
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Implementação do controlador PI digital de tensão.},label={lst:implementacaoPI}]
+e0=in[0]; // Erro atual
+// Calcula saída atual 
+u0= (e0*b0z+e1*b1z-u1*a1z)/a0z; 
+u1=u0; // Atualiza saída anterior
+e1=e0; // Atualiza erro anterior    
+out[0] = u0; // Saída do controlador
+\end{lstlisting}
+
+
 
 \section{Conclusões} 
 

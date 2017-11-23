@@ -98,7 +98,7 @@ for s=0:str2double(inistruct.x1main.numscreen)-1 % Screens Loop
         eval(['simview.screen' num2str(s) '.curve' num2str(c) '.source=str2double(inistruct.x1screen' num2str(s) '.curve_'  num2str(c) '_source);'])
         eval(['simview.screen' num2str(s) '.curve' num2str(c) '.connect=str2double(inistruct.x1screen' num2str(s) '.curve_'  num2str(c) '_connect);'])
         eval(['simview.screen' num2str(s) '.curve' num2str(c) '.thickness=str2double(inistruct.x1screen' num2str(s) '.curve_'  num2str(c) '_thickness);'])
-        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.color=str2double(inistruct.x1screen' num2str(s) '.curve_'  num2str(c) '_color);'])
+        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.color=str2double(inistruct.x1screen' num2str(s) '.curve_'  num2str(c) '_color);'])   
     end
 end
 
@@ -128,9 +128,16 @@ for s=0:simview.main.numscreen-1 % Screens Loop
         formula{s+1,c+1}= eval(['simview.screen' num2str(s) '.curve' num2str(c) '.formula']);
         [form, modified] = matlab.lang.makeValidName(formula{s+1,c+1},'ReplacementStyle','delete'); % Problem here for minus signal
         
-        formuladata=evalin('base',form);
-        
-        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.data=formuladata;'])
+        formuladata=evalin('base',form);        
+        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.data=formuladata;'])        
+        ymean=mean(formuladata);
+        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.ymean=ymean;'])
+        ymax=max(formuladata);
+        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.ymax=ymax;'])
+        ymin=min(formuladata);
+        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.ymin=ymin;'])    
+        ydelta=abs(ymax-ymin);
+        eval(['simview.screen' num2str(s) '.curve' num2str(c) '.ydelta=ydelta;']) 
     end
 end
 

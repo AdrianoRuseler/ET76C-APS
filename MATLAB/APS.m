@@ -95,6 +95,7 @@ conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 
 %% Implementação analógica com AmpOp
+
 E12=[10 12 15 18 22 27 33 39 47 56 68 82];
 x=1;
 for e1=1:length(E12)
@@ -155,6 +156,7 @@ conv.a1z = CzDen(2); %
 conv.b0z = CzNum(1); % 
 conv.b1z = CzNum(2); % 
 
+%% Simulação do controlador Digital
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaDiscreto'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação

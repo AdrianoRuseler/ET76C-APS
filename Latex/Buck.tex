@@ -128,6 +128,28 @@ As conclusões devem ser as mais claras possíveis, informando aos leitores sobr
 
 As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
 
+
+\section{Implementação digital do controlador PI}
+
+
+\begin{lstlisting}[caption={Parâmetros do controlador PI digital de tensão.},label={lst:valoresPI}]
+// Constantes do controlador
+double  a0z = 1.00000000e+00;
+double  a1z = -1.00000000e+00;
+double  b0z = 5.30305662e-05;
+double  b1z = -4.65043351e-05;
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Implementação do controlador PI digital de tensão.},label={lst:implementacaoPI}]
+e0=in[0]; // Erro atual
+// Calcula saída atual 
+u0= (e0*b0z+e1*b1z-u1*a1z)/a0z; 
+u1=u0; // Atualiza saída anterior
+e1=e0; // Atualiza erro anterior    
+out[0] = u0; // Saída do controlador
+\end{lstlisting}
+
+
 \section{Conclusões} 
 
 
