@@ -32,55 +32,32 @@ end
 
 %% Optem resposta ao degrau 1 malha
 conv.FTMA1 = feedback(conv.Cv*conv.vC0_d,conv.Hv);
-
+FTMA=conv.FTMA1;
 opt = stepDataOptions; % 
 opt.InputOffset = conv.VC; %
-opt.StepAmplitude =conv.VC/2; %
+opt.StepAmplitude =opt.InputOffset/2; %
+[y1,t1]=step(FTMA,opt); % Obtem resposta ao degrau
+opt.StepAmplitude =-opt.InputOffset/2; %
+[y2,t2]=step(FTMA,opt); % Obtem resposta ao degrau
 
 hsfig=figure;
-
 haxes1=subplot(2,1,1);
-
-[y,t]=step(conv.FTMA1,opt); % Obtem resposta ao degrau
-t=t.*1e3;
-plot(t,y)
-% indMax=find(y==max(y));
-% indMin=find(y==min(y));
-% 
-% line(t,y(indMin)*ones(1,length(t)),'LineStyle','--')
-% line(t(indMin)*ones(1,length(t)),y,'LineStyle','--')
-
-
-% text(t(indMin),y(indMin),['\downarrow ' num2str(y(indMin))])
-% text(t(indMax),y(indMax),['\uparrow ' num2str(y(indMax))])
+t1=t1.*1e3;
+plot(haxes1,t1,y1,'LineWidth',2)
 grid on
-% axis tight
-xlim([t(1) t(end)])
+xlim([t1(1) t1(end)])
 title('')
 xlabel('')
 ylabel('Amplitude (V)','Interpreter','latex')
 legend({'$v_0(s)$'},'Interpreter','latex')
 set(haxes1,'XTickLabel',[])
 
-% print(hsfig,[conv.tipo '\StepResponse1malha' ],'-depsc') % Salva resposta ao degrau
-
-
-opt = stepDataOptions; % 
-opt.InputOffset = conv.VC; %
-opt.StepAmplitude =-conv.VC/2; %
-
 % hsfig=figure;
 haxes2=subplot(2,1,2);
-[y,t]=step(conv.FTMA1,opt); % Obtem resposta ao degrau
-t=t.*1e3;
-plot(t,y)
-% indMax=find(y==max(y));
-% indMin=find(y==min(y));
-% text(t(indMin),y(indMin),['\downarrow ' num2str(y(indMin))])
-% text(t(indMax),y(indMax),['\uparrow ' num2str(y(indMax))])
+t2=t2.*1e3;
+plot(haxes2,t2,y2,'LineWidth',2)
 grid on
-% axis tight
-xlim([t(1) t(end)])
+xlim([t2(1) t2(end)])
 title('')
 xlabel('Tempo (ms)','Interpreter','latex')
 ylabel('Amplitude (V)','Interpreter','latex')
@@ -97,20 +74,43 @@ disp(['Recomenda-se um tempo mínimo de simulação igual a: ' num2str(3*conv.ST) '
 
 %% Optem resposta ao degrau 1 malha AmpOp
 % Optem resposta ao degrau
-if isfield(conv, 'FTMA1AmpOp')
-    opt = stepDataOptions; % 
-    opt.InputOffset = conv.VC; %
-    opt.StepAmplitude =conv.VC/2; %
+if isfield(conv, 'CApmOp')
     conv.FTMA1AmpOp = feedback(conv.CApmOp*conv.vC0_d,conv.Hv);
     
+    FTMA=conv.FTMA1AmpOp;
+    opt = stepDataOptions; %
+    opt.InputOffset = conv.VC; %
+    opt.StepAmplitude =opt.InputOffset/2; %
+    [y1,t1]=step(FTMA,opt); % Obtem resposta ao degrau
+    opt.StepAmplitude =-opt.InputOffset/2; %
+    [y2,t2]=step(FTMA,opt); % Obtem resposta ao degrau
+    
     hsfig=figure;
-    step(conv.FTMA1,conv.FTMA1AmpOp,opt) % Obtêm resposta ao degrau
-
+    haxes1=subplot(2,1,1);
+    t1=t1.*1e3;
+    plot(haxes1,t1,y1,'LineWidth',2)
     grid on
+    xlim([t1(1) t1(end)])
     title('')
-    xlabel('Tempo','Interpreter','latex')
+    xlabel('')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'Original','AmpOp'},'Interpreter','latex')
+    legend({'$v_0(s)$'},'Interpreter','latex')
+    set(haxes1,'XTickLabel',[])
+    
+    % hsfig=figure;
+    haxes2=subplot(2,1,2);
+    t2=t2.*1e3;
+    plot(haxes2,t2,y2,'LineWidth',2)
+    grid on
+    xlim([t2(1) t2(end)])
+    title('')
+    xlabel('Tempo (ms)','Interpreter','latex')
+    ylabel('Amplitude (V)','Interpreter','latex')
+    legend({'$v_0(s)$'},'Interpreter','latex')
+    
+    set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
+    set(haxes2,'Position',[0.15 0.1 0.75 0.4]); 
+    
     
     print(hsfig,[conv.latex.figsdir '\StepResponse1malhaAmpOp' ],'-depsc') % Salva resposta ao degrau
     
@@ -118,7 +118,53 @@ if isfield(conv, 'FTMA1AmpOp')
     
 end
 
-
+%% Optem resposta ao degrau para duas malhas
+if isfield(conv,'C2i')
+    conv.FTMA2i = feedback(conv.C2i*conv.iL0_d,conv.Hi);
+    conv.FTMA2 = feedback(conv.C2v*conv.FTMA2i,conv.Hv);
+    opt = stepDataOptions; %
+    opt.InputOffset = conv.VC; %
+    opt.StepAmplitude = opt.InputOffset/2; %
+    
+    FTMA=conv.FTMA2;
+    opt = stepDataOptions; %
+    opt.InputOffset = conv.VC; %
+    opt.StepAmplitude =opt.InputOffset/2; %
+    [y1,t1]=step(FTMA,opt); % Obtem resposta ao degrau
+    opt.StepAmplitude =-opt.InputOffset/2; %
+    [y2,t2]=step(FTMA,opt); % Obtem resposta ao degrau
+    
+    hsfig=figure;
+    haxes1=subplot(2,1,1);
+    t1=t1.*1e3;
+    plot(haxes1,t1,y1,'LineWidth',2)
+    grid on
+    xlim([t1(1) t1(end)])
+    title('')
+    xlabel('')
+    ylabel('Amplitude (V)','Interpreter','latex')
+    legend({'$v_0(s)$'},'Interpreter','latex')
+    set(haxes1,'XTickLabel',[])
+    
+    % hsfig=figure;
+    haxes2=subplot(2,1,2);
+    t2=t2.*1e3;
+    plot(haxes2,t2,y2,'LineWidth',2)
+    grid on
+    xlim([t2(1) t2(end)])
+    title('')
+    xlabel('Tempo (ms)','Interpreter','latex')
+    ylabel('Amplitude (V)','Interpreter','latex')
+    legend({'$v_0(s)$'},'Interpreter','latex')
+    
+    set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
+    set(haxes2,'Position',[0.15 0.1 0.75 0.4]);
+    
+    
+    print(hsfig,[conv.latex.figsdir '\StepResponse2malhas' ],'-depsc') % Salva resposta ao degrau
+    conv.Step2malhas = stepinfo(conv.FTMA1AmpOp,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+    
+end
 %% Tabela com parâmetros do conversor
 filename=[conv.latex.tablesdir '\' conv.tipo '_step1malha.tex'];
 

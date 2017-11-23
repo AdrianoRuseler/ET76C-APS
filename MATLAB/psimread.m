@@ -33,10 +33,10 @@
 function conv = psimread(conv)
 
 % conv.PSIMCMD.data = psimread(conv.PSIMCMD.outfile);  
+conv.PSIMCMD.data=[]; % Limpa dados
 
 if nargin <1  % conv not supplied
     conv.PSIMCMD.status=1;
-    conv.PSIMCMD.data=[];
     return
 end
 
@@ -45,7 +45,6 @@ if ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % Verifica se existe o arquivo
 elseif ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % Verifica se existe o arquivo
     disp([conv.PSIMCMD.outfile ' não encontrado!!!'])
     conv.PSIMCMD.status=1;
-    conv.PSIMCMD.data=[];
     return
 end
         

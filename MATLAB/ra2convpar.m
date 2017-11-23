@@ -82,8 +82,8 @@ conv.Hv=conv.Rb/(conv.Ra+conv.Rb); % Ganho do condicionamento de tensão
 conv.Rs=0.1; % Resistor shunt para medição da corrente
 conv.Hi=conv.Rs; % Ganho do condicionamento de corrente
 
-conv.param={'Ra','Rb','Hv','Hi','D','VC','L0','IL0','C0','V0','Vi','fs','R0','VTm','VTM','Kp','Ki',...
-    'ST','R1pi','R2pi','C1pi','fa','Ta','a0z','a1z','b1z','b0z'};
+ conv.param={'Ra','Rb','Hv','Hi','D','VC','L0','IL0','C0','V0','Vi','fs','R0','VTm','VTM','Kp','Ki',...
+    'ST','R1pi','R2pi','C1pi','fa','Ta','a0z','a1z','b1z','b0z','Kp1','Ki1','Kp2','Ki2'};
 
 %% Funções de transferência
 D=[0 0];

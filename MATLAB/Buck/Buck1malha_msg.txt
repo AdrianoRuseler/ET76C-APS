@@ -1,6 +1,6 @@
 New Simulation.
-File Opened: C:\Users\adria\Dropbox\GitHub\ET76C-APS\MATLAB\Buck\Buck1malha.psimsch
-Simulation Failed.
-Error:   Name=P2     Netlist Name=P
-	Invalid entry. Undefined variable  'Kp'.     Kp
+File Opened: A:\Dropbox\GitHub\ET76C-APS\MATLAB\Buck\Buck1malha.psimsch
+Simulation Successful.
+Warning:   Name=P2     Netlist Name=P
+	Warning! One of the input gains for Summer  P2  is zero!
 

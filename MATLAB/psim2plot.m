@@ -64,11 +64,11 @@ for s=0:PSIMdata.simview.main.numscreen-1
     for c=0:eval(['PSIMdata.simview.screen' num2str(s) '.curvecount'])-1 % Curves Loop
         ydata = eval(['PSIMdata.simview.screen' num2str(s) '.curve' num2str(c) '.data']);
         legString{c+1} = eval(['PSIMdata.simview.screen' num2str(s) '.curve' num2str(c) '.label']);
-        plot(haxes,xdata,ydata)
+        plot(haxes,xdata,ydata)        
     end
     %     axis tight
-    %     legend(haxes,legString,'Interpreter','latex');
-    
+    xlim(haxes,[conv.PSIMCMD.printtime conv.PSIMCMD.totaltime]*1e3);
+         legend(haxes,legString,'Interpreter','latex');    
     if ~s==PSIMdata.simview.main.numscreen-1
         set(haxes,'XTickLabel',[])
     end

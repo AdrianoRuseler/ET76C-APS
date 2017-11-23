@@ -43,6 +43,7 @@ conv = psimfromcmd(conv); % Simula via CMD e retorna dados obtidos
 
 % Salve o arquivo *.ini via simview
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
+conv2tex(conv); % Exporta tabelas de comparação
 
 %% Simule o arquivo ACSweep para verificar a modelagem do cenversor
 conv.prefixname='ACSweep'; 
@@ -98,59 +99,30 @@ conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 %% Implementação analógica com AmpOp
 
-E12=[10 12 15 18 22 27 33 39 47 56 68 82];
-x=1;
-for e1=1:length(E12)
-    for e2=1:length(E12)
-        g(x)=E12(e2)/(E12(e1));
-        indx{x}=[e1 e2];
-        x=x+1;
-    end      
-end
+conv = PI2AmpOp(conv); % Essa função retorna a implementação analógica do PI
+conv = step2tex(conv); % Obtem resposta ao degrau
 
-Re= abs(conv.Kp*10000-g); % Ajustado manualmente
-ind=find(Re==min(abs(Re))); % Menor erro 
-e=indx{ind};
-conv.R1pi=E12(e(1))*10000;
-conv.R2pi=E12(e(2));
-
-Kpf = conv.R2pi/conv.R1pi; % Ganho obtido
-
-C1t=1/(conv.R1pi*conv.Ki);
-C1base=10^(floor(log10(C1t)-1));
-
-C1e= abs(C1t/C1base-E12);
-ind=find(C1e==min(abs(C1e))); % Menor erro 
-conv.C1pi=E12(ind)*C1base;
-
-Kif=1/(conv.R1pi*conv.C1pi);
-
-conv.CApmOp = pid(Kpf,Kif); % Verificação 
 
 %% Resposta ao degrau e simulação
-
-conv = step2tex(conv);
 
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaAmpOp'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
+%% Simulação via CMD
 conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
-
  
 %% Discretização do controlador
 conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
 conv.Ta=1/conv.fa; 
- 
+
 % 'tustin' — Bilinear (Tustin) method.
 conv.Cz=c2d(conv.Cv,conv.Ta,'tustin');
-
-
 [CzNum, CzDen]=tfdata(conv.Cz,'v');
 
 conv.a0z = CzDen(1); % 
@@ -163,39 +135,77 @@ psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaDiscreto'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
+%% Simulação via CMD
+conv.prefixname='1malhaDiscreto';
+conv.PSIMCMD.totaltime = 3*conv.ST;
+conv.PSIMCMD.printtime = conv.ST/2;
+
+conv = psimfromcmd(conv); % Simula via CMD e importa dados
+conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
+
 %% Implementação em linguem C do controlador (DLL)
 
 % Specify discrete transfer functions in DSP format
 conv.CDLL=filt(CzNum,CzDen,conv.Ta);
 
-% u(z)  5.303e-05 - 4.65e-05 z^-1
+% u(z)  0.003797 + 0.003797 z^-1
 % ---- = -------------------------
 % e(z)          1 - z^-1
           
 % Simule no PSIM para verificar a resposta
-winopen([conv.basefilename '1malhaDLL.psimsch']) % Abre arquivo de simulação
+conv.prefixname='1malhaDLL'; % Prefixo para nomear arquivos
+winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+
+%% Simulação via CMD
+conv.prefixname='1malhaDLL';
+conv.PSIMCMD.totaltime = 3*conv.ST;
+conv.PSIMCMD.printtime = conv.ST/2;
+
+conv = psimfromcmd(conv); % Simula via CMD e importa dados
+conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
  %% Projeto com duas malhas de controle
  
  % Abra a feramenta de projeto do controlador
 controlSystemDesigner(conv.T6) 
+% Ci=C1; % Associe a estrutura 
+% Cv=C2; % Associe a estrutura 
+
+% Opção 02
+% pidTuner(conv.iL0_d*conv.Hi,'PI') % Exporte com o nome Ci
+% pidTuner(conv.vC0_iL0*conv.Hv,'PI') % Exporte com o nome Cv
+
+% Opção 03
+% [Ci,Ciinfo] = pidtune(conv.iL0_d*conv.Hi,'PI',10*conv.fcv); % Automático
+% [Cv,Cvinfo] = pidtune(conv.vC0_iL0*conv.Hv,'PI',conv.fcv); % Automático
 
 %% Exporte os controladores PI projetados
-conv.C1=C1; % Associe a estrutura 
-conv.C2=C2; % Associe a estrutura 
+conv.C2i=Ci; % Associe a estrutura 
+conv.C2v=Cv; % Associe a estrutura 
 
 % Obtenha os ganhos
- [PInum PIden]=tfdata(C1); 
+ [PInum PIden]=tfdata(Ci); 
  conv.Kp1 = PInum{1}(1); % Ganho proporcional
  conv.Ki1 = PInum{1}(2); % Ganho do integrador
- [PInum PIden]=tfdata(C2); 
+ [PInum PIden]=tfdata(Cv); 
  conv.Kp2 = PInum{1}(1); % Ganho proporcional
  conv.Ki2 = PInum{1}(2); % Ganho do integrador
- 
+
+conv = step2tex(conv); % Plota resposta ao degrau
+conv.prefixname='2malhas';
+psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 
 % Simulação do controle em malha fechada
+winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
- % Simule no PSIM para verificar a resposta
-winopen([conv.basefilename '2malhas.psimsch']) % Abre arquivo de simulação
+
+%% Simulação via CMD
+conv.prefixname='2malhas'; % Prefixo para nomear arquivos
+conv.PSIMCMD.totaltime = 3*conv.ST;
+conv.PSIMCMD.printtime = conv.ST/2;
+
+conv = psimfromcmd(conv); % Simula via CMD e importa dados
+conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
+
 
  

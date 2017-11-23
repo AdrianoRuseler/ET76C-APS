@@ -115,9 +115,14 @@ fclose(fid);
 % 
 % l = latex(t_sym)
 
-
+% PSIMCMD
+if ~isfield(conv,'PSIMCMD')
+    return
+% if isfield(conv.PSIMCMD,'data')
+    
+end
 %% Simulação do Ponto de operação do conversor
-if isfield(conv.PSIMCMD.data,'simview')
+if isfield(conv.PSIMCMD,'data.simview')
     filename=[conv.latex.tablesdir '\' conv.tipo '_steadystatesim.tex'];
     
     % call fprintf to print the updated text strings

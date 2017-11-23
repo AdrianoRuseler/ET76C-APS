@@ -1,55 +1,55 @@
 New Simulation.
-File Opened: C:\Users\adria\Dropbox\GitHub\ET76C-APS\MATLAB\Buck\BuckACSweep.psimsch
+File Opened: A:\Dropbox\GitHub\ET76C-APS\MATLAB\Buck\BuckACSweep.psimsch
 Simulation Successful.
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 2976.13    
-Amplitude relative error =2.13 %
+Amplitude relative error =2.2 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 3464.75    
-Amplitude relative error =3.39 %
+Amplitude relative error =3.46 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 4033.6    
-Amplitude relative error =5.05 %
+Amplitude relative error =4.03 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 4695.84    
-Amplitude relative error =7.1 %
+Amplitude relative error =5.04 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 5466.81    
-Amplitude relative error =7.47 %
+Amplitude relative error =12.12 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 7409.27    
-Amplitude relative error =13.42 %
+Amplitude relative error =20.48 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 8625.73    
-Amplitude relative error =190.59 %
+Amplitude relative error =851.01 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 10041.9    
-Amplitude relative error =92.26 %
+Amplitude relative error =1173.42 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 11690.6    
-Amplitude relative error =49.76 %
+Amplitude relative error =5010.6 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 13610    
-Amplitude relative error =17.46 %
+Amplitude relative error =63.08 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 15844.5    
-Amplitude relative error =20.65 %
+Amplitude relative error =18.97 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 18445.9    
-Amplitude relative error =5.72 %
+Amplitude relative error =5.04 %
 
 Warning:  Warning! The program did not reach the steady state after 60 cycles when performing the ac sweep.
 Frequency = 21474.3    
-Amplitude relative error =1.4 %
+Amplitude relative error =1.74 %
 
