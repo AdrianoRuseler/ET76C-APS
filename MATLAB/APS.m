@@ -11,10 +11,12 @@ catch
 end
 
 %% Identificação
-clc
-% RA=1234567; % Buck
+clear all % Limpa variáveis de comando
+clc% Limpa Command Window
+
+RA=1234567; % Buck
 % RA=1019252; % Coloque aqui o seu RA (Boost)
-RA=1230067; % Buck-Boost
+% RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 

@@ -89,6 +89,11 @@ ylabel(PSIMdata.simview.screen1.handle,'Corrente no indutor (A)','Interpreter','
  
  print(PSIMdata.simview.main.hfig,[conv.latex.figsdir '\' conv.tipo conv.prefixname],'-depsc') % Exporta figura no formato .eps
 
+ %% Exporta tabela com dados de simulação
+ 
+ 
+ 
+ 
  
  
 

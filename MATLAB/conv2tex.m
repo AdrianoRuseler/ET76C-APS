@@ -116,6 +116,32 @@ fclose(fid);
 % l = latex(t_sym)
 
 
-
-
+%% Simulação do Ponto de operação do conversor
+if isfield(conv.PSIMCMD.data,'simview')
+    filename=[conv.latex.tablesdir '\' conv.tipo '_steadystatesim.tex'];
+    
+    % call fprintf to print the updated text strings
+    fid = fopen(filename,'w','n','UTF-8');
+    if fid==-1
+        disp('Erro ao abrir o arquivo para escrita do ponto de operação!')
+        return
+    end   
+    fprintf(fid, '%s%c%c', '% Valores da simulação do ponto de operação do conversor',13,10);
+    fprintf(fid, '%s%c%c', '\begin{table}[!ht]',13,10);
+    fprintf(fid, '%s%c%c', '\centering',13,10);
+    fprintf(fid, '%s%c%c', ['\caption{Comparação dos valores teóricos e simulados para o ponto de operação do conversor ' conv.tipo ' referente ao registro acadêmico de número $' num2str(conv.RA) '$}'],13,10);
+    fprintf(fid, '%s%c%c', '\label{tab:steadystatesim}',13,10);
+    fprintf(fid, '%s%c%c', '\begin{tabular}{@{}cccc@{}}',13,10);
+    fprintf(fid, '%s%c%c', '\toprule',13,10);
+    fprintf(fid, '%s%c%c', '\textbf{Símbolo} & \textbf{Teórico} & \textbf{Simulado} & \textbf{Descrição}\\ \midrule',13,10);
+    fprintf(fid, '%s%c%c', ['$I_{L_0}$ & \SI{' num2str(conv.IL0) '}{\A} & \SI{' num2str(conv.PSIMCMD.data.simview.screen1.curve0.ymean) '}{\A} & Corrente média\\'],13,10);
+    fprintf(fid, '%s%c%c', ['$\Delta{i_{L_0}}$  & \SI{' num2str(conv.DiL0*conv.IL0) '}{\A} & \SI{' num2str(conv.PSIMCMD.data.simview.screen1.curve0.ydelta) '}{\A}& Ondulação de corrente\\'],13,10);
+    fprintf(fid, '%s%c%c', ['$V_{C_0}$ & \SI{' num2str(conv.V0) '}{\V} & \SI{' num2str(conv.PSIMCMD.data.simview.screen0.curve0.ymean) '}{\V} & Tensão média\\'],13,10);
+    fprintf(fid, '%s%c%c', ['$\Delta{v_{C_0}}$  & \SI{' num2str(conv.DvC0*conv.V0) '}{\V} & \SI{' num2str(conv.PSIMCMD.data.simview.screen0.curve0.ydelta) '}{\V}& Ondulação de tensão \\'],13,10);
+    fprintf(fid, '%s%c%c', '\bottomrule',13,10);
+    fprintf(fid, '%s%c%c', '\end{tabular}',13,10);
+    fprintf(fid, '%s%c%c', '\end{table}',13,10);
+    fprintf(fid, '%s%c%c', '',13,10);
+    fclose(fid);    
+end
 

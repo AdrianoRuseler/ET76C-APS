@@ -152,7 +152,7 @@ end
 %% Save data struct
 conv.PSIMCMD.data.simview=simview;
 
-disp('Dados do arquivo .ini importados!')
+disp(['Dados do arquivo ' conv.PSIMCMD.inifile ' importados!'])
 
 %% Plota dados
 
