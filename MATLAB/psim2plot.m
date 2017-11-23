@@ -85,7 +85,7 @@ ylabel(PSIMdata.simview.screen1.handle,'Corrente no indutor (A)','Interpreter','
  set(PSIMdata.simview.screen1.handle,'Position',[0.15 0.1 0.75 0.4]);
  
  
- print(PSIMdata.simview.main.hfig,[conv.latex.figsdir '\' conv.tipo conv.prefixname],'-depsc')
+ print(PSIMdata.simview.main.hfig,[conv.latex.figsdir '\' conv.tipo conv.prefixname],'-depsc') % Exporta figura no formato .eps
 
  
  

@@ -24,9 +24,7 @@
 % ***
 % =========================================================================
 
-
 function  [hfig haxes] = validarplanta(conv)
-
 
 conv.PSIMCMD.outfile = [conv.fullfilename '.fra'];
 conv = psimread(conv); % Abra o arquivo .fra

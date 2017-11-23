@@ -11,7 +11,7 @@ catch
 end
 
 %% Identificação
-
+clc
 % RA=1234567; % Buck
 % RA=1019252; % Coloque aqui o seu RA (Boost)
 RA=1230067; % Buck-Boost
@@ -56,9 +56,13 @@ validarplanta(conv); % Compara modelos
 %% Projeto do controlador
 
 % Abra a feramenta de projeto do controlador
+% Opção 01
 % controlSystemDesigner(conv.T1) 
+
+% Opção 02
 % pidTuner(conv.vC0_d*conv.Hv,'pi') % Exporte com o nome Cv
 
+% Opção 03
 [Cv,info] = pidtune(conv.vC0_d*conv.Hv,'PI',conv.fcv); % Automático
 
 %% Exporte o controlador PI projetado
@@ -186,9 +190,7 @@ conv.C2=C2; % Associe a estrutura
  
 
 % Simulação do controle em malha fechada
- 
 
- 
  % Simule no PSIM para verificar a resposta
 winopen([conv.basefilename '2malhas.psimsch']) % Abre arquivo de simulação
 

@@ -16,9 +16,9 @@ conv.VTm=0; % Tensão minima da portadora
 conv.VTM=1; % Tensão máxima da portadora
 
 conv.fci=2*pi*conv.fs/4; % Frequência de corte da malha de corrente
-conv.fcv=2*pi*60; % Frequência de corte da malha de
+conv.fcv=2*pi*60; % Frequência de corte da malha de tensão
 
-
+conv.Dcnd=0.8;
 % Decide qual topologia utilizar
 if(conv.G>1.75)
     conv.tipo = 'Boost';
@@ -30,6 +30,8 @@ if(conv.G>1.75)
     % Modelo dinâmico
     A=[0 (conv.D-1)/conv.L0;(1-conv.D)/conv.C0 -1/(conv.R0*conv.C0)];
     B=[1/conv.L0 conv.V0/conv.L0; 0 -conv.IL0/conv.C0];
+    % Parâmetros em MCD
+    
 elseif(conv.G<0.75)
     conv.tipo = 'Buck';
     conv.D = conv.V0/conv.Vi; % Razão cíclica do Buck em MCC
@@ -40,6 +42,8 @@ elseif(conv.G<0.75)
     % Modelo dinâmico
     A=[0 -1/conv.L0;1/conv.C0 -1/(conv.R0*conv.C0)];
     B=[conv.D/conv.L0 conv.Vi/conv.L0;0 0];
+     % Parâmetros em MCD
+     
 else
     conv.tipo = 'Buck-Boost';
     conv.D = conv.V0/(conv.V0+conv.Vi); % Razão cíclica do Buck-Boost em MCC
@@ -50,6 +54,11 @@ else
     % Modelo dinâmico
     A=[0 (conv.D-1)/conv.L0;(1-conv.D)/conv.C0 -1/(conv.R0*conv.C0)];
     B=[conv.D/conv.L0 (conv.V0+conv.Vi)/conv.L0; 0 -conv.IL0/conv.C0];
+     % Parâmetros em MCD
+%     conv.D2=conv.I0*conv.Dcnd/conv.IL0; % Razão cíclica do diodo
+%     conv.D1=conv.Dcnd-conv.D2; % Razão cíclica em MCD
+%     conv.DiL0d=2*conv.IL0/conv.Dcnd; % Ondulação de corrente em MCD
+%     conv.L0d=conv.D1*conv.Vi/(conv.fs*conv.DiL0d); % Indutância em MCD
 end
 
 %% Leitura de tensão via divisor resistivo
@@ -135,6 +144,8 @@ conv.latex.figsdir = [ conv.basedir 'Figs'];
 if ~exist(conv.latex.figsdir,'dir')
     mkdir(conv.latex.figsdir)
 end
+
+%% Exporta tabela com parâmetros do conversor
 
 conv2tex(conv); % Exporta tabela com parâmetros do conversor
 
