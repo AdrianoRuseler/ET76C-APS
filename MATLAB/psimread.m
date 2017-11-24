@@ -41,7 +41,7 @@ if nargin <1  % conv not supplied
 end
 
 if ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % Verifica se existe o arquivo    
-    conv.PSIMCMD.outfile = [conv.fullfilename '.fra'];
+    conv.PSIMCMD.outfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.fra'];
 elseif ~isequal(exist(conv.PSIMCMD.outfile,'file'),2) % Verifica se existe o arquivo
     disp([conv.PSIMCMD.outfile ' não encontrado!!!'])
     conv.PSIMCMD.status=1;
