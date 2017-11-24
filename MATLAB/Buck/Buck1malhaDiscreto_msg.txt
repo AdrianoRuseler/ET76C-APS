@@ -1,3 +1,0 @@
-New Simulation.
-File Opened: A:\Dropbox\GitHub\ET76C-APS\MATLAB\Buck\Buck1malhaDiscreto.psimsch
-Simulation Successful.

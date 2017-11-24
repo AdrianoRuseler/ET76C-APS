@@ -87,7 +87,7 @@ winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simula
 %% Simulação via CMD
 
 conv.PSIMCMD.totaltime = 3*conv.ST;
-conv.PSIMCMD.steptime = 1E-006;
+conv.PSIMCMD.steptime = 1E-007;
 conv.PSIMCMD.printtime = conv.ST/2;
 conv.PSIMCMD.printstep = 1;
 conv.prefixname='1malha'; % Prefixo para nomear arquivos
@@ -114,6 +114,7 @@ conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
+%% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
  
@@ -141,6 +142,7 @@ conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
+%% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 %% Implementação em linguem C do controlador (DLL)
@@ -151,7 +153,7 @@ conv.CDLL=filt(CzNum,CzDen,conv.Ta);
 % u(z)  0.003797 + 0.003797 z^-1
 % ---- = -------------------------
 % e(z)          1 - z^-1
-          
+
 % Simule no PSIM para verificar a resposta
 conv.prefixname='1malhaDLL'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
@@ -162,22 +164,23 @@ conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
+%% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
  %% Projeto com duas malhas de controle
  
  % Abra a feramenta de projeto do controlador
-controlSystemDesigner(conv.T6) 
+% controlSystemDesigner(conv.T6) 
 % Ci=C1; % Associe a estrutura 
 % Cv=C2; % Associe a estrutura 
 
 % Opção 02
 % pidTuner(conv.iL0_d*conv.Hi,'PI') % Exporte com o nome Ci
 % pidTuner(conv.vC0_iL0*conv.Hv,'PI') % Exporte com o nome Cv
-
+    
 % Opção 03
-% [Ci,Ciinfo] = pidtune(conv.iL0_d*conv.Hi,'PI',10*conv.fcv); % Automático
-% [Cv,Cvinfo] = pidtune(conv.vC0_iL0*conv.Hv,'PI',conv.fcv); % Automático
+[Ci,Ciinfo] = pidtune(conv.iL0_d*conv.Hi,'PI',conv.fci); % Automático
+[Cv,Cvinfo] = pidtune(conv.vC0_iL0*feedback(Ci*conv.iL0_d,conv.Hi)*conv.Hv,'PI',conv.fcv); % Automático
 
 %% Exporte os controladores PI projetados
 conv.C2i=Ci; % Associe a estrutura 
@@ -202,10 +205,14 @@ winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simula
 %% Simulação via CMD
 conv.prefixname='2malhas'; % Prefixo para nomear arquivos
 conv.PSIMCMD.totaltime = 3*conv.ST;
+conv.PSIMCMD.steptime = 1E-007;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
+
+%% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
-
+%% Finaliza APS
+save conv
  

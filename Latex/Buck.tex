@@ -42,7 +42,7 @@ A introdução requer uma breve revisão da literatura referente ao tópico de p
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=1\linewidth]{Figs/Buck}
+	\includegraphics[width=1\linewidth]{Figs/BuckConv}
 	\caption{Conversor Buck.}
 	\label{fig:buck}
 \end{figure}
@@ -78,7 +78,7 @@ A \figref{fig:buck-steadystate} apresenta a resposta da simulação do ponto de 
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\linewidth]{Figs/Buck-SteadyState}
+	\includegraphics[width=0.9\linewidth]{Figs/Buck}
 	\caption{Verificação do ponto de operação do conversor Buck.}
 	\label{fig:buck-steadystate}
 \end{figure}
@@ -88,15 +88,11 @@ A \figref{fig:buck-steadystate} apresenta a resposta da simulação do ponto de 
 
 \section{Verificação do modelo dinâmico via simulação}
 
-\subsection{Função de transferência}
-
-%\begin{equation}
-%\frac{3317760000000001}{32768\,\left(s^2+\frac{1603454457173333\,s}{17179869184}+\frac{7549747199999989}{16777216}\right)}
-%\end{equation}
+%\subsection{Função de transferência}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=1\linewidth]{Figs/Buck-ValidacaoModelo}
+	\includegraphics[width=1\linewidth]{Figs/BuckACSweep}
 	\caption{Comparação do diagrama de Bode da função de transferência que relaciona uma variação da corrente na indutância em função da razão cíclica obtida via simulação no PSIM.}
 	\label{fig:buck-il0}
 \end{figure}
@@ -108,13 +104,22 @@ Detalhes do projeto do controlador de tensão
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\linewidth]{Figs/StepResponse1malha}
+	\includegraphics[width=0.9\linewidth]{Figs/BuckStepResponse1malha}
 	\caption{Resposta ao degrau de referência de tensão.}
 	\label{fig:stepresponse1malha}
 \end{figure}
 
 % Tabela com a resposta ao degrau de referência
 \input{Tables/Buck_step1malha.tex}
+
+
+%\begin{figure}[!ht]
+%	\centering
+%	\includegraphics[width=0.9\linewidth]{Figs/BuckStepResponse1malhaAmpOp}
+%	\caption{Resposta ao degrau de referência de tensão.}
+%	\label{fig:BuckStepResponse1malhaAmpOp}
+%\end{figure}
+
 
 
 A \figref{fig:buck1malha} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
@@ -126,12 +131,15 @@ A \figref{fig:buck1malha} apresenta o resultado da simulação da resposta ao de
 	\label{fig:buck1malha}
 \end{figure}
 
+A \figref{fig:buck1malhaAmpOp} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
 
-As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck1malhaAmpOp}
+	\caption{Resposta ao degrau de referência de tensão com controlador implementado com amplificadores operacionais.}
+	\label{fig:buck1malhaAmpOp}
+\end{figure}
 
-As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
-
-As conclusões devem ser as mais claras possíveis, informando aos leitores sobre a importância do trabalho dentro do contexto em que se situa. As vantagens e desvantagens em relação aos já existentes na literatura devem ser comentadas, assim como os resultados obtidos e as possíveis aplicações práticas do trabalho.
 
 
 \section{Implementação digital do controlador PI}
@@ -155,6 +163,26 @@ out[0] = u0; // Saída do controlador
 \end{lstlisting}
 
 
+\section{Implementação com duas malhas}
+
+A \figref{fig:BuckStepResponse2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/BuckStepResponse2malhas}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:BuckStepResponse2malhas}
+\end{figure}
+
+
+A \figref{fig:Buck2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck2malhas}
+	\caption{Resposta ao degrau de referência de tensão com controlador implementado com amplificadores operacionais.}
+	\label{fig:Buck2malhas}
+\end{figure}
 \section{Conclusões} 
 
 

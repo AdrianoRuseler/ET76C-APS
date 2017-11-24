@@ -66,7 +66,7 @@ legend({'$v_0(s)$'},'Interpreter','latex')
 set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
 set(haxes2,'Position',[0.15 0.1 0.75 0.4]);
 
-print(hsfig,[conv.latex.figsdir '\StepResponse1malha' ],'-depsc') % Salva resposta ao degrau
+print(hsfig,[conv.latex.figsdir  '\' conv.tipo 'StepResponse1malha' ],'-depsc') % Salva resposta ao degrau
 
 conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
 conv.ST=(15*conv.Step.SettlingTime); % Tempo de acomodação
@@ -112,7 +112,7 @@ if isfield(conv, 'CApmOp')
     set(haxes2,'Position',[0.15 0.1 0.75 0.4]); 
     
     
-    print(hsfig,[conv.latex.figsdir '\StepResponse1malhaAmpOp' ],'-depsc') % Salva resposta ao degrau
+    print(hsfig,[conv.latex.figsdir '\' conv.tipo 'StepResponse1malhaAmpOp' ],'-depsc') % Salva resposta ao degrau
     
     conv.StepAmpOp = stepinfo(conv.FTMA1AmpOp,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
     
@@ -161,8 +161,10 @@ if isfield(conv,'C2i')
     set(haxes2,'Position',[0.15 0.1 0.75 0.4]);
     
     
-    print(hsfig,[conv.latex.figsdir '\StepResponse2malhas' ],'-depsc') % Salva resposta ao degrau
-    conv.Step2malhas = stepinfo(conv.FTMA1AmpOp,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+    print(hsfig,[conv.latex.figsdir '\' conv.tipo 'StepResponse2malhas' ],'-depsc') % Salva resposta ao degrau
+    conv.Step2malhas = stepinfo(conv.FTMA2,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);
+    
+    conv.ST=(15*conv.Step2malhas.SettlingTime); % Tempo de acomodação
     
 end
 %% Tabela com parâmetros do conversor

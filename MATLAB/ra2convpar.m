@@ -83,7 +83,7 @@ conv.Rs=0.1; % Resistor shunt para medição da corrente
 conv.Hi=conv.Rs; % Ganho do condicionamento de corrente
 
  conv.param={'Ra','Rb','Hv','Hi','D','VC','L0','IL0','C0','V0','Vi','fs','R0','VTm','VTM','Kp','Ki',...
-    'ST','R1pi','R2pi','C1pi','fa','Ta','a0z','a1z','b1z','b0z','Kp1','Ki1','Kp2','Ki2'};
+    'ST','R1pi','R2pi','C1pi','fa','a0z','a1z','b1z','b0z','Kp1','Ki1','Kp2','Ki2'};
 
 %% Funções de transferência
 D=[0 0];
@@ -121,12 +121,12 @@ conv.basedir=[ pwd '\' conv.tipo '\'];
 conv.basefilename = [ conv.basedir conv.tipo ];
 conv.prefixname= '';
 conv.fullfilename = [ conv.basefilename  conv.prefixname];
-
+conv.simsdir=[ conv.basedir 'Sims'];
 conv.PSIMCMD.infile = [ conv.basefilename '.psimsch'];
-conv.PSIMCMD.outfile = [conv.basefilename '.txt'];
+conv.PSIMCMD.outfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.txt'];
 conv.PSIMCMD.paramfile = [conv.basefilename '_data.txt']; % Arquivo com os parâmetros de simulação
-conv.PSIMCMD.msgfile = [conv.basefilename '_msg.txt'];
-conv.PSIMCMD.inifile = [conv.basefilename '.ini']; % Arquivo ini simview
+conv.PSIMCMD.msgfile = [conv.simsdir  '\' conv.tipo  conv.prefixname  '_msg.txt'];
+conv.PSIMCMD.inifile = [conv.simsdir  '\' conv.tipo  conv.prefixname  '.ini']; % Arquivo ini simview
 conv.PSIMCMD.totaltime = 0.01;
 conv.PSIMCMD.steptime = 1E-006;
 conv.PSIMCMD.printtime = 0;
@@ -143,6 +143,11 @@ end
 conv.latex.figsdir = [ conv.basedir 'Figs'];
 if ~exist(conv.latex.figsdir,'dir')
     mkdir(conv.latex.figsdir)
+end
+
+
+if ~exist(conv.simsdir,'dir')
+    mkdir(conv.simsdir)
 end
 
 %% Exporta tabela com parâmetros do conversor

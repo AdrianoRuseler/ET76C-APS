@@ -91,9 +91,10 @@ end
 
 conv.fullfilename = [ conv.basefilename  conv.prefixname]; % Atualiza nome do arquivo
 conv.PSIMCMD.infile = [ conv.fullfilename '.psimsch'];
-conv.PSIMCMD.outfile = [conv.fullfilename '.txt'];
-conv.PSIMCMD.msgfile = [conv.fullfilename '_msg.txt'];
-conv.PSIMCMD.inifile = [conv.fullfilename '.ini']; % Arquivo ini simview
+% conv.PSIMCMD.outfile = [conv.fullfilename '.txt'];
+conv.PSIMCMD.outfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.txt'];
+conv.PSIMCMD.msgfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '_msg.txt'];
+conv.PSIMCMD.inifile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.ini']; % Arquivo ini simview
 
 
 % Cria string de comando

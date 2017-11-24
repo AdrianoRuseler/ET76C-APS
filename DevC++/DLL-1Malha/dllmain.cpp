@@ -21,8 +21,8 @@ double *in, *out;
 // Constantes do controlador
 double  a0z = 1.00000000e+00;
 double  a1z = -1.00000000e+00;
-double  b0z = 5.30305662e-05;
-double  b1z = -4.65043351e-05;
+double  b0z = 3.32464639e-03;
+double  b1z = 3.32464639e-03;
 
 
 __stdcall void simuser (double t, double delt, double *in, double *out)

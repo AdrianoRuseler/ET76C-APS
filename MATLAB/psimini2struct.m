@@ -51,8 +51,9 @@ elseif ~isequal(exist(conv.PSIMCMD.inifile,'file'),2) % If file NOT exists
 end
 
 if conv.PSIMCMD.status
-    disp('Status indica algum erro!')
-    return
+    conv = psimread(conv); % Importa pontos simulados
+%     disp('Status indica algum erro!')
+%     return
 end
 
 

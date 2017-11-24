@@ -26,7 +26,9 @@
 
 function  [hfig haxes] = validarplanta(conv)
 
-conv.PSIMCMD.outfile = [conv.fullfilename '.fra'];
+% conv.PSIMCMD.outfile = [conv.fullfilename '.fra'];
+conv.PSIMCMD.outfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.fra'];
+
 conv = psimread(conv); % Abra o arquivo .fra
 
 PSIMdata.fra=conv.PSIMCMD.fra;
