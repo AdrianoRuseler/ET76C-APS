@@ -37,32 +37,32 @@ opt = stepDataOptions; %
 opt.InputOffset = conv.VC; %
 opt.StepAmplitude =opt.InputOffset/2; %
 [y1,t1]=step(FTMA,opt); % Obtem resposta ao degrau
+t1=t1.*1e3;
 opt.StepAmplitude =-opt.InputOffset/2; %
 [y2,t2]=step(FTMA,opt); % Obtem resposta ao degrau
+t2=t2.*1e3;
 
 hsfig=figure;
 haxes1=subplot(2,1,1);
-t1=t1.*1e3;
 plot(haxes1,t1,y1,'LineWidth',2)
 grid on
 xlim([t1(1) t1(end)])
 title('')
 xlabel('')
 ylabel('Amplitude (V)','Interpreter','latex')
-legend({'$v_0(s)$'},'Interpreter','latex')
+legend({'Cont\''inuo'},'Interpreter','latex')
 set(haxes1,'XTickLabel',[])
 title(['RA: ' num2str(conv.RA)],'Interpreter','latex')
 
 % hsfig=figure;
 haxes2=subplot(2,1,2);
-t2=t2.*1e3;
 plot(haxes2,t2,y2,'LineWidth',2)
 grid on
 xlim([t2(1) t2(end)])
 title('')
 xlabel('Tempo (ms)','Interpreter','latex')
 ylabel('Amplitude (V)','Interpreter','latex')
-legend({'$v_0(s)$'},'Interpreter','latex')
+legend({'Cont\''inuo'},'Interpreter','latex')
 
 set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
 set(haxes2,'Position',[0.15 0.1 0.75 0.4]);
@@ -80,6 +80,7 @@ conv.Step = stepinfo(conv.FTMA1,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0
 conv.ST=(15*conv.Step.SettlingTime); % Tempo de acomodação
 disp(['Recomenda-se um tempo mínimo de simulação igual a: ' num2str(3*conv.ST) ' segundos!'])
 
+
 %% Optem resposta ao degrau 1 malha AmpOp
 % Optem resposta ao degrau
 if isfield(conv, 'CApmOp')
@@ -89,40 +90,41 @@ if isfield(conv, 'CApmOp')
     opt = stepDataOptions; %
     opt.InputOffset = conv.VC; %
     opt.StepAmplitude =opt.InputOffset/2; %
-    [y1,t1]=step(FTMA,opt); % Obtem resposta ao degrau
+    [y1,t1]=step(FTMA,opt,conv.StepData.t1(:,1)*1e-3); % Obtem resposta ao degrau
+    t1=t1.*1e3;
     opt.StepAmplitude =-opt.InputOffset/2; %
-    [y2,t2]=step(FTMA,opt); % Obtem resposta ao degrau
- 
+    [y2,t2]=step(FTMA,opt,conv.StepData.t1(:,1)*1e-3); % Obtem resposta ao degrau
+    t2=t2.*1e3;
+     
     hsfig=figure;
     haxes1=subplot(2,1,1);
-    t1=t1.*1e3;
     plot(haxes1,t1,y1,'LineWidth',2)
     grid on
     xlim([t1(1) t1(end)])
     title('')
     xlabel('')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'$v_0(s)$'},'Interpreter','latex')
+    legend({'Anal\''ogico'},'Interpreter','latex')
     set(haxes1,'XTickLabel',[])
     title(['RA: ' num2str(conv.RA)],'Interpreter','latex')
     
     % hsfig=figure;
     haxes2=subplot(2,1,2);
-    t2=t2.*1e3;
+
     plot(haxes2,t2,y2,'LineWidth',2)
     grid on
     xlim([t2(1) t2(end)])
     title('')
     xlabel('Tempo (ms)','Interpreter','latex')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'$v_0(s)$'},'Interpreter','latex')
+    legend({'Anal\''ogico'},'Interpreter','latex')
     
     set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
     set(haxes2,'Position',[0.15 0.1 0.75 0.4]); 
     
     linkaxes([haxes1 haxes2],'x') % Linka eixos x
     
-    conv.StepData.t1=[conv.StepData.t1 t1];
+    conv.StepData.t1=[conv.StepData.t1 t1];    
     conv.StepData.y1=[conv.StepData.y1 y1];
     conv.StepData.t2=[conv.StepData.t2 t2];
     conv.StepData.y2=[conv.StepData.y2 y2];
@@ -157,7 +159,7 @@ if isfield(conv, 'Cz')
     title('')
     xlabel('')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'$v_0(s)$'},'Interpreter','latex')
+    legend({'Discreto'},'Interpreter','latex')
     set(haxes1,'XTickLabel',[])
     title(['RA: ' num2str(conv.RA)],'Interpreter','latex')
     
@@ -170,7 +172,7 @@ if isfield(conv, 'Cz')
     title('')
     xlabel('Tempo (ms)','Interpreter','latex')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'$v_0(s)$'},'Interpreter','latex')
+    legend({'Discreto'},'Interpreter','latex')
     
     set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
     set(haxes2,'Position',[0.15 0.1 0.75 0.4]); 
@@ -253,7 +255,7 @@ if isfield(conv,'C2i')
     title('')
     xlabel('')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'1 Malha','2 Malhas'},'Interpreter','latex')
+    legend({'2 Malhas','1 Malha'},'Interpreter','latex')
     set(haxes1,'XTickLabel',[])
     title(['RA: ' num2str(conv.RA)],'Interpreter','latex')
     
@@ -268,7 +270,7 @@ if isfield(conv,'C2i')
     title('')
     xlabel('Tempo (ms)','Interpreter','latex')
     ylabel('Amplitude (V)','Interpreter','latex')
-    legend({'1 Malha','2 Malhas'},'Interpreter','latex')
+    legend({'2 Malhas','1 Malha'},'Interpreter','latex')
     
     set(haxes1,'Position',[0.15 0.55 0.75 0.4]);
     set(haxes2,'Position',[0.15 0.1 0.75 0.4]);
@@ -280,6 +282,9 @@ if isfield(conv,'C2i')
 end
 %% Tabela com parâmetros do conversor
 filename=[conv.latex.tablesdir '\' conv.tipo '_step1malha.tex'];
+
+[Gm,Pm,Wgm,Wpm] = margin(conv.Cv*conv.vC0_d*conv.Hv);
+Gm_dB = 20*log10(Gm); % Margem de ganho
 
 % call fprintf to print the updated text strings
 fid = fopen(filename,'w','n','UTF-8');
@@ -298,6 +303,9 @@ fprintf(fid, '%s%c%c', '\toprule',13,10);
 fprintf(fid, '%s%c%c', '\textbf{Descrição} & \textbf{Valor}\\ \midrule',13,10);
 fprintf(fid, '%s%c%c', ['Ganho proporcional & \SI{' num2str(conv.Kp) '}{}\\'],13,10);
 fprintf(fid, '%s%c%c', ['Ganho integral & \SI{' num2str(conv.Ki) '}{}\\'],13,10);
+fprintf(fid, '%s%c%c', ['Margem de ganho & \SI{' num2str(Gm_dB) '}{\deci\bel}\\'],13,10);
+fprintf(fid, '%s%c%c', ['Margem de fase & \SI{' num2str(Pm) '}{\degree}\\'],13,10);
+fprintf(fid, '%s%c%c', ['Frequência de cruzamento & \SI{' num2str(Wpm) '}{\radian\per\s}\\'],13,10);
 fprintf(fid, '%s%c%c', ['Tempo de subida & \SI{' num2str(conv.Step.RiseTime*1000) '}{\milli\s}\\'],13,10);
 fprintf(fid, '%s%c%c', ['Tempo de acomodação & \SI{' num2str(conv.Step.SettlingTime*1000) '}{\milli\s}\\'],13,10);
 fprintf(fid, '%s%c%c', ['Tensão máxima de acomodação & \SI{' num2str(conv.Step.SettlingMax) '}{\V}\\'],13,10);
@@ -313,9 +321,11 @@ fprintf(fid, '%s%c%c', '',13,10);
 fclose(fid);
 
 if isfield(conv, 'FTMA1AmpOp')
-    filename=[conv.latex.tablesdir '\' conv.tipo '_step1malhaAmpOp.tex'];
-    
+    filename=[conv.latex.tablesdir '\' conv.tipo '_step1malhaAmpOp.tex']; 
     % call fprintf to print the updated text strings
+    
+    [Gm,Pm,Wgm,Wpm] = margin(conv.CApmOp*conv.vC0_d*conv.Hv);
+    Gm_dB = 20*log10(Gm); % Margem de ganho
     fid = fopen(filename,'w','n','UTF-8');
     if fid==-1
         disp('Erro ao abrir o arquivo para escrita dos parâmetros!')
@@ -332,6 +342,9 @@ if isfield(conv, 'FTMA1AmpOp')
     fprintf(fid, '%s%c%c', '\textbf{Descrição} & \textbf{Valor}\\ \midrule',13,10);
     fprintf(fid, '%s%c%c', ['Ganho proporcional & \SI{' num2str(conv.Kpf) '}{}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Ganho integral & \SI{' num2str(conv.Kif) '}{}\\'],13,10);
+    fprintf(fid, '%s%c%c', ['Margem de ganho & \SI{' num2str(Gm_dB) '}{\deci\bel}\\'],13,10);
+    fprintf(fid, '%s%c%c', ['Margem de fase & \SI{' num2str(Pm) '}{\degree}\\'],13,10);
+    fprintf(fid, '%s%c%c', ['Frequência de cruzamento & \SI{' num2str(Wpm) '}{\radian\per\s}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Resistor do controlador PI $R_{1_{PI}}$ & \SI{' num2str(conv.R1pi/1000) '}{\kilo\ohm}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Resistor do controlador PI $R_{2_{PI}}$ & \SI{' num2str(conv.R2pi) '}{\ohm}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Resistor do controlador PI $C_{1_{PI}}$ & \SI{' num2str(conv.C1pi*1e9) '}{\nano\F}\\'],13,10);
@@ -354,6 +367,11 @@ end
 if isfield(conv, 'FTMA2')
     filename=[conv.latex.tablesdir '\' conv.tipo '_step2malhas.tex'];
     
+%     [Gmi,Pmi,Wgmi,Wpmi] = margin(conv.C2i*conv.iL0_d*conv.Hi);
+%     Gmi_dB = 20*log10(Gmi); % Margem de ganho 
+%     [Gmv,Pmv,Wgmv,Wpmv] = margin(conv.vC0_iL0*feedback(conv.C2i*conv.iL0_d,conv.Hi)*conv.Hv);
+%     Gmv_dB = 20*log10(Gmv); % Margem de ganho 
+    
     % call fprintf to print the updated text strings
     fid = fopen(filename,'w','n','UTF-8');
     if fid==-1
@@ -371,8 +389,14 @@ if isfield(conv, 'FTMA2')
     fprintf(fid, '%s%c%c', '\textbf{Descrição} & \textbf{Valor}\\ \midrule',13,10);
     fprintf(fid, '%s%c%c', ['Ganho proporcional (controle de corrente) & \SI{' num2str(conv.Kp1) '}{}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Ganho integral (controle de corrente) & \SI{' num2str(conv.Ki1) '}{}\\'],13,10);
+%     fprintf(fid, '%s%c%c', ['Margem de ganho $Ci$ & \SI{' num2str(Gmi_dB) '}{\deci\bel}\\'],13,10);
+%     fprintf(fid, '%s%c%c', ['Margem de fase $Ci$ & \SI{' num2str(Pmi) '}{\degree}\\'],13,10);
+%     fprintf(fid, '%s%c%c', ['Frequência de cruzamento $Ci$ & \SI{' num2str(Wpmi) '}{\radian\per\s}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Ganho proporcional (controle de tensão) & \SI{' num2str(conv.Kp2) '}{}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Ganho integral (controle de tensão) & \SI{' num2str(conv.Ki2) '}{}\\'],13,10);
+%     fprintf(fid, '%s%c%c', ['Margem de ganho $Cv$ & \SI{' num2str(Gmv_dB) '}{\deci\bel}\\'],13,10);
+%     fprintf(fid, '%s%c%c', ['Margem de fase $Cv$ & \SI{' num2str(Pmv) '}{\degree}\\'],13,10);
+%     fprintf(fid, '%s%c%c', ['Frequência de cruzamento $Cv$ & \SI{' num2str(Wpmv) '}{\radian\per\s}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Tempo de subida & \SI{' num2str(conv.Step2malhas.RiseTime*1000) '}{\milli\s}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Tempo de acomodação & \SI{' num2str(conv.Step2malhas.SettlingTime*1000) '}{\milli\s}\\'],13,10);
     fprintf(fid, '%s%c%c', ['Tensão máxima de acomodação & \SI{' num2str(conv.Step2malhas.SettlingMax) '}{\V}\\'],13,10);

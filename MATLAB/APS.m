@@ -15,8 +15,8 @@ clear all % Limpa variáveis de comando
 clc% Limpa Command Window
 close all % 
 
-RA=1234567; % Buck
-% RA=1019252; % Coloque aqui o seu RA (Boost)
+% RA=1234567; % Buck
+ RA=1019252; % Coloque aqui o seu RA (Boost)
 % RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor

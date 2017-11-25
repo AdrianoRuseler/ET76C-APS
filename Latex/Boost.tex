@@ -51,6 +51,9 @@ A introdução requer uma breve revisão da literatura referente ao tópico de p
 
 
 A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Boost.
+
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck\_parametros.tex} }
+
 % Tabela com parâmetros do conversor
 \input{Tables/Boost_parametros.tex}
 
@@ -61,27 +64,33 @@ A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Boost
 A análise teórica apresentada anteriormente deve ser verificada por simulação \cite{noauthor_psim_nodate}.
 
 A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Boost.
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck\_steadystate.tex} }
 
 % Tabela com o ponto de operação do conversor
 \input{Tables/Boost_steadystate.tex}
 
 
+A \tabref{tab:steadystatesim} apresenta uma comparação dos valores teóricos com os obtidos por simulação para o ponto de operação do conversor Boost.
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Boost\_steadystatesim.tex} }
 
+% Tabela com o ponto de operação do conversor
+\input{Tables/Boost_steadystatesim.tex}
 
-
-
-
-\section{Verificação do modelo dinâmico via simulação}
-
-\subsection{Função de transferência}
-
-%\begin{equation}
-%\frac{3317760000000001}{32768\,\left(s^2+\frac{1603454457173333\,s}{17179869184}+\frac{7549747199999989}{16777216}\right)}
-%\end{equation}
+A \figref{fig:boost-steadystate} apresenta a resposta da simulação do ponto de operação do conversor..  \textcolor{red}{compare se os valores simulados com os parâmetros de projeto...}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=1\linewidth]{Figs/Boost-ValidacaoModelo}
+	\includegraphics[width=0.9\linewidth]{Figs/Boost}
+	\caption{Verificação do ponto de operação do conversor Boost.}
+	\label{fig:boost-steadystate}
+\end{figure}
+
+\section{Verificação do modelo dinâmico via simulação}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\linewidth]{Figs/BoostACSweep}
 	\caption{Comparação do diagrama de Bode das funções de transferência em função da razão cíclica obtida via simulação no PSIM.}
 	\label{fig:ValidacaoModelo}
 \end{figure}
@@ -91,7 +100,18 @@ A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Boost.
 Detalhes do projeto do controlador de tensão
 
 
-\section{Implementação digital do controlador PI}
+
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Boost_step1malha.tex}
+
+\subsection{Implementação analógica do controlador PI}
+
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Buck_step1malhaAmpOp.tex}
+
+
+
+\subsection{Implementação digital do controlador PI}
 
 O Código--fonte \ref{lst:valoresPI} atribui os valores das constantes do controlador PI de tensão implementado.
 \begin{lstlisting}[caption={Parâmetros do controlador PI digital de tensão.},label={lst:valoresPI}]
@@ -111,6 +131,44 @@ e1=e0; // Atualiza erro anterior
 out[0] = u0; // Saída do controlador
 \end{lstlisting}
 
+
+\subsection{Comparação entre as respostas ao degrau de referência}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/BoostStepResponse1malhaTodos}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:stepresponse1malha}
+\end{figure}
+
+
+\section{Implementação com duas malhas}
+
+
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Boost_step2malhas.tex}
+
+
+
+A \figref{fig:BoostStepResponse2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/BoostStepResponse2malhas}
+	\caption{Comparação da resposta ao degrau de referência de tensão para a implementação com uma malha e com duas malhas.}
+	\label{fig:BoostStepResponse2malhas}
+\end{figure}
+
+
+A \figref{fig:Buck2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck2malhas}
+	\caption{Resposta ao degrau de referência de tensão com duas malhas de controle.}
+	\label{fig:Buck2malhas}
+\end{figure}
 
 \section{Conclusões} 
 
