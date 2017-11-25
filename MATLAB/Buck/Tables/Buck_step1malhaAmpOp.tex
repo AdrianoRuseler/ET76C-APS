@@ -1,18 +1,23 @@
 % Tabela com resposta ao degrau de referência
 \begin{table}[!ht]
 \centering
-\caption{Resposta ao degrau de referência de tensão $v_{C0}$ do conversor Buck, implementado com Amplificador Operacional.}
-\label{tab:parametros}
+\caption{Resposta ao degrau de referência de tensão $v_{C0}$ do conversor Buck, registro acadêmico de número $1234567$, implementado com Amplificador Operacional.}
+\label{tab:resposta1malhaAmpOp}
 \begin{tabular}{@{}cc@{}}
 \toprule
 \textbf{Descrição} & \textbf{Valor}\\ \midrule
+Ganho proporcional & \SI{1.2195e-05}{}\\
+Ganho integral & \SI{369.5492}{}\\
+Resistor do controlador PI $R_{1_{PI}}$ & \SI{820}{\kilo\ohm}\\
+Resistor do controlador PI $R_{2_{PI}}$ & \SI{10}{\ohm}\\
+Resistor do controlador PI $C_{1_{PI}}$ & \SI{3.3}{\nano\F}\\
 Tempo de subida & \SI{7.406}{\milli\s}\\
 Tempo de acomodação & \SI{7.7032}{\milli\s}\\
 Tensão máxima de acomodação & \SI{225.8359}{\V}\\
 Tensão mínima de acomodação & \SI{215.16}{\V}\\
 Sobresinal & \SI{0}{\V}\\
 Tensão de pico & \SI{225.8359}{\V}\\
-Tempo da tensão de pico & \SI{18.2535}{\milli\s}\\
+Tempo para a tensão de pico & \SI{18.2535}{\milli\s}\\
 \bottomrule
 \end{tabular}
 \end{table}

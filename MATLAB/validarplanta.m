@@ -84,7 +84,7 @@ for j=1:e
     hx.XTickLabel={};
     grid on
     axis tight
-    title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ],'Interpreter','latex')   
+    title([conv.tipo ' - ' PSIMdata.fra.signals(f).label ' (RA:' num2str(conv.RA) ')'],'Interpreter','latex')   
     xlabel('')
     if j==1
         ylabel('Magnitude (dB)','Interpreter','latex')

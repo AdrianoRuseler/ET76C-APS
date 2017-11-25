@@ -15,6 +15,9 @@ conv.G=conv.V0/conv.Vi; % Ganho do conversor
 conv.VTm=0; % Tensão minima da portadora
 conv.VTM=1; % Tensão máxima da portadora
 
+conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
+conv.Ta=1/conv.fa; % Periodo de amostragem
+
 conv.fci=2*pi*conv.fs/4; % Frequência de corte da malha de corrente
 conv.fcv=2*pi*60; % Frequência de corte da malha de tensão
 

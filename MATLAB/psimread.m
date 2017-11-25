@@ -53,19 +53,22 @@ end
 dirstruct.wdir=pwd;
 
 switch ext % Make a simple check of file extensions
-    case '.txt'      
+    case '.txt'
         % Good to go!!
     case '.fra' % Waiting for code implementation
         disp('Frequency analysis from PSIM.')
         dataout = psimfra2matlab(conv.PSIMCMD.outfile);
-        conv.PSIMCMD.fra=dataout.fra;
+        if isempty(dataout)
+        else
+            conv.PSIMCMD.fra=dataout.fra;
+        end
         return
     otherwise
         disp('Save simview data as *.txt file.')
         conv.PSIMCMD.status=1;
         return
 end
-    
+
 dirstruct.simulatedir=pathstr; % Update simulations dir
     
 %  Create folder under psimdir to store mat file

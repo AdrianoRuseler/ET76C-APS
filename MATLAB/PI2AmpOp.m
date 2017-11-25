@@ -44,7 +44,7 @@ e=indx{ind};
 conv.R1pi=E12(e(1))*10000;
 conv.R2pi=E12(e(2));
 
-Kpf = conv.R2pi/conv.R1pi; % Ganho obtido
+conv.Kpf = conv.R2pi/conv.R1pi; % Ganho obtido
 
 C1t=1/(conv.R1pi*conv.Ki);
 C1base=10^(floor(log10(C1t)-1));
@@ -53,8 +53,8 @@ C1e= abs(C1t/C1base-E12);
 ind=find(C1e==min(abs(C1e))); % Menor erro 
 conv.C1pi=E12(ind)*C1base;
 
-Kif=1/(conv.R1pi*conv.C1pi);
+conv.Kif=1/(conv.R1pi*conv.C1pi);
 
-conv.CApmOp = pid(Kpf,Kif); % Verificação 
+conv.CApmOp = pid(conv.Kpf,conv.Kif); % Verificação 
 
 

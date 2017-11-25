@@ -53,6 +53,8 @@ if isempty(conv.PSIMCMD.data)
 end
 
 PSIMdata.simview.main.hfig=figure; % Create fig handle
+% title(['RA: ' num2str(conv.RA)])
+
 xdata=PSIMdata.simview.main.xdata*1e3;
 
 for s=0:PSIMdata.simview.main.numscreen-1
@@ -66,20 +68,23 @@ for s=0:PSIMdata.simview.main.numscreen-1
         legString{c+1} = eval(['PSIMdata.simview.screen' num2str(s) '.curve' num2str(c) '.label']);
         plot(haxes,xdata,ydata)        
     end
-    %     axis tight
+    %     axis tight    
     xlim(haxes,[conv.PSIMCMD.printtime conv.PSIMCMD.totaltime]*1e3);
          legend(haxes,legString,'Interpreter','latex');    
     if ~s==PSIMdata.simview.main.numscreen-1
         set(haxes,'XTickLabel',[])
+        title(['RA: ' num2str(conv.RA)],'Interpreter','latex')
     end
 end
 
 xlabel('Tempo (ms)','Interpreter','latex')
 
+
+
 ylabel(PSIMdata.simview.screen0.handle,'Tens\~ao de sa\''ida (V)','Interpreter','latex')
 ylabel(PSIMdata.simview.screen1.handle,'Corrente no indutor (A)','Interpreter','latex')
 
-
+linkaxes([PSIMdata.simview.screen0.handle PSIMdata.simview.screen1.handle],'x') % Linka eixos x
 % get(PSIMdata.simview.main.hfig,'Position')
 % get(PSIMdata.simview.screen1.handle,'Position')
 

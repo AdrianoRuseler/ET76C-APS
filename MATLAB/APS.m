@@ -13,6 +13,7 @@ end
 %% Identificação
 clear all % Limpa variáveis de comando
 clc% Limpa Command Window
+close all % 
 
 RA=1234567; % Buck
 % RA=1019252; % Coloque aqui o seu RA (Boost)
@@ -116,11 +117,8 @@ conv.PSIMCMD.printtime = conv.ST/2;
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
 %% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
-
  
 %% Discretização do controlador
-conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
-conv.Ta=1/conv.fa; 
 
 % 'tustin' — Bilinear (Tustin) method.
 conv.Cz=c2d(conv.Cv,conv.Ta,'tustin');
@@ -130,6 +128,8 @@ conv.a0z = CzDen(1); %
 conv.a1z = CzDen(2); %  
 conv.b0z = CzNum(1); % 
 conv.b1z = CzNum(2); % 
+
+conv = step2tex(conv); % Obtem resposta ao degrau
 
 %% Simulação do controlador Digital
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
@@ -189,7 +189,7 @@ conv.C2v=Cv; % Associe a estrutura
 % Obtenha os ganhos
  [PInum PIden]=tfdata(Ci); 
  conv.Kp1 = PInum{1}(1); % Ganho proporcional
- conv.Ki1 = PInum{1}(2); % Ganho do integrador
+ conv.Ki1 = PInum{1}(2); % Ganho integral (contole corrente)
  [PInum PIden]=tfdata(Cv); 
  conv.Kp2 = PInum{1}(1); % Ganho proporcional
  conv.Ki2 = PInum{1}(2); % Ganho do integrador
@@ -214,5 +214,5 @@ conv = psimfromcmd(conv); % Simula via CMD e importa dados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
 %% Finaliza APS
-save conv
+% save conv
  

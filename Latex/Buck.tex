@@ -104,7 +104,7 @@ Detalhes do projeto do controlador de tensão
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\linewidth]{Figs/BuckStepResponse1malha}
+	\includegraphics[width=0.9\linewidth]{Figs/BuckStepResponse1malhaTodos}
 	\caption{Resposta ao degrau de referência de tensão.}
 	\label{fig:stepresponse1malha}
 \end{figure}
@@ -121,6 +121,9 @@ Detalhes do projeto do controlador de tensão
 %\end{figure}
 
 
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Buck_step1malhaAmpOp.tex}
+
 
 A \figref{fig:buck1malha} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
 
@@ -130,6 +133,9 @@ A \figref{fig:buck1malha} apresenta o resultado da simulação da resposta ao de
 	\caption{Resposta ao degrau de referência de tensão.}
 	\label{fig:buck1malha}
 \end{figure}
+
+
+
 
 A \figref{fig:buck1malhaAmpOp} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
 
@@ -165,12 +171,18 @@ out[0] = u0; // Saída do controlador
 
 \section{Implementação com duas malhas}
 
+
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Buck_step2malhas.tex}
+
+
+
 A \figref{fig:BuckStepResponse2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.9\linewidth]{Figs/BuckStepResponse2malhas}
-	\caption{Resposta ao degrau de referência de tensão.}
+	\caption{Comparação da resposta ao degrau de referência de tensão para a implementação com uma malha e com duas malhas.}
 	\label{fig:BuckStepResponse2malhas}
 \end{figure}
 
@@ -180,7 +192,7 @@ A \figref{fig:Buck2malhas} apresenta o resultado da simulação da resposta ao d
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.9\linewidth]{Figs/Buck2malhas}
-	\caption{Resposta ao degrau de referência de tensão com controlador implementado com amplificadores operacionais.}
+	\caption{Resposta ao degrau de referência de tensão com duas malhas de controle.}
 	\label{fig:Buck2malhas}
 \end{figure}
 \section{Conclusões} 

@@ -56,6 +56,7 @@ fprintf(fid, '%s%c%c', '\begin{tabular}{@{}ccc@{}}',13,10);
 fprintf(fid, '%s%c%c', '\toprule',13,10);
 fprintf(fid, '%s%c%c', '\textbf{Símbolo} & \textbf{Descrição} & \textbf{Valor}\\ \midrule',13,10);
 fprintf(fid, '%s%c%c', ['$f_s$ & Frequência de comutação & \SI{' num2str(conv.fs/1000) '}{\kilo\hertz}\\'],13,10);
+fprintf(fid, '%s%c%c', ['$f_s$ & Frequência de amostragem & \SI{' num2str(conv.fa/1000) '}{\kilo\hertz}\\'],13,10);
 fprintf(fid, '%s%c%c', ['$V_i$ & Tensão média de entrada  & \SI{' num2str(conv.Vi) '}{\V}\\'],13,10);
 fprintf(fid, '%s%c%c', ['$V_0$ & Tensão média de saída  & \SI{' num2str(conv.V0) '}{\V} \\'],13,10);
 fprintf(fid, '%s%c%c', ['$P_0$ & Potência processada  & \SI{' num2str(conv.P0) '}{\W} \\'],13,10);
