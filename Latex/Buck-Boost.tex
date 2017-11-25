@@ -51,9 +51,9 @@ A introdução requer uma breve revisão da literatura referente ao tópico de p
 
 
 A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Buck--Boost.
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck-Boost\_parametros.tex} }
 % Tabela com parâmetros do conversor
 \input{Tables/Buck-Boost_parametros.tex}
-
 
 
 \section{Verificação do ponto de operação via simulação}
@@ -61,26 +61,43 @@ A \tabref{tab:parametros} apresenta os parâmetros de projeto do conversor Buck-
 A análise teórica apresentada anteriormente deve ser verificada por simulação \cite{noauthor_psim_nodate}.
 
 A \tabref{tab:steadystate} apresenta o ponto de operação do conversor Buck--Boost.
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck-Boost\_steadystate.tex} }
 
 % Tabela com o ponto de operação do conversor
 \input{Tables/Buck-Boost_steadystate.tex}
 
 
-									
-\section{Verificação do modelo dinâmico via simulação}
+A \tabref{tab:steadystatesim} apresenta uma comparação dos valores teóricos com os obtidos por simulação para o ponto de operação do conversor Buck--Boost.
+\textcolor{red}{atualize os valores da tabela, arquivo \emph{Buck-Boost\_steadystatesim.tex} }
 
-%\subsection{Função de transferência}
+% Tabela com o ponto de operação do conversor
+\input{Tables/Buck-Boost_steadystatesim.tex}
 
-%\begin{equation}
-%\frac{3317760000000001}{32768\,\left(s^2+\frac{1603454457173333\,s}{17179869184}+\frac{7549747199999989}{16777216}\right)}
-%\end{equation}
+A \figref{fig:buck-boost-steadystate} apresenta a resposta da simulação do ponto de operação do conversor..  \textcolor{red}{compare se os valores simulados com os parâmetros de projeto...}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=1\linewidth]{Figs/Buck-Boost-ValidacaoModelo}
-		\caption{Comparação do diagrama de Bode das funções de transferência em função da razão cíclica obtida via simulação no PSIM.}
-	\label{fig:ValidacaoModelo}
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-Boost}
+	\caption{Verificação do ponto de operação do conversor Buck-Boost.}
+	\label{fig:buck-boost-steadystate}
 \end{figure}
+
+
+
+									
+\section{Verificação do modelo dinâmico via simulação}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\linewidth]{Figs/Buck-BoostACSweep}
+		\caption{Comparação do diagrama de Bode das funções de transferência em função da razão cíclica obtida via simulação no PSIM.}
+	\label{fig:Buck-BoostACSweep}
+\end{figure}
+
+
+
+
 
 
 \section{Projeto do controlador de tensão}
@@ -89,15 +106,41 @@ Detalhes do projeto do controlador de tensão
 
 
 
-\begin{figure}
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Buck-Boost_step1malha.tex}
+
+
+A \figref{fig:Buck-Boost1malha} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.8\linewidth]{Figs/StepResponse1malha}
-	\caption{Resposta ao degrau de referência de tensão.}
-	\label{fig:stepresponse1malha}
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-Boost1malha}
+	\caption{Resposta ao degrau de referência de tensão para o controlador implementado com blocos funcionais.}
+	\label{fig:Buck-Boost1malha}
 \end{figure}
 
 
-\section{Implementação digital do controlador PI}
+
+\subsection{Implementação analógica do controlador PI}
+
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Buck-Boost_step1malhaAmpOp.tex}
+
+
+
+A \figref{fig:Buck-Boost1malhaAmpOp} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-Boost1malhaAmpOp}
+	\caption{Resposta ao degrau de referência de tensão com controlador implementado com amplificadores operacionais.}
+	\label{fig:Buck-Boost1malhaAmpOp}
+\end{figure}
+
+
+
+
+\subsection{Implementação digital do controlador PI}
 
 
 \begin{lstlisting}[caption={Parâmetros do controlador PI digital de tensão.},label={lst:valoresPI}]
@@ -117,6 +160,43 @@ e1=e0; // Atualiza erro anterior
 out[0] = u0; // Saída do controlador
 \end{lstlisting}
 
+
+\subsection{Comparação entre as respostas ao degrau de referência}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-BoostStepResponse1malhaTodos}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:Buck-BoostStepResponse1malhaTodos}
+\end{figure}
+
+\section{Implementação com duas malhas}
+
+
+% Tabela com a resposta ao degrau de referência
+\input{Tables/Buck-Boost_step2malhas.tex}
+
+
+
+A \figref{fig:Buck-BoostStepResponse2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-BoostStepResponse2malhas}
+	\caption{Comparação da resposta ao degrau de referência de tensão para a implementação com uma malha e com duas malhas.}
+	\label{fig:Buck-BoostStepResponse2malhas}
+\end{figure}
+
+
+A \figref{fig:Buck-Boost2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Buck-Boost2malhas}
+	\caption{Resposta ao degrau de referência de tensão com duas malhas de controle.}
+	\label{fig:Buck-Boost2malhas}
+\end{figure}
 
 
 \section{Conclusões} 

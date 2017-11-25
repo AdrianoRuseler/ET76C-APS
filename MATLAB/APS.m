@@ -16,8 +16,8 @@ clc% Limpa Command Window
 close all % 
 
 % RA=1234567; % Buck
- RA=1019252; % Coloque aqui o seu RA (Boost)
-% RA=1230067; % Buck-Boost
+%  RA=1019252; % Coloque aqui o seu RA (Boost)
+RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -88,7 +88,7 @@ winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simula
 %% Simulação via CMD
 
 conv.PSIMCMD.totaltime = 3*conv.ST;
-conv.PSIMCMD.steptime = 1E-007;
+conv.PSIMCMD.steptime = 1E-006;
 conv.PSIMCMD.printtime = conv.ST/2;
 conv.PSIMCMD.printstep = 1;
 conv.prefixname='1malha'; % Prefixo para nomear arquivos
@@ -205,7 +205,7 @@ winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simula
 %% Simulação via CMD
 conv.prefixname='2malhas'; % Prefixo para nomear arquivos
 conv.PSIMCMD.totaltime = 3*conv.ST;
-conv.PSIMCMD.steptime = 1E-007;
+conv.PSIMCMD.steptime = 1E-006;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados

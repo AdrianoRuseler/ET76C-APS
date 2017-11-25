@@ -104,11 +104,34 @@ Detalhes do projeto do controlador de tensão
 % Tabela com a resposta ao degrau de referência
 \input{Tables/Boost_step1malha.tex}
 
+
+
+A \figref{fig:Boost1malha} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Boost1malha}
+	\caption{Resposta ao degrau de referência de tensão.}
+	\label{fig:Boost1malha}
+\end{figure}
+
+
+
+
 \subsection{Implementação analógica do controlador PI}
 
 % Tabela com a resposta ao degrau de referência
-\input{Tables/Buck_step1malhaAmpOp.tex}
+\input{Tables/Boost_step1malhaAmpOp.tex}
 
+
+A \figref{fig:Boost1malhaAmpOp} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/Boost1malhaAmpOp}
+	\caption{Resposta ao degrau de referência de tensão com controlador implementado com amplificadores operacionais.}
+	\label{fig:Boost1malhaAmpOp}
+\end{figure}
 
 
 \subsection{Implementação digital do controlador PI}
@@ -139,7 +162,7 @@ out[0] = u0; // Saída do controlador
 	\centering
 	\includegraphics[width=0.9\linewidth]{Figs/BoostStepResponse1malhaTodos}
 	\caption{Resposta ao degrau de referência de tensão.}
-	\label{fig:stepresponse1malha}
+	\label{fig:BoostStepResponse1malhaTodos}
 \end{figure}
 
 
@@ -161,13 +184,13 @@ A \figref{fig:BoostStepResponse2malhas} apresenta o resultado da simulação da 
 \end{figure}
 
 
-A \figref{fig:Buck2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
+A \figref{fig:Boost2malhas} apresenta o resultado da simulação da resposta ao degrau de referência de tensão....
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\linewidth]{Figs/Buck2malhas}
+	\includegraphics[width=0.9\linewidth]{Figs/Boost2malhas}
 	\caption{Resposta ao degrau de referência de tensão com duas malhas de controle.}
-	\label{fig:Buck2malhas}
+	\label{fig:Boost2malhas}
 \end{figure}
 
 \section{Conclusões} 
