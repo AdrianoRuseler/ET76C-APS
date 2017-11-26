@@ -28,7 +28,7 @@ if(conv.G>1.75)
     conv.D = (conv.V0-conv.Vi)/conv.V0; % Razão cíclica do Boost em MCC
     conv.VC=conv.D*(conv.VTM-conv.VTm)+conv.VTm; % Tensão de controle
     conv.IL0 = conv.I0/(1-conv.D);
-    conv.L0 = (conv.V0-conv.Vi)*conv.Vi/(conv.DiL0*conv.I0*conv.V0*conv.fs);
+    conv.L0 = (conv.V0-conv.Vi)*conv.Vi/(conv.DiL0*conv.IL0*conv.V0*conv.fs);
     conv.C0 = (conv.I0*conv.D)/(conv.fs*conv.DvC0*conv.V0);
     % Modelo dinâmico
     A=[0 (conv.D-1)/conv.L0;(1-conv.D)/conv.C0 -1/(conv.R0*conv.C0)];

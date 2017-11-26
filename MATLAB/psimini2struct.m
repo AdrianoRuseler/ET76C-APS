@@ -127,8 +127,12 @@ end
 for s=0:simview.main.numscreen-1 % Screens Loop
     for c=0:eval(['simview.screen' num2str(s) '.curvecount'])-1 % Curves Loop
         formula{s+1,c+1}= eval(['simview.screen' num2str(s) '.curve' num2str(c) '.formula']);
-        [form, modified] = matlab.lang.makeValidName(formula{s+1,c+1},'ReplacementStyle','delete'); % Problem here for minus signal
-        
+        if verLessThan('matlab', '8.2.0')
+            form = genvarname(formula{s+1,c+1});
+            modified=1; % Just force update
+        else
+            [form, modified] = matlab.lang.makeValidName(formula{s+1,c+1},'ReplacementStyle','delete'); % Problem here for minus signal
+        end          
         formuladata=evalin('base',form);        
         eval(['simview.screen' num2str(s) '.curve' num2str(c) '.data=formuladata;'])        
         ymean=mean(formuladata);
@@ -147,8 +151,6 @@ end
 for i=1:length(conv.PSIMCMD.data.signals)
     evalin('base', ['clear ' conv.PSIMCMD.data.signals(i).label])     
 end
-
-
 
 %% Save data struct
 conv.PSIMCMD.data.simview=simview;
