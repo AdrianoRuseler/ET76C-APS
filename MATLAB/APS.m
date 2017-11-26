@@ -16,8 +16,8 @@ clc% Limpa Command Window
 close all % 
 
 % RA=1234567; % Buck
-%  RA=1019252; % Coloque aqui o seu RA (Boost)
-RA=1230067; % Buck-Boost
+ RA=1019252; % Coloque aqui o seu RA (Boost)
+% RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -179,8 +179,8 @@ conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 % pidTuner(conv.vC0_iL0*conv.Hv,'PI') % Exporte com o nome Cv
     
 % Opção 03
-[Ci,Ciinfo] = pidtune(conv.iL0_d*conv.Hi,'PI',conv.fci); % Automático
-[Cv,Cvinfo] = pidtune(conv.vC0_iL0*feedback(Ci*conv.iL0_d,conv.Hi)*conv.Hv,'PI',conv.fcv); % Automático
+[Ci,C2iinfo] = pidtune(conv.iL0_d*conv.Hi,'PI',conv.fci); % Automático
+[Cv,C2vinfo] = pidtune(conv.vC0_iL0*feedback(Ci*conv.iL0_d,conv.Hi)*conv.Hv,'PI',conv.fcv); % Automático
 
 %% Exporte os controladores PI projetados
 conv.C2i=Ci; % Associe a estrutura 

@@ -63,7 +63,11 @@ end
 dirstruct.psimdir=pathstr; % Update simulations dir
 dirstruct.pwd=pwd;     
 % Make name valid in MATLAB
-name = matlab.lang.makeValidName(name);
+if verLessThan('matlab', '8.2.0')
+    name = genvarname(name);
+else
+    name = matlab.lang.makeValidName(name);
+end
 name = strrep(name, '_', ''); % Removes umderscore
 
 

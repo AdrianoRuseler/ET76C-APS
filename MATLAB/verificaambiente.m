@@ -59,41 +59,41 @@ if status % Verifica se é possivel executar o PSIM pelo prompt do DOS
 end
 
 %% verificar dependências dos m file
-
-disp('Verificando arquivos e versão do MATLAB....')
-[fList,pList] = matlab.codetools.requiredFilesAndProducts(which('APS'));
-nf=0; % Number of not found m files
-for e=1:length(fList)
-    if exist(fList{e},'file')
-        disp(['Encontrado: ' fList{e}])
-    else
-        warning(['Não encontrado: ' fList{e}])
-        nf=nf+1;
-    end
-end
-
-if ~nf
-    disp('Todos os arquivos estão presentes!')
-end
-
-Nome={pList.Name};
-Versao={pList.Version};
-% ProductNumber={pList.ProductNumber};
-% Utilizado={pList.Certain};
-
-ver('MATLAB')
-if verLessThan('MATLAB',Versao{1}) %
-    warning(['Versão ' Versao{1} ' ou superior do pacote ' Nome{1} ' requerida!'])
-else
-    disp(['Versão ' Versao{1} ' ou superior do pacote ' Nome{1} ' encontrada!'])
-end
-
-ver('Control')
-if verLessThan('Control',Versao{2}) %
-    warning(['Versão ' Versao{2} ' ou superior do pacote ' Nome{2} ' requerida!'])
-else
-    disp(['Versão ' Versao{2} ' ou superior do pacote ' Nome{2} ' encontrada!'])
-end
+% 
+% disp('Verificando arquivos e versão do MATLAB....')
+% [fList,pList] = matlab.codetools.requiredFilesAndProducts(which('APS'));
+% nf=0; % Number of not found m files
+% for e=1:length(fList)
+%     if exist(fList{e},'file')
+%         disp(['Encontrado: ' fList{e}])
+%     else
+%         warning(['Não encontrado: ' fList{e}])
+%         nf=nf+1;
+%     end
+% end
+% 
+% if ~nf
+%     disp('Todos os arquivos estão presentes!')
+% end
+% 
+% Nome={pList.Name};
+% Versao={pList.Version};
+% % ProductNumber={pList.ProductNumber};
+% % Utilizado={pList.Certain};
+% 
+% ver('MATLAB')
+% if verLessThan('MATLAB',Versao{1}) %
+%     warning(['Versão ' Versao{1} ' ou superior do pacote ' Nome{1} ' requerida!'])
+% else
+%     disp(['Versão ' Versao{1} ' ou superior do pacote ' Nome{1} ' encontrada!'])
+% end
+% 
+% ver('Control')
+% if verLessThan('Control',Versao{2}) %
+%     warning(['Versão ' Versao{2} ' ou superior do pacote ' Nome{2} ' requerida!'])
+% else
+%     disp(['Versão ' Versao{2} ' ou superior do pacote ' Nome{2} ' encontrada!'])
+% end
 
 
 %% Verifica plataforma
