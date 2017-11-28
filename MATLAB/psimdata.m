@@ -50,5 +50,5 @@ fclose(fid);
 disp('Exporte os dados simulados no diretório:')
 disp(conv.PSIMCMD.outfile)
 
-winopen(conv.PSIMCMD.paramfile ) % Abre arquivo criado
+% winopen(conv.PSIMCMD.paramfile ) % Abre arquivo criado
 

@@ -15,8 +15,8 @@ clear all % Limpa variáveis de comando
 clc% Limpa Command Window
 close all % 
 
-% RA=1234567; % Buck
- RA=1019252; % Coloque aqui o seu RA (Boost)
+RA=1234567; % Buck
+%  RA=1019252; % Coloque aqui o seu RA (Boost)
 % RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
@@ -26,7 +26,6 @@ winopen(conv.basedir) % Abre pasta contendo arquivos de simulação
 %% Simulação do ponto de operação 
 
 % Simule o conversor para verificar o ponto de operação
-psimdata(conv) % Atualiza arquivo com os parâmetros do convesor
 winopen([conv.basefilename '.psimsch']) % Abre arquivo de simulação
 
 % Simule e exporte no formato .txt
@@ -67,7 +66,7 @@ validarplanta(conv); % Compara modelos
 % pidTuner(conv.vC0_d*conv.Hv,'pi') % Exporte com o nome Cv
 
 % Opção 03
-[Cv,info] = pidtune(conv.vC0_d*conv.Hv,'PI',conv.fcv); % Automático
+[Cv,info] = pidtune(conv.vC0_d*conv.Hv,'PI',8*conv.fcv); % Automático
 
 %% Exporte o controlador PI projetado
 conv.Cv=Cv; % Associe a estrutura 
@@ -94,20 +93,17 @@ conv.PSIMCMD.printstep = 1;
 conv.prefixname='1malha'; % Prefixo para nomear arquivos
 
 conv = psimfromcmd(conv); % Simula via CMD
-
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
-
 
 %% Implementação analógica com AmpOp
 
 conv = PI2AmpOp(conv); % Essa função retorna a implementação analógica do PI
 conv = step2tex(conv); % Obtem resposta ao degrau
 
-
-%% Resposta ao degrau e simulação
-
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaAmpOp'; % Prefixo para nomear arquivos
+
+%% Resposta ao degrau e simulação
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 
 %% Simulação via CMD

@@ -1,9 +1,4 @@
-% =========================================================================
-% *** psimfra2matlab
-% ***  
-% *** This function converts fft PSIM simulated data to MATLAB data 
-% *** format.
-% *** Convert PSIM txt data to simulink struct data
+
 % =========================================================================
 % ***
 % *** The MIT License (MIT)
@@ -107,8 +102,20 @@ PSIMdata.fra.freq=FRAdata(:,1);
      PSIMdata.fra.signals(j).dimensions=1;   
      j=j+1;
  end
+ 
+
+freq=PSIMdata.fra.freq;
+
+for s=1:length(PSIMdata.fra.signals)
+   mag= PSIMdata.fra.signals(s).amp;
+   phase= PSIMdata.fra.signals(s).phase;      
+   response = mag.*exp(1j*phase*pi/180);
+   PSIMdata.fra.idfrd(s) = idfrd(response,freq,0);
+   assignin('base',PSIMdata.fra.signals(s).label,PSIMdata.fra.idfrd(s));
+end
+ 
   
- PSIMdata.fra.name=name;
+PSIMdata.fra.name=name;
  
 disp('Done!!!!')
 toc
