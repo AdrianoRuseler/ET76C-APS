@@ -278,7 +278,7 @@ if isfield(conv,'C2i')
     
     print(hsfig,[conv.latex.figsdir '\' conv.tipo 'StepResponse2malhas' ],'-depsc') % Salva resposta ao degrau
     conv.Step2malhas = stepinfo(conv.FTMA2,'SettlingTimeThreshold',0.05,'RiseTimeLimits',[0.05,0.95]);    
-    conv.ST=(15*conv.Step2malhas.SettlingTime); % Tempo de acomodação    
+%     conv.ST=(15*conv.Step2malhas.SettlingTime); % Tempo de acomodação    
 end
 %% Tabela com parâmetros do conversor
 filename=[conv.latex.tablesdir '\' conv.tipo '_step1malha.tex'];

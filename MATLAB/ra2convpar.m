@@ -32,7 +32,7 @@ conv.V0 = bitget(RA,6:-1:4)*[50; 75; 100]+50; % Tensão de saída
 conv.P0 = bitget(RA,15:-1:13)*[500; 750; 250]+1000; % Potência do conversor
 conv.fs = bitget(RA,12:-1:9)*[2.5e3; 5e3; 10e3;15e3]+10e3; % Frequência de comutação
 conv.DiL0 = bitget(RA,8:-1:5)*[0.05; 0.1; 0.2;0.3]+0.1; % Ondulação percentual de corrente
-conv.DvC0 = bitget(RA,4:-1:1)*[0.005; 0.01; 0.02;0.03]+0.01; % Ondulação percentual de tensão
+conv.DvC0 = bitget(RA,4:-1:1)*[0.0005; 0.001; 0.002;0.003]+0.001; % Ondulação percentual de tensão
 
 conv.R0=conv.V0^2/conv.P0; % Resistência de carga
 conv.I0=conv.P0/conv.V0; % Corrente de carga
@@ -45,7 +45,7 @@ conv.fa=2*conv.fs; % Amostragem no dobro da frequência de comutação;
 conv.Ta=1/conv.fa; % Periodo de amostragem
 
 conv.fci=2*pi*conv.fs/4; % Frequência de corte da malha de corrente
-conv.fcv=2*pi*60; % Frequência de corte da malha de tensão
+conv.fcv=4*pi*60/10; % Frequência de corte da malha de tensão
 
 conv.Dcnd=0.8;
 % Decide qual topologia utilizar

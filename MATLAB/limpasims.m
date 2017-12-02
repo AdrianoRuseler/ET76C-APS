@@ -24,36 +24,57 @@
 % ***
 % =========================================================================
 
-function psimdata(conv)
+function limpasims(conv)
+wdir=pwd;
 
-if nargin < 1
-    disp('Dados do conversor não foram fornecidos!')
-    return
-end
-
-conv.fullfilename = [ conv.basefilename  conv.prefixname]; % Atualiza nome do arquivo
-conv.PSIMCMD.outfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.txt'];
-% conv.PSIMCMD.inifile = [conv.fullfilename '.ini']; % Arquivo ini simview
-
-
-% names = fieldnames(conv);
-% call fprintf to print the updated text strings
-fid = fopen(conv.PSIMCMD.paramfile,'w');
-if fid==-1
-    disp('Erro ao abrir o arquivo para escrita!')
-    return
-end
-
-for ind=1:length(conv.param)    
-    if isfield(conv,conv.param{ind}) % Apenas imprime o que for numerico
-        strdata=[char(conv.param(ind)) ' = ' num2str(getfield(conv,conv.param{ind}),'%10.8e')];
-        fprintf(fid, '%s%c%c', strdata,13,10);
+cd(conv.basedir) % Diretório base
+simfiles=dir('*.txt');
+for f=1:length(simfiles)
+    if ~isempty(simfiles)
+        delete(simfiles(f).name)
+        disp(['Arquivo: ' simfiles(f).name ' (' num2str(simfiles(f).bytes) ' Bytes) deletado!'])
     end
 end
-fclose(fid);
 
-disp('Exporte os dados simulados no diretório:')
-disp(conv.PSIMCMD.outfile)
+simfiles=dir('*.smv');
+for f=1:length(simfiles)
+    if ~isempty(simfiles)
+        delete(simfiles(f).name)
+        disp(['Arquivo: ' simfiles(f).name ' (' num2str(simfiles(f).bytes) ' Bytes) deletado!'])
+    end
+end
 
-% winopen(conv.PSIMCMD.paramfile ) % Abre arquivo criado
+simfiles=dir('*.fra');
+for f=1:length(simfiles)
+    if ~isempty(simfiles)
+        delete(simfiles(f).name)
+        disp(['Arquivo: ' simfiles(f).name ' (' num2str(simfiles(f).bytes) ' Bytes) deletado!'])
+    end
+end
 
+cd(conv.simsdir)
+simfiles=dir('*.txt');
+for f=1:length(simfiles)
+    if ~isempty(simfiles)
+        delete(simfiles(f).name)
+        disp(['Arquivo: ' simfiles(f).name ' (' num2str(simfiles(f).bytes) ' Bytes) deletado!'])
+    end
+end
+
+simfiles=dir('*.smv');
+for f=1:length(simfiles)
+    if ~isempty(simfiles)
+        delete(simfiles(f).name)
+        disp(['Arquivo: ' simfiles(f).name ' (' num2str(simfiles(f).bytes) ' Bytes) deletado!'])
+    end
+end
+
+simfiles=dir('*.fra');
+for f=1:length(simfiles)
+    if ~isempty(simfiles)
+        delete(simfiles(f).name)
+        disp(['Arquivo: ' simfiles(f).name ' (' num2str(simfiles(f).bytes) ' Bytes) deletado!'])
+    end
+end
+
+cd(wdir) % Diretório base

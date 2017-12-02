@@ -77,7 +77,7 @@ dirstruct.simulatedir=pathstr; % Update simulations dir
 
 
 %%  Load file .txt
-disp(['Reading ' name '.txt file....     Wait!'])
+disp(['Reading ' conv.PSIMCMD.outfile ' file....     Wait!'])
 tic
 cd(dirstruct.simulatedir)
 [fileID,errmsg] = fopen(conv.PSIMCMD.outfile);

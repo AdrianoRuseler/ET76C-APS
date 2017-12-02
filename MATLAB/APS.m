@@ -15,28 +15,32 @@ clear all % Limpa variáveis de comando
 clc% Limpa Command Window
 close all % 
 
-RA=1234567; % Buck
-%  RA=1019252; % Coloque aqui o seu RA (Boost)
+% RA=1234567; % Buck
+RA=1019252; % Coloque aqui o seu RA (Boost)
 % RA=1230067; % Buck-Boost
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
 winopen(conv.basedir) % Abre pasta contendo arquivos de simulação
 
-%% Simulação do ponto de operação 
-
+%% Simulação do ponto de operação (Manual)
+conv.prefixname='';  % Atualiza prefixo para nome do Arquivo de simulação
 % Simule o conversor para verificar o ponto de operação
 winopen([conv.basefilename '.psimsch']) % Abre arquivo de simulação
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
 
-% Simule e exporte no formato .txt
-% conv = psimread(conv); 
-% conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
+%% Importação dos dados simulados (Manual)
+% Simule e exporte no formato *.txt (SIMVIEW)
+% Exporte também as configurações *.ini (Settings->Save Settings)
+
+conv = sim2matlab(conv);  % Importa configurações do SIMVIEW
+conv2tex(conv); % Exporta tabelas de comparação
 
 %% Simulação via CMD
 conv.prefixname='';  % Atualiza prefixo para nome do Arquivo de simulação
-conv.PSIMCMD.totaltime = 0.01; % Ajuste o tempo para atingir o regime permanente
+conv.PSIMCMD.totaltime = 0.1; % Ajuste o tempo para atingir o regime permanente
 conv.PSIMCMD.steptime = 1E-006;
-conv.PSIMCMD.printtime = 0.008;
+conv.PSIMCMD.printtime = 0.098;
 conv.PSIMCMD.printstep = 1;
 
 conv = psimfromcmd(conv); % Simula via CMD e retorna dados obtidos
@@ -48,12 +52,14 @@ conv2tex(conv); % Exporta tabelas de comparação
 %% Simule o arquivo ACSweep para verificar a modelagem do cenversor
 conv.prefixname='ACSweep'; 
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+% Se simulado manualmente, save no formato *fra na pasta Sims
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.fra'])
 
-% Simulação via CMD
+%% Simulação via CMD
 conv = psimfromcmd(conv); % Simula via CMD
 
 %% Verificação das plantas
-
+% Se simulado manualmente, save no formato *fra na pasta Sims
 validarplanta(conv); % Compara modelos
 
 %% Projeto do controlador
@@ -66,7 +72,7 @@ validarplanta(conv); % Compara modelos
 % pidTuner(conv.vC0_d*conv.Hv,'pi') % Exporte com o nome Cv
 
 % Opção 03
-[Cv,info] = pidtune(conv.vC0_d*conv.Hv,'PI',8*conv.fcv); % Automático
+[Cv,info] = pidtune(conv.vC0_d*conv.Hv,'PI',conv.fcv); % Automático
 
 %% Exporte o controlador PI projetado
 conv.Cv=Cv; % Associe a estrutura 
@@ -83,6 +89,13 @@ psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 %% Simule no PSIM para verificar a resposta
 
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
+
+%% Importação dos dados simulados (Manual)
+% Simule e exporte no formato *.txt (SIMVIEW)
+% Exporte também as configurações *.ini (Settings->Save Settings)
+% conv.prefixname='1malha';  % Atualiza prefixo para nome do Arquivo de simulação
+conv = sim2matlab(conv);  % Importa configurações do SIMVIEW
 
 %% Simulação via CMD
 
@@ -103,15 +116,20 @@ conv = step2tex(conv); % Obtem resposta ao degrau
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaAmpOp'; % Prefixo para nomear arquivos
 
-%% Resposta ao degrau e simulação
+%% Resposta ao degrau e simulação (Manual)
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
+
+%% Importação dos dados simulados (Manual)
+% Simule e exporte no formato *.txt (SIMVIEW)
+% Exporte também as configurações *.ini (Settings->Save Settings)
+conv = sim2matlab(conv);  % Importa configurações do SIMVIEW
 
 %% Simulação via CMD
 conv.PSIMCMD.totaltime = 3*conv.ST;
 conv.PSIMCMD.printtime = conv.ST/2;
 
 conv = psimfromcmd(conv); % Simula via CMD e importa dados
-%% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
  
 %% Discretização do controlador
@@ -127,10 +145,16 @@ conv.b1z = CzNum(2); %
 
 conv = step2tex(conv); % Obtem resposta ao degrau
 
-%% Simulação do controlador Digital
+%% Simulação do controlador Digital (Manual)
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 conv.prefixname='1malhaDiscreto'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
+
+%% Importação dos dados simulados (Manual)
+% Simule e exporte no formato *.txt (SIMVIEW)
+% Exporte também as configurações *.ini (Settings->Save Settings)
+conv = sim2matlab(conv);  % Importa configurações do SIMVIEW
 
 %% Simulação via CMD
 conv.prefixname='1malhaDiscreto';
@@ -153,6 +177,12 @@ conv.CDLL=filt(CzNum,CzDen,conv.Ta);
 % Simule no PSIM para verificar a resposta
 conv.prefixname='1malhaDLL'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
+
+%% Importação dos dados simulados (Manual)
+% Simule e exporte no formato *.txt (SIMVIEW)
+% Exporte também as configurações *.ini (Settings->Save Settings)
+conv = sim2matlab(conv);  % Importa configurações do SIMVIEW
 
 %% Simulação via CMD
 conv.prefixname='1malhaDLL';
@@ -194,9 +224,14 @@ conv = step2tex(conv); % Plota resposta ao degrau
 conv.prefixname='2malhas';
 psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 
-% Simulação do controle em malha fechada
+%% Simulação do controle em malha fechada
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
+disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
 
+%% Importação dos dados simulados (Manual)
+% Simule e exporte no formato *.txt (SIMVIEW)
+% Exporte também as configurações *.ini (Settings->Save Settings)
+conv = sim2matlab(conv);  % Importa configurações do SIMVIEW
 
 %% Simulação via CMD
 conv.prefixname='2malhas'; % Prefixo para nomear arquivos
@@ -209,6 +244,8 @@ conv = psimfromcmd(conv); % Simula via CMD e importa dados
 %% Plota dados simulados
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
-%% Finaliza APS
-% save conv
+%% Limpa arquivos de simulação
+
+limpasims(conv);  % Deleta arquivos de simulação (*.txt, *.smv e *.fra)
+
  

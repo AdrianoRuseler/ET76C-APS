@@ -58,7 +58,7 @@ end
 
 
 %% Read ini file
-
+conv.PSIMCMD.data.simview=[]; % Limpa campo
 inistruct = ini2struct(conv.PSIMCMD.inifile);  
 
 % Creates the simview structure

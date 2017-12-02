@@ -31,7 +31,11 @@ conv.PSIMCMD.outfile = [conv.simsdir  '\' conv.tipo  conv.prefixname '.fra'];
 
 conv = psimread(conv); % Abra o arquivo .fra
 
-PSIMdata.fra=conv.PSIMCMD.fra;
+if isfield(conv.PSIMCMD,'fra')
+    PSIMdata.fra=conv.PSIMCMD.fra;
+else
+    return
+end
 
 estados=conv.sys.statename;
 e=length(estados);
