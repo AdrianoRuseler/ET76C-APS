@@ -16,8 +16,9 @@ clc% Limpa Command Window
 close all % 
 
 % RA=1234567; % Buck
-RA=1019252; % Coloque aqui o seu RA (Boost)
-% RA=1230067; % Buck-Boost
+ RA=1019252; % Coloque aqui o seu RA (Boost)
+% RA=1438336; % Buck-Boost
+% RA=1693832;
 
 %% Obtenção dos parâmetros do conversor
 conv = ra2convpar(RA); % Converte o numero do RA em parâmetros do conversor; 
@@ -38,9 +39,9 @@ conv2tex(conv); % Exporta tabelas de comparação
 
 %% Simulação via CMD
 conv.prefixname='';  % Atualiza prefixo para nome do Arquivo de simulação
-conv.PSIMCMD.totaltime = 0.1; % Ajuste o tempo para atingir o regime permanente
+conv.PSIMCMD.totaltime = 0.45; % Ajuste o tempo para atingir o regime permanente
 conv.PSIMCMD.steptime = 1E-006;
-conv.PSIMCMD.printtime = 0.098;
+conv.PSIMCMD.printtime = 0.44;
 conv.PSIMCMD.printstep = 1;
 
 conv = psimfromcmd(conv); % Simula via CMD e retorna dados obtidos
@@ -108,7 +109,7 @@ conv.prefixname='1malha'; % Prefixo para nomear arquivos
 conv = psimfromcmd(conv); % Simula via CMD
 conv = psimini2struct(conv);  % Importa configurações do SIMVIEW
 
-%% Implementação analógica com AmpOp
+%% Implementação analógica com AmpOp 
 
 conv = PI2AmpOp(conv); % Essa função retorna a implementação analógica do PI
 conv = step2tex(conv); % Obtem resposta ao degrau
@@ -144,9 +145,10 @@ conv.b0z = CzNum(1); %
 conv.b1z = CzNum(2); % 
 
 conv = step2tex(conv); % Obtem resposta ao degrau
+psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
 
 %% Simulação do controlador Digital (Manual)
-psimdata(conv) % Atualiza arquivo txt com os parâmetros do conversor
+
 conv.prefixname='1malhaDiscreto'; % Prefixo para nomear arquivos
 winopen([conv.basefilename conv.prefixname '.psimsch']) % Abre arquivo de simulação
 disp(['Salve a simulação com o nome: ' conv.tipo conv.prefixname '.txt'])
